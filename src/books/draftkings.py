@@ -12,6 +12,8 @@ def generate_draftkings_nhl_formatted_events():
     for offers in res['eventGroup']['offerCategories'][0]['offerSubcategoryDescriptors'][0]['offerSubcategory']['offers']:
         for offer in offers:
             id = offer['eventId']
+            if 'label' not in offer:
+                continue
             market_name = convert_market_name(offer['label'])
             if market_name == 'Moneyline':
                 outcomes = [{'name': convert_team_name_nhl(outcome['label']), 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
