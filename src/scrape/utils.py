@@ -25,6 +25,11 @@ def compute_conversion(odds_a, odds_b):
         return (a-1) - (a-1)/b
     else:
         return (b-1) - (b-1)/a
+    
+def generate_event_name(team_a, team_b):
+    team_a = convert_team_name_nhl(team_a)
+    team_b = convert_team_name_nhl(team_b)
+    return f'{team_a} vs {team_b}' if team_a < team_b else f'{team_b} vs {team_a}'
 
 def convert_market_name(name):
     name = name.replace('|', '').replace('Live', '').replace(' - Inc. OT and Shootout', '').strip()
@@ -45,9 +50,9 @@ def convert_event_name_nhl(name):
         a, b = name.split(' at ')
     if ' |at| ' in name:
         a, b = name.split(' |at| ')
-    a = convert_team_name_nhl(a.strip('| '))
-    b = convert_team_name_nhl(b.strip('| '))
-    return frozenset([a,b])
+    a = a.strip('| ')
+    b = b.strip('| ')
+    return generate_event_name(a, b)
 
 def convert_spread_nhl(spread, market_name=None):
     if market_name:
@@ -55,6 +60,7 @@ def convert_spread_nhl(spread, market_name=None):
         line = float(market_name.split(' ')[-1])
         if team not in market_name:
             line = -line
+        line = '+' + str(line) if line > 0 else str(line)
     else:
         team, line = ' '.join(spread.split(' ')[:-1]), spread.split(' ')[-1]
     return f'{convert_team_name_nhl(team)} {line}'

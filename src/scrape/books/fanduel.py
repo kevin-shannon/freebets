@@ -1,6 +1,11 @@
 import requests
 from utils import convert_event_name_nhl, convert_market_name, convert_team_name_nhl
 
+def generate_fanduel():
+    return {
+        'nhl': generate_fanduel_nhl_formatted_events()
+    }
+
 # FANDUEL
 # NHL
 def generate_fanduel_nhl_formatted_events():
@@ -17,9 +22,9 @@ def generate_fanduel_nhl_formatted_events():
         for selection in res['attachments']['markets'].values():
             # Moneyline
             if selection['marketType'] == 'MONEY_LINE':
-                event_tuple = id_to_tuple[str(selection['eventId'])]
+                event_name = id_to_tuple[str(selection['eventId'])]
                 market = convert_market_name(selection['marketType'])
-                formatted_events[event_tuple][market] = [{'name': convert_team_name_nhl(outcome['runnerName']), 'odds': int(outcome['winRunnerOdds']['americanDisplayOdds']['americanOdds'])} for outcome in selection['runners']]
+                formatted_events[event_name][market] = [{'name': convert_team_name_nhl(outcome['runnerName']), 'odds': int(outcome['winRunnerOdds']['americanDisplayOdds']['americanOdds'])} for outcome in selection['runners']]
             # Totals
             if selection['marketType'] == 'TOTAL_POINTS_(OVER/UNDER)':
                 pass
