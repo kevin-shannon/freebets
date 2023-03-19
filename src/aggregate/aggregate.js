@@ -63,11 +63,44 @@ function aggregate(data, books_a, books_b) {
             }
         }
     }
-    // Remove bets with one outcome
-    for (let key in bets) { 
+    
+    for (let key in bets) {
+        // Remove bets with one outcome
         if (bets[key]['outcomes'].length === 1) {
             delete bets.key
+        } else {
+            // Add EV and Conversion attributes
+            bets[key]['ev'] = computeEv(bets[key]['outcomes'][0]['odds'], bets[key]['outcomes'][1]['odds']);
+            bets[key]['conversion'] = computeConversion(bets[key]['outcomes'][0]['odds'], bets[key]['outcomes'][1]['odds']);
         }
     }
-    return bets;
+    return Object.values(bets);
 }
+
+function convertAmericanToDecimal(american) {
+    if (american > 0) {
+      return 1 + american / 100;
+    } else {
+      return 1 - 100 / american;
+    }
+  }
+  
+  function computeEv(oddsA, oddsB) {
+    const a = convertAmericanToDecimal(oddsA);
+    const b = convertAmericanToDecimal(oddsB);
+    if (a > b) {
+      return a / (a / b + 1);
+    } else {
+      return b / (b / a + 1);
+    }
+  }
+  
+  function computeConversion(oddsA, oddsB) {
+    const a = convertAmericanToDecimal(oddsA);
+    const b = convertAmericanToDecimal(oddsB);
+    if (a > b) {
+      return (a - 1) - (a - 1) / b;
+    } else {
+      return (b - 1) - (b - 1) / a;
+    }
+  }
