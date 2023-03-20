@@ -6,6 +6,19 @@ function App() {
 }
 
 function BetRow({ bet }) {
+  return (
+    <tr>
+      <td>{bet.ev}</td>
+      <td>{bet.conversion}</td>
+      <td>{bet.event}</td>
+      <td>{bet.market}</td>
+      <td><BetsBlock bet={bet} /></td>
+      <td><BooksBlock bet={bet} /></td>
+    </tr>
+  );
+}
+
+function BooksBlock({ bet }) {
   const books_a = [];
   const books_b = [];
   bet.outcomes[0].books.forEach((book) => {
@@ -24,31 +37,35 @@ function BetRow({ bet }) {
   })
 
   return (
-    <tr>
-      <td>{bet.ev}</td>
-      <td>{bet.event}</td>
-      <td>{bet.market}</td>
-      <td>
-        <table>
-          <tbody>
-            <tr>
-              <td>{bet.outcomes[0].name}</td>
-              <td>{bet.outcomes[0].odds}</td>
-              <td>{books_a}</td>
-            </tr>
-            <tr>
-              <td>{bet.outcomes[1].name}</td>
-              <td>{bet.outcomes[1].odds}</td>
-              <td>{books_b}</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  );
+    <table>
+      <tbody>
+        <tr>
+          <td>{bet.outcomes[0].odds}</td>
+          <td>{books_a}</td>
+        </tr>
+        <tr>
+          <td>{bet.outcomes[1].odds}</td>
+          <td>{books_b}</td>
+        </tr>
+      </tbody>
+    </table>
+  )
 }
 
-
+function BetsBlock({ bet }) {
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <td>{bet.outcomes[0].name}</td>
+        </tr>
+        <tr>
+          <td>{bet.outcomes[1].name}</td>
+        </tr>
+      </tbody>
+    </table>
+  )
+}
 
 function BetTable({ bets }) {
   const rows = [];
@@ -65,6 +82,7 @@ function BetTable({ bets }) {
       <thead>
         <tr>
           <th>EV</th>
+          <th>Conversion</th>
           <th>Event</th>
           <th>Market</th>
           <th>Bets</th>
