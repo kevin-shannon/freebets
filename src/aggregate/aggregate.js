@@ -70,8 +70,8 @@ function aggregate(data, books_a, books_b) {
             delete bets.key
         } else {
             // Add EV and Conversion attributes
-            bets[key]['ev'] = computeEv(bets[key]['outcomes'][0]['odds'], bets[key]['outcomes'][1]['odds']);
-            bets[key]['conversion'] = computeConversion(bets[key]['outcomes'][0]['odds'], bets[key]['outcomes'][1]['odds']);
+            bets[key]['ev'] = parseFloat((computeEv(bets[key]['outcomes'][0]['odds'], bets[key]['outcomes'][1]['odds']) * 100).toFixed(2));
+            bets[key]['conversion'] = parseFloat((computeConversion(bets[key]['outcomes'][0]['odds'], bets[key]['outcomes'][1]['odds']) * 100).toFixed(2));
         }
     }
     return Object.values(bets);

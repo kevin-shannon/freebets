@@ -1,26 +1,54 @@
 import './App.css';
+import Book from './Book.js'
 
 function App() {
   return <FilterableBetTable bets={BETS} />;
 }
 
 function BetRow({ bet }) {
+  const books_a = [];
+  const books_b = [];
+  bet.outcomes[0].books.forEach((book) => {
+    books_a.push(
+      <Book
+        book={book}
+        key={book} />
+    )
+  })
+  bet.outcomes[1].books.forEach((book) => {
+    books_b.push(
+      <Book
+        book={book}
+        key={book} />
+    )
+  })
+
   return (
     <tr>
       <td>{bet.ev}</td>
       <td>{bet.event}</td>
       <td>{bet.market}</td>
-      <tr>
-        <td>{bet.outcomes[0].name}</td>
-        <td>{bet.outcomes[0].odds}</td>
-      </tr>
-      <tr>
-        <td>{bet.outcomes[1].name}</td>
-        <td>{bet.outcomes[1].odds}</td>
-      </tr>
+      <td>
+        <table>
+          <tbody>
+            <tr>
+              <td>{bet.outcomes[0].name}</td>
+              <td>{bet.outcomes[0].odds}</td>
+              <td>{books_a}</td>
+            </tr>
+            <tr>
+              <td>{bet.outcomes[1].name}</td>
+              <td>{bet.outcomes[1].odds}</td>
+              <td>{books_b}</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
     </tr>
   );
 }
+
+
 
 function BetTable({ bets }) {
   const rows = [];
@@ -57,10 +85,10 @@ function FilterableBetTable({ bets }) {
 }
 
 const BETS = [
-  {ev: 97, conversion: 70, event: "OTT Senators vs TOR Maple Leafs", market: "Moneyline", outcomes: [{"name": "TOR Maple Leafs", "odds": -400, "books": ["unibet"]}, {"name": "OTT Senators", "odds": 333, "books": ["superbook"]}]},
-  {ev: 95, conversion: 70, event: "CGY Flames vs DAL Stars", market: "Total 3.5", outcomes: [{"name": "Over", "odds": -110, "books": ["betmgm", "pointsbet"]}, {"name": "Under", "odds": 100, "books": ["draftkings"]}]},
-  {ev: 93, conversion: 69, event: "MTL Canadiens vs TB Lightning", market: "Team Total: MTL Canadiens: 4.5", outcomes: [{"name": "Under", "odds": -200, "books": ["betmgm"]}, {"name": "Over", "odds": 170, "books": ["fanduel"]}]},
-  {ev: 91, conversion: 69, event: "LA Kings vs VAN Canucks", market: "Spread: LA Kings: -2.5", outcomes: [{"name": "VAN Canucks +2.5", "odds": -250, "books": ["draftkings"]}, {"name": "LA Kings -2.5", "odds": 200, "books": ["betmgm"]}]}
+  {sport: 'nhl', event: 'ANA Ducks vs VAN Canucks', market: 'Total: 10.0', outcomes: Array(2), ev: 95.36, conversion: 48.10, outcomes: [{name: 'Over', odds: 850, books: ['unibet']}, {name: 'Under', odds: -1667, books: ['unibet']}]},
+  {sport: 'nhl', event: 'BOS Bruins vs BUF Sabres', market: 'Moneyline', outcomes: Array(2), ev: 97.09, conversion: 56.74, outcomes: [{name: 'BUF Sabres', odds: 160, books: ['draftkings']}, {name: 'BOS Bruins', odds: -182, books: ['fanduel']}]},
+  {sport: 'nhl', event: 'CBJ Blue Jackets vs VGK Golden Knights', market: 'Total: 5.5', outcomes: Array(2), ev: 95.43, conversion: 52, outcomes: [{name: 'Under', odds: 143, books: ['unibet']}, {name: 'Over', odds: -175, books: ['betmgm', 'unibet']}]},
+  {sport: 'nhl', event: 'STL Blues vs WPG Jets', market: 'Spread: WPG Jets: -1.0', outcomes: Array(2), ev: 95.4, conversion: 50.94, outcomes: [{name: 'WPG Jets -1.0', odds: 135, books: ['unibet']}, {name: 'STL Blues +1.0', odds: -165, books: ['unibet']}]}
 ];
 
 export default App;
