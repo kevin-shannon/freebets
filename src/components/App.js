@@ -145,13 +145,21 @@ function BookSelect({ allowSelectAll, selectAllDefault }) {
   );
 }
 
-function BookFilters() {
-  return (
-    <div style={{display: 'flex'}}>
-      <BookSelect allowSelectAll={false} selectAllDefault={false}/>
-      <BookSelect allowSelectAll={true} selectAllDefault={true}/>
-    </div>
-  );
+function BookFilters({ betType }) {
+  if (betType.value === 'arbitrage') {
+    return (
+      <div style={{display: 'flex'}}>
+        <BookSelect key="arb" allowSelectAll={true} selectAllDefault={true} />
+      </div>
+    );
+  } else {
+    return (
+      <div style={{display: 'flex'}}>
+        <BookSelect key="free" allowSelectAll={true} selectAllDefault={false} />
+        <BookSelect allowSelectAll={true} selectAllDefault={true} />
+      </div>
+    );
+  }
 }
 
 function FilterBar() {
@@ -163,7 +171,7 @@ function FilterBar() {
         options={bet_type_options}
         isSearchable={false}
         onChange={setSelectedOption} />
-      <BookFilters />
+      <BookFilters betType={selectedOption}/>
     </div>
   );
 }
