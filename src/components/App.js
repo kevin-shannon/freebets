@@ -1,7 +1,6 @@
 import './App.css';
 import React, { useState } from 'react';
 import Select from 'react-select';
-import _ from "lodash";
 import BetsBlock from './BetsBlock';
 import BooksBlock from './BooksBlock';
 import { components } from "react-select";
@@ -79,9 +78,11 @@ const ValueContainer = ({ children, ...props }) => {
   const newChildren = [];
   const nbValues = getValue().length;
   if (nbValues === 1) {
-    newChildren.push(children[0][0].key.replace(/-.*/g, ""));
+    newChildren.push(getValue()[0]['label']);
+  } else if (props.options.length === nbValues) {
+    newChildren.push('All Books');
   } else {
-    newChildren.push(`${nbValues} items selected`);
+    newChildren.push(`${nbValues} books selected`);
   }
   newChildren.push(children[1]);
 
@@ -100,6 +101,33 @@ const ValueContainer = ({ children, ...props }) => {
 };
 
 function BookSelect() {
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleSelectAll = (selectAll) => {
+    if (selectAll) {
+      setSelectedOptions(updatedOptions);
+    } else {
+      setSelectedOptions([]);
+    }
+  };
+
+  const handleChange = (selected, action) => {
+    if (action.action === 'select-option' && action.option.value === 'selectAll') {
+      handleSelectAll(true);
+    } else if (action.action === 'deselect-option' && action.option.value === 'selectAll') {
+      handleSelectAll(false);
+    } else if (action.action === 'select-option' && selected.length === options.length) {
+      handleSelectAll(true);
+    } else {
+      if (action.action === 'deselect-option' && selected.length === options.length)
+        selected = selected.filter(obj => obj.value !== 'selectAll');
+      setSelectedOptions(selected);
+    }
+  };
+
+  const selectAllOption = { label: 'All', value: 'selectAll' };
+  const updatedOptions = [selectAllOption, ...options];
+
   return (
     <Select 
       isMulti={true}
@@ -111,7 +139,10 @@ function BookSelect() {
       hideSelectedOptions={false}
       closeMenuOnSelect={false} 
       isSearchable={false}
-      options={options} />
+      isClearable={false}
+      options={updatedOptions}
+      value={selectedOptions}
+      onChange={handleChange} />
   );
 }
 
@@ -145,13 +176,13 @@ const bet_type_options = [
 ];
 
 const options = [
-  { value: 'betmgm', label: 'BetMgm', key: 1 },
-  { value: 'caesars', label: 'Caesars', key: 2 },
-  { value: 'draftkings', label: 'Draftkings', key: 3 },
-  { value: 'fanduel', label: 'Fanduel', key: 4 },
-  { value: 'pointsbet', label: 'Pointsbet', key: 5 },
-  { value: 'superbook', label: 'Superbook', key: 6 },
-  { value: 'unibet', label: 'Unibet', key: 7 },
+  { value: 'betmgm', label: 'BetMgm' },
+  { value: 'caesars', label: 'Caesars' },
+  { value: 'draftkings', label: 'Draftkings' },
+  { value: 'fanduel', label: 'Fanduel' },
+  { value: 'pointsbet', label: 'Pointsbet' },
+  { value: 'superbook', label: 'Superbook' },
+  { value: 'unibet', label: 'Unibet' },
 ];
 
 const BETS = [
