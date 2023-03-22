@@ -9,11 +9,10 @@ function App() {
   return <FilterableBetTable bets={BETS} />;
 }
 
-function BetRow({ bet }) {
+function BetRow({ bet, selectedOption }) {
   return (
     <tr>
-      <td>{bet.ev}</td>
-      <td>{bet.conversion}</td>
+      <td>{selectedOption.value === 'arbitrage' ? bet.ev : bet.conversion}</td>
       <td>{bet.event}</td>
       <td>{bet.market}</td>
       <td><BetsBlock bet={bet} /></td>
@@ -22,12 +21,19 @@ function BetRow({ bet }) {
   );
 }
 
-function BetTable({ bets }) {
+function BetTable({ bets, selectedOption }) {
   const rows = [];
+  const rate = selectedOption.value === 'arbitrage' ? 'EV' : 'Conversion';
+  if (selectedOption.value === 'arbitrage') {
+    bets.sort((a, b) => b.ev - a.ev);
+  } else {
+    bets.sort((a, b) => b.conversion - a.conversion);
+  }
   bets.forEach((bet) => {
     rows.push(
       <BetRow
         bet={bet}
+        selectedOption={selectedOption}
         key={bet.event + bet.market} />
     );
   });
@@ -36,8 +42,7 @@ function BetTable({ bets }) {
     <table>
       <thead>
         <tr>
-          <th>EV</th>
-          <th>Conversion</th>
+          <th>{rate}</th>
           <th>Event</th>
           <th>Market</th>
           <th>Bets</th>
@@ -50,10 +55,12 @@ function BetTable({ bets }) {
 }
 
 function FilterableBetTable({ bets }) {
+  const [selectedOption, setSelectedOption] = useState(bet_type_options[1]);
+
   return (
     <div>
-      <FilterBar />
-      <BetTable bets={bets} />
+      <FilterBar selectedOption={selectedOption} onSelectedOptionChange={setSelectedOption} />
+      <BetTable bets={bets} selectedOption={selectedOption} />
     </div>
   );
 }
@@ -162,15 +169,14 @@ function BookFilters({ betType }) {
   }
 }
 
-function FilterBar() {
-  const [selectedOption, setSelectedOption] = useState(bet_type_options[1]);
+function FilterBar({ selectedOption, onSelectedOptionChange }) {
   return (
     <div style={{display: 'flex'}}>
       <Select
         defaultValue={selectedOption}
         options={bet_type_options}
         isSearchable={false}
-        onChange={setSelectedOption} />
+        onChange={onSelectedOptionChange} />
       <BookFilters betType={selectedOption}/>
     </div>
   );
@@ -193,7 +199,7 @@ const options = [
 ];
 
 const BETS = [
-  {sport: 'nhl', event: 'ANA Ducks vs VAN Canucks', market: 'Total: 10.0', outcomes: Array(2), ev: 95.36, conversion: 48.10, outcomes: [{name: 'Over', odds: 850, books: ['unibet']}, {name: 'Under', odds: -1667, books: ['unibet']}]},
+  {sport: 'nhl', event: 'ANA Ducks vs VAN Canucks', market: 'Total: 10.0', outcomes: Array(2), ev: 95.36, conversion: 78.10, outcomes: [{name: 'Over', odds: 850, books: ['unibet']}, {name: 'Under', odds: -1667, books: ['unibet']}]},
   {sport: 'nhl', event: 'BOS Bruins vs BUF Sabres', market: 'Moneyline', outcomes: Array(2), ev: 97.09, conversion: 56.74, outcomes: [{name: 'BUF Sabres', odds: 160, books: ['draftkings']}, {name: 'BOS Bruins', odds: -182, books: ['fanduel']}]},
   {sport: 'nhl', event: 'CBJ Blue Jackets vs VGK Golden Knights', market: 'Total: 5.5', outcomes: Array(2), ev: 95.43, conversion: 52, outcomes: [{name: 'Under', odds: 143, books: ['unibet']}, {name: 'Over', odds: -175, books: ['betmgm', 'unibet']}]},
   {sport: 'nhl', event: 'STL Blues vs WPG Jets', market: 'Spread: WPG Jets: -1.0', outcomes: Array(2), ev: 95.4, conversion: 50.94, outcomes: [{name: 'WPG Jets -1.0', odds: 135, books: ['unibet']}, {name: 'STL Blues +1.0', odds: -165, books: ['unibet']}]}
