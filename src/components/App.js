@@ -100,12 +100,14 @@ const ValueContainer = ({ children, ...props }) => {
   );
 };
 
-function BookSelect() {
-  const [selectedOptions, setSelectedOptions] = useState([]);
+function BookSelect({ allowSelectAll, selectAllDefault }) {
+  const selectAllOption = { label: 'All', value: 'selectAll' };
+  const updatedOptions = [selectAllOption, ...options];
+  const [selectedOptions, setSelectedOptions] = useState(selectAllDefault ? allowSelectAll ? updatedOptions : options : []);
 
   const handleSelectAll = (selectAll) => {
     if (selectAll) {
-      setSelectedOptions(updatedOptions);
+      allowSelectAll ? setSelectedOptions(updatedOptions) : setSelectedOptions(options);
     } else {
       setSelectedOptions([]);
     }
@@ -125,9 +127,6 @@ function BookSelect() {
     }
   };
 
-  const selectAllOption = { label: 'All', value: 'selectAll' };
-  const updatedOptions = [selectAllOption, ...options];
-
   return (
     <Select 
       isMulti={true}
@@ -140,7 +139,7 @@ function BookSelect() {
       closeMenuOnSelect={false} 
       isSearchable={false}
       isClearable={false}
-      options={updatedOptions}
+      options={allowSelectAll ? updatedOptions : options}
       value={selectedOptions}
       onChange={handleChange} />
   );
@@ -149,8 +148,8 @@ function BookSelect() {
 function BookFilters() {
   return (
     <div style={{display: 'flex'}}>
-      <BookSelect />
-      
+      <BookSelect allowSelectAll={false} selectAllDefault={false}/>
+      <BookSelect allowSelectAll={true} selectAllDefault={true}/>
     </div>
   );
 }
