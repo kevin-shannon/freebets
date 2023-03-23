@@ -1,5 +1,5 @@
-function aggregate(data, books_a, books_b) {
-    bets = {}
+export default function aggregate(data, books_a, books_b) {
+    let bets = {}
     // First pass for book A
     for (let book in data) {
         if (books_a.includes(book)) {
@@ -67,7 +67,7 @@ function aggregate(data, books_a, books_b) {
     for (let key in bets) {
         // Remove bets with one outcome
         if (bets[key]['outcomes'].length === 1) {
-            delete bets.key
+            delete bets[key]
         } else {
             // Add EV and Conversion attributes
             bets[key]['ev'] = parseFloat((computeEv(bets[key]['outcomes'][0]['odds'], bets[key]['outcomes'][1]['odds']) * 100).toFixed(2));

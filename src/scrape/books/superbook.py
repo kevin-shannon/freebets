@@ -17,5 +17,5 @@ def generate_superbook_nhl_formatted_events():
         for market in event['markets']:
             market_name = convert_market_name(market['name'])
             if market_name == 'Moneyline':
-                formatted_events[event_name] = [{'name': convert_team_name_nhl(outcome['name']), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['selections']]
+                formatted_events[event_name] = {market_name : [{'name': convert_team_name_nhl(outcome['name']), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['selections']]}
     return formatted_events
