@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import BetsBlock from './BetsBlock';
 import BooksBlock from './BooksBlock';
@@ -9,10 +9,10 @@ function App() {
   return <FilterableBetTable bets={BETS} />;
 }
 
-function BetRow({ bet, selectedOption }) {
+function BetRow({ bet, betType }) {
   return (
     <tr>
-      <td>{selectedOption.value === 'arbitrage' ? bet.ev : bet.conversion}</td>
+      <td>{betType.value === 'arbitrage' ? bet.ev : bet.conversion}</td>
       <td>{bet.event}</td>
       <td>{bet.market}</td>
       <td><BetsBlock bet={bet} /></td>
@@ -21,10 +21,10 @@ function BetRow({ bet, selectedOption }) {
   );
 }
 
-function BetTable({ bets, selectedOption }) {
+function BetTable({ bets, betType }) {
   const rows = [];
-  const rate = selectedOption.value === 'arbitrage' ? 'EV' : 'Conversion';
-  if (selectedOption.value === 'arbitrage') {
+  const rate = betType.value === 'arbitrage' ? 'EV' : 'Conversion';
+  if (betType.value === 'arbitrage') {
     bets.sort((a, b) => b.ev - a.ev);
   } else {
     bets.sort((a, b) => b.conversion - a.conversion);
@@ -33,7 +33,7 @@ function BetTable({ bets, selectedOption }) {
     rows.push(
       <BetRow
         bet={bet}
-        selectedOption={selectedOption}
+        betType={betType}
         key={bet.event + bet.market} />
     );
   });
@@ -55,14 +55,24 @@ function BetTable({ bets, selectedOption }) {
 }
 
 function FilterableBetTable({ bets }) {
-  const [selectedOption, setSelectedOption] = useState(bet_type_options[1]);
+  const [betType, setBetType] = useState(bet_type_options[0]);
+  const [bookA, setBookA] = useState([]);
+  const [bookB, setBookB] = useState([]);
 
-  return (
-    <div>
-      <FilterBar selectedOption={selectedOption} onSelectedOptionChange={setSelectedOption} />
-      <BetTable bets={bets} selectedOption={selectedOption} />
-    </div>
-  );
+  if (!bookA.length || !bookB.length) {
+    return (
+      <div>
+        <FilterBar betType={betType} onBetTypeChange={setBetType} bookA={bookA} onBookAChange={setBookA} bookB={bookB} onBookBChange={setBookB} />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <FilterBar betType={betType} onBetTypeChange={setBetType} bookA={bookA} onBookAChange={setBookA} bookB={bookB} onBookBChange={setBookB} />
+        <BetTable bets={bets} betType={betType} bookA={bookA} bookB={bookB} />
+      </div>
+    );
+  }
 }
 
 const Option = (props) => {
@@ -107,30 +117,34 @@ const ValueContainer = ({ children, ...props }) => {
   );
 };
 
-function BookSelect({ allowSelectAll, selectAllDefault }) {
+function BookSelect({ allowSelectAll, selectAllDefault, book, onBookChange }) {
   const selectAllOption = { label: 'All', value: 'selectAll' };
-  const updatedOptions = [selectAllOption, ...options];
-  const [selectedOptions, setSelectedOptions] = useState(selectAllDefault ? allowSelectAll ? updatedOptions : options : []);
+  const updatedOptions = [selectAllOption, ...book_options];
+  function onBooksChange(input) {
+    onBookChange.forEach(func => {
+      func(input);
+    });
+  }
+  useEffect(() => {
+    onBooksChange(selectAllDefault ? allowSelectAll ? updatedOptions : book_options : []);
+  }, []); 
 
   const handleSelectAll = (selectAll) => {
-    if (selectAll) {
-      allowSelectAll ? setSelectedOptions(updatedOptions) : setSelectedOptions(options);
-    } else {
-      setSelectedOptions([]);
-    }
+    selectAll ? allowSelectAll ? onBooksChange(updatedOptions) : onBooksChange(book_options) : onBooksChange([]);
   };
 
   const handleChange = (selected, action) => {
+    console.log('change')
     if (action.action === 'select-option' && action.option.value === 'selectAll') {
       handleSelectAll(true);
     } else if (action.action === 'deselect-option' && action.option.value === 'selectAll') {
       handleSelectAll(false);
-    } else if (action.action === 'select-option' && selected.length === options.length) {
+    } else if (action.action === 'select-option' && selected.length === book_options.length) {
       handleSelectAll(true);
     } else {
-      if (action.action === 'deselect-option' && selected.length === options.length)
+      if (action.action === 'deselect-option' && selected.length === book_options.length)
         selected = selected.filter(obj => obj.value !== 'selectAll');
-      setSelectedOptions(selected);
+        onBooksChange(selected);
     }
   };
 
@@ -146,38 +160,38 @@ function BookSelect({ allowSelectAll, selectAllDefault }) {
       closeMenuOnSelect={false} 
       isSearchable={false}
       isClearable={false}
-      options={allowSelectAll ? updatedOptions : options}
-      value={selectedOptions}
+      options={allowSelectAll ? updatedOptions : book_options}
+      value={book}
       onChange={handleChange} />
   );
 }
 
-function BookFilters({ betType }) {
+function BookFilters({ betType, bookA, onBookAChange, bookB, onBookBChange }) {
   if (betType.value === 'arbitrage') {
     return (
       <div style={{display: 'flex'}}>
-        <BookSelect key="arb" allowSelectAll={true} selectAllDefault={true} />
+        <BookSelect key='arb' allowSelectAll={true} selectAllDefault={true} book={bookA} onBookChange={[onBookAChange, onBookBChange]} />
       </div>
     );
   } else {
     return (
       <div style={{display: 'flex'}}>
-        <BookSelect key="free" allowSelectAll={true} selectAllDefault={false} />
-        <BookSelect allowSelectAll={true} selectAllDefault={true} />
+        <BookSelect key='free' allowSelectAll={true} selectAllDefault={false} book={bookA} onBookChange={[onBookAChange]} />
+        <BookSelect allowSelectAll={true} selectAllDefault={true} book={bookB} onBookChange={[onBookBChange]} />
       </div>
     );
   }
 }
 
-function FilterBar({ selectedOption, onSelectedOptionChange }) {
+function FilterBar({ betType, onBetTypeChange, bookA, onBookAChange, bookB, onBookBChange }) {
   return (
     <div style={{display: 'flex'}}>
       <Select
-        defaultValue={selectedOption}
+        defaultValue={betType}
         options={bet_type_options}
         isSearchable={false}
-        onChange={onSelectedOptionChange} />
-      <BookFilters betType={selectedOption}/>
+        onChange={onBetTypeChange} />
+      <BookFilters betType={betType} bookA={bookA} onBookAChange={onBookAChange} bookB={bookB} onBookBChange={onBookBChange} />
     </div>
   );
 }
@@ -188,7 +202,7 @@ const bet_type_options = [
   { value: 'risk-free bet', label: 'Risk-Free Bet'}
 ];
 
-const options = [
+const book_options = [
   { value: 'betmgm', label: 'BetMgm' },
   { value: 'caesars', label: 'Caesars' },
   { value: 'draftkings', label: 'Draftkings' },
