@@ -4,6 +4,7 @@ import FilterBar from "./FilterBar";
 import BetTable from "./BetTable";
 import aggregate from "../aggregate/aggregate.js";
 import data from "../scrape/output/output.json";
+import { book_options_all, bet_type_options } from "./Options";
 
 function readyBookList(book) {
   let arr = book.map((ob) => ob.value);
@@ -15,9 +16,9 @@ function readyBookList(book) {
 }
 
 function App() {
-  const [betType, setBetType] = useState("");
-  const [bookA, setBookA] = useState([]);
-  const [bookB, setBookB] = useState([]);
+  const [betType, setBetType] = useState(bet_type_options[0]);
+  const [bookA, setBookA] = useState(book_options_all);
+  const [bookB, setBookB] = useState(book_options_all);
   const bets = aggregate(data, readyBookList(bookA), readyBookList(bookB));
 
   return (

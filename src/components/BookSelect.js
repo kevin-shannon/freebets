@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { components } from "react-select";
 import Select from "react-select";
+import { components } from "react-select";
+import { book_options_all, book_options } from "./Options";
 
 const Option = (props) => {
   return (
@@ -32,31 +32,15 @@ const ValueContainer = ({ children, ...props }) => {
   return <components.ValueContainer {...props}>{newChildren}</components.ValueContainer>;
 };
 
-const book_options = [
-  { value: "betmgm", label: "BetMgm" },
-  { value: "caesars", label: "Caesars" },
-  { value: "draftkings", label: "Draftkings" },
-  { value: "fanduel", label: "Fanduel" },
-  { value: "pointsbet", label: "Pointsbet" },
-  { value: "superbook", label: "Superbook" },
-  { value: "unibet", label: "Unibet" },
-];
-
 function onBooksChange(input, onBookChange) {
   onBookChange.forEach((func) => {
     func(input);
   });
 }
 
-export default function BookSelect({ allowSelectAll, selectAllDefault, book, onBookChange }) {
-  const selectAllOption = { label: "All", value: "all" };
-  const [updatedOptions] = useState([selectAllOption, ...book_options]);
-  useEffect(() => {
-    onBooksChange(selectAllDefault ? (allowSelectAll ? updatedOptions : book_options) : [], onBookChange);
-  }, [allowSelectAll, selectAllDefault, onBookChange, updatedOptions]);
-
+export default function BookSelect({ allowSelectAll, book, onBookChange }) {
   const handleSelectAll = (selectAll) => {
-    selectAll ? (allowSelectAll ? onBooksChange(updatedOptions, onBookChange) : onBooksChange(book_options, onBookChange)) : onBooksChange([], onBookChange);
+    selectAll ? (allowSelectAll ? onBooksChange(book_options_all, onBookChange) : onBooksChange(book_options, onBookChange)) : onBooksChange([], onBookChange);
   };
 
   const handleChange = (selected, action) => {
@@ -84,7 +68,7 @@ export default function BookSelect({ allowSelectAll, selectAllDefault, book, onB
       closeMenuOnSelect={false}
       isSearchable={false}
       isClearable={false}
-      options={allowSelectAll ? updatedOptions : book_options}
+      options={allowSelectAll ? book_options_all : book_options}
       value={book}
       onChange={handleChange}
     />
