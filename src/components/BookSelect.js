@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { components } from "react-select";
 import Select from "react-select";
 
@@ -42,20 +42,21 @@ const book_options = [
   { value: "unibet", label: "Unibet" },
 ];
 
+function onBooksChange(input, onBookChange) {
+  onBookChange.forEach((func) => {
+    func(input);
+  });
+}
+
 export default function BookSelect({ allowSelectAll, selectAllDefault, book, onBookChange }) {
   const selectAllOption = { label: "All", value: "all" };
-  const updatedOptions = [selectAllOption, ...book_options];
-  function onBooksChange(input) {
-    onBookChange.forEach((func) => {
-      func(input);
-    });
-  }
+  const [updatedOptions] = useState([selectAllOption, ...book_options]);
   useEffect(() => {
-    onBooksChange(selectAllDefault ? (allowSelectAll ? updatedOptions : book_options) : []);
-  }, [onBooksChange]);
+    onBooksChange(selectAllDefault ? (allowSelectAll ? updatedOptions : book_options) : [], onBookChange);
+  }, [allowSelectAll, selectAllDefault, onBookChange, updatedOptions]);
 
   const handleSelectAll = (selectAll) => {
-    selectAll ? (allowSelectAll ? onBooksChange(updatedOptions) : onBooksChange(book_options)) : onBooksChange([]);
+    selectAll ? (allowSelectAll ? onBooksChange(updatedOptions, onBookChange) : onBooksChange(book_options, onBookChange)) : onBooksChange([], onBookChange);
   };
 
   const handleChange = (selected, action) => {
@@ -67,7 +68,7 @@ export default function BookSelect({ allowSelectAll, selectAllDefault, book, onB
       handleSelectAll(true);
     } else {
       if (action.action === "deselect-option" && selected.length === book_options.length) selected = selected.filter((obj) => obj.value !== "all");
-      onBooksChange(selected);
+      onBooksChange(selected, onBookChange);
     }
   };
 
