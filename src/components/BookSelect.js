@@ -52,7 +52,7 @@ export default function BookSelect({ allowSelectAll, selectAllDefault, book, onB
   }
   useEffect(() => {
     onBooksChange(selectAllDefault ? (allowSelectAll ? updatedOptions : book_options) : []);
-  }, []);
+  }, [onBooksChange]);
 
   const handleSelectAll = (selectAll) => {
     selectAll ? (allowSelectAll ? onBooksChange(updatedOptions) : onBooksChange(book_options)) : onBooksChange([]);

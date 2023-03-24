@@ -5,7 +5,7 @@ import BookFilters from "./BookFilters";
 export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChange, bookB, onBookBChange }) {
   useEffect(() => {
     onBetTypeChange(bet_type_options[0]);
-  }, []);
+  }, [onBetTypeChange]);
 
   return (
     <div style={{ display: "flex" }}>
