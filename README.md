@@ -1,2 +1,0 @@
-# freebets
-sportsbook bets aggregator
