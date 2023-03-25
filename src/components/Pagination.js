@@ -4,7 +4,7 @@ function Pagination({ currentPage, totalPages, maxPagesToShow, onPageChange }) {
   let pageNumbers = [];
   pageNumbers.push(["<", Math.max(currentPage - 1, 1)]);
   if (totalPages <= maxPagesToShow) {
-    for (let i = 1; i < totalPages; i++) {
+    for (let i = 1; i <= totalPages; i++) {
       pageNumbers.push([i, i]);
     }
   } else if (currentPage <= 3) {
