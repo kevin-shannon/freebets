@@ -2,7 +2,7 @@ import "./App.css";
 import React, { useState } from "react";
 import FilterBar from "./FilterBar";
 import BetTable from "./BetTable";
-import aggregate from "../aggregate/aggregate.js";
+import filterBets from "./Utils.js";
 import data from "../scrape/output/output.json";
 import { book_options_all, bet_type_options } from "./Options";
 
@@ -19,7 +19,7 @@ function App() {
   const [betType, setBetType] = useState(bet_type_options[0]);
   const [bookA, setBookA] = useState(book_options_all);
   const [bookB, setBookB] = useState(book_options_all);
-  const bets = aggregate(data, readyBookList(bookA), readyBookList(bookB));
+  const bets = filterBets(data, betType, readyBookList(bookA), readyBookList(bookB));
 
   return (
     <div>

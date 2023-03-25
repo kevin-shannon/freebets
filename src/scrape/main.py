@@ -18,5 +18,25 @@ data = {
     'unibet': generate_unibet()
 }
 
+def aggregate(data):
+    bets = {}
+    for book in data:
+        for sport in data[book]:
+            for event in data[book][sport]:
+                for market in data[book][sport][event]:
+                    key = frozenset([sport, event, market])
+                    outcomes = data[book][sport][event][market]
+                    if key not in bets:
+                        bets[key] = {'sport': sport, 'event': event, 'market': market}
+                        bets[key]['outcomes'] = [{'name': outcome['name'], 'books': {}} for outcome in outcomes]
+                    for i in range(len(outcomes)):
+                        for j in range(len(bets[key]['outcomes'])):
+                            if bets[key]['outcomes'][j]['name'] == outcomes[i]['name']:
+                                if outcomes[i]['odds'] in bets[key]['outcomes'][j]['books']:
+                                    bets[key]['outcomes'][j]['books'][outcomes[i]['odds']].append(book)
+                                else:
+                                    bets[key]['outcomes'][j]['books'][outcomes[i]['odds']] = [book]
+    return list(bets.values())
+
 with open(output, "w") as f:
-    json.dump(data, f)
+    json.dump(aggregate(data), f)

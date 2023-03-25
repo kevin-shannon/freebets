@@ -1,10 +1,10 @@
 import BetsBlock from "./BetsBlock";
 import BooksBlock from "./BooksBlock";
 
-export default function BetRow({ bet, betType }) {
+export default function BetRow({ bet }) {
   return (
     <tr>
-      <td>{betType.value === "arbitrage" ? bet.ev : bet.conversion}</td>
+      <td>{(bet.rate * 100).toFixed(1)}%</td>
       <td>{bet.event}</td>
       <td>{bet.market}</td>
       <td>

@@ -3,13 +3,9 @@ import BetRow from "./BetRow";
 export default function BetTable({ bets, betType }) {
   const rows = [];
   const rate = betType.value === "arbitrage" ? "EV" : "Conversion";
-  if (betType.value === "arbitrage") {
-    bets.sort((a, b) => b.ev - a.ev);
-  } else {
-    bets.sort((a, b) => b.conversion - a.conversion);
-  }
+  bets.sort((a, b) => b.rate - a.rate);
   bets.forEach((bet) => {
-    rows.push(<BetRow bet={bet} betType={betType} key={bet.event + bet.market} />);
+    rows.push(<BetRow bet={bet} key={bet.event + bet.market} />);
   });
 
   return (
