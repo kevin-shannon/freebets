@@ -13,6 +13,7 @@ export default function filterBets(data, betType, books_a, books_b) {
       bets.push(temp);
     }
   }
+  bets.sort((a, b) => b.rate - a.rate);
   return bets;
 }
 

@@ -6,18 +6,13 @@ export default function PaginatedBets({ betsPerPage, maxPagesToShow, bets, betTy
   const [page, setPage] = useState(1);
   const start = (page - 1) * betsPerPage;
   const end = page * betsPerPage;
-  console.log(`Loading bets from ${start} to ${end}`);
   const currentBets = bets.slice(start, end);
   const totalPages = Math.ceil(bets.length / betsPerPage);
-
-  const handlePageClick = (page) => {
-    setPage(page);
-  };
 
   return (
     <>
       <BetTable bets={currentBets} betType={betType} />
-      <Pagination currentPage={page} totalPages={totalPages} maxPagesToShow={maxPagesToShow} onPageChange={handlePageClick} />
+      <Pagination currentPage={page} totalPages={totalPages} maxPagesToShow={maxPagesToShow} onPageChange={setPage} />
     </>
   );
 }
@@ -25,7 +20,6 @@ export default function PaginatedBets({ betsPerPage, maxPagesToShow, bets, betTy
 function BetTable({ bets, betType }) {
   const rows = [];
   const rate = betType.value === "arbitrage" ? "EV" : "Conversion";
-  bets.sort((a, b) => b.rate - a.rate);
   bets.forEach((bet) => {
     rows.push(<BetRow bet={bet} key={bet.event + bet.market} />);
   });

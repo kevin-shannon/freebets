@@ -2,7 +2,7 @@ import React from "react";
 
 function Pagination({ currentPage, totalPages, maxPagesToShow, onPageChange }) {
   let pageNumbers = [];
-
+  pageNumbers.push(["<", Math.max(currentPage - 1, 1)]);
   if (totalPages <= maxPagesToShow) {
     for (let i = 1; i < totalPages; i++) {
       pageNumbers.push([i, i]);
@@ -28,16 +28,19 @@ function Pagination({ currentPage, totalPages, maxPagesToShow, onPageChange }) {
     pageNumbers.push(["...", currentPage + 2]);
     pageNumbers.push([totalPages, totalPages]);
   }
+  pageNumbers.push([">", Math.min(currentPage + 1, totalPages)]);
 
   return (
     <nav>
       <ul className="pagination">
         {pageNumbers.map((pageNumber) => (
-          <li key={pageNumber[1]} className={`page-item${pageNumber[1] === currentPage ? " active" : ""}`}>
-            <button className="page-link" onClick={() => onPageChange(pageNumber[1])}>
-              {pageNumber[0]}
-            </button>
-          </li>
+          <button
+            key={pageNumber[0].toString() + pageNumber[1].toString()}
+            className={`page-link${pageNumber[1] === currentPage ? " active" : ""}`}
+            onClick={() => onPageChange(pageNumber[1])}
+          >
+            {pageNumber[0]}
+          </button>
         ))}
       </ul>
     </nav>
