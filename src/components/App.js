@@ -1,8 +1,8 @@
 import "./App.css";
 import React, { useState } from "react";
 import FilterBar from "./FilterBar";
-import BetTable from "./BetTable";
-import filterBets from "./Utils.js";
+import PaginatedBets from "./BetTable";
+import filterBets from "../Utils.js";
 import data from "../scrape/output/output.json";
 import { book_options_all, bet_type_options } from "./Options";
 
@@ -24,7 +24,7 @@ function App() {
   return (
     <div>
       <FilterBar betType={betType} onBetTypeChange={setBetType} bookA={bookA} onBookAChange={setBookA} bookB={bookB} onBookBChange={setBookB} />
-      {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <BetTable bets={bets} betType={betType} bookA={bookA} bookB={bookB} />}
+      {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <PaginatedBets betsPerPage={10} maxPagesToShow={7} bets={bets} betType={betType} />}
     </div>
   );
 }
