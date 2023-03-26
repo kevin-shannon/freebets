@@ -1,3 +1,4 @@
+import "./BookSelect.css";
 import Select from "react-select";
 import { components } from "react-select";
 import { book_options_all, book_options } from "./Options";
@@ -22,7 +23,7 @@ const ValueContainer = ({ children, ...props }) => {
   } else if (props.options.length === count) {
     newChildren.push("All Books");
   } else {
-    newChildren.push(`${count} books selected`);
+    newChildren.push(`${count} books`);
   }
   newChildren.push(children[1]);
 
@@ -58,6 +59,7 @@ export default function BookSelect({ allowSelectAll, book, onBookChange }) {
 
   return (
     <Select
+      className="dropdown"
       isMulti={true}
       components={{
         MultiValueContainer: () => null,
