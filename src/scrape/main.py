@@ -43,11 +43,12 @@ def lambda_handler(event, context):
     # Define the S3 bucket and key
     bucket_name = "stanleys-bucket"
     key = "output.json"
+    body = json.dumps(aggregate(data))
     
     # Create an S3 client object
     s3 = boto3.client('s3')
     
     # Convert the JSON object to a string and save it to S3
-    s3.put_object(Bucket=bucket_name, Key=key, Body=json.dumps(aggregate(data)))
+    s3.put_object(Bucket=bucket_name, Key=key, Body=body, ACL='public-read')
     
     return "Output saved to S3"
