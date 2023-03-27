@@ -5,6 +5,7 @@ import PaginatedBets from "./BetTable";
 import filterBets from "../Utils.js";
 import data from "../scrape/output/output.json";
 import { book_options_all, bet_type_options } from "./Options";
+import "typeface-roboto";
 
 function readyBookList(book) {
   let arr = book.map((ob) => ob.value);

@@ -1,3 +1,4 @@
+import boto3
 import json
 from books.betmgm import generate_betmgm
 from books.caesars import generate_caesars
@@ -15,7 +16,7 @@ data = {
     'fanduel': generate_fanduel(),
     'pointsbet': generate_pointsbet(),
     'superbook': generate_superbook(),
-    'unibet': generate_unibet()
+    #'unibet': generate_unibet()
 }
 
 def aggregate(data):
@@ -38,5 +39,15 @@ def aggregate(data):
                                     bets[key]['outcomes'][j]['books'][outcomes[i]['odds']] = [book]
     return list(bets.values())
 
-with open(output, "w") as f:
-    json.dump(aggregate(data), f)
+def lambda_handler(event, context):
+    # Define the S3 bucket and key (file path) where you want to save the data
+    bucket_name = "stanleys-bucket"
+    key = "output.json"
+    
+    # Create an S3 client object
+    s3 = boto3.client('s3')
+    
+    # Convert the JSON object to a string and save it to S3
+    s3.put_object(Bucket=bucket_name, Key=key, Body=json.dumps(aggregate(data)))
+    
+    return "Output saved to S3"

@@ -1,3 +1,4 @@
+import "./BooksBlock.css";
 import Book from "./Book.js";
 
 export default function BooksBlock({ bet }) {
@@ -14,11 +15,11 @@ export default function BooksBlock({ bet }) {
     <table>
       <tbody>
         <tr>
-          <td>{bet.outcomes[0].odds}</td>
+          <td className="odds-value">{bet.outcomes[0].odds > 0 ? "+" + bet.outcomes[0].odds : bet.outcomes[0].odds}</td>
           <td>{books_a}</td>
         </tr>
         <tr>
-          <td>{bet.outcomes[1].odds}</td>
+          <td className="odds-value">{bet.outcomes[1].odds > 0 ? "+" + bet.outcomes[1].odds : bet.outcomes[1].odds}</td>
           <td>{books_b}</td>
         </tr>
       </tbody>

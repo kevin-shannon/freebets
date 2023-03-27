@@ -1,3 +1,4 @@
+import "./BetTable.css";
 import BetRow from "./BetRow";
 import React, { useState } from "react";
 import Pagination from "./Pagination";
@@ -25,7 +26,7 @@ function BetTable({ bets, betType }) {
   });
 
   return (
-    <table>
+    <table className="bet-table">
       <thead>
         <tr>
           <th>{rate}</th>
