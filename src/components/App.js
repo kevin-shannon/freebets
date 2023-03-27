@@ -1,11 +1,10 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FilterBar from "./FilterBar";
 import PaginatedBets from "./BetTable";
 import filterBets from "../Utils.js";
-import data from "../scrape/output/output.json";
 import { book_options_all, bet_type_options } from "./Options";
-import "typeface-roboto";
+import axios from "axios";
 
 function readyBookList(book) {
   let arr = book.map((ob) => ob.value);
@@ -20,6 +19,19 @@ function App() {
   const [betType, setBetType] = useState(bet_type_options[0]);
   const [bookA, setBookA] = useState(book_options_all);
   const [bookB, setBookB] = useState(book_options_all);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://stanleys-bucket.s3.us-east-2.amazonaws.com/output.json")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   const bets = filterBets(data, betType, readyBookList(bookA), readyBookList(bookB));
 
   return (
