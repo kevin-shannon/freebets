@@ -20,15 +20,15 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd src/scrape
           pip install --upgrade pip
-          pip install -r requirements.txt --target ./src/scrape
+          pip install -r ./requirements.txt --target ./
 
       - name: Zip code
         run: |
-          cd src/scrape
           zip -r ../scrape-books.zip .
 
-      - name: default deploy
+      - name: Deploy
         uses: appleboy/lambda-action@master
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
