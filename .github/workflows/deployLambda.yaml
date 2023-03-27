@@ -25,7 +25,9 @@ jobs:
 
       - name: Zip code
         run: |
-          zip -rj scrape-books.zip src/scrape
+          cd src/scrape
+          zip -r ../../scrape-books.zip ./
+          cd ../..
 
       - name: Deploy
         uses: appleboy/lambda-action@master
