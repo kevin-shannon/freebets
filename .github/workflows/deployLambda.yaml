@@ -28,18 +28,11 @@ jobs:
           cd src/scrape
           zip -r ../scrape-books.zip .
 
-      - name: Upload to S3
-        uses: jakejarvis/s3-sync-action@master
+      - name: default deploy
+        uses: appleboy/lambda-action@master
         with:
-          args: --delete --exclude '*.git*'
-        env:
-          AWS_S3_BUCKET: stanleys-bucket
-          AWS_REGION: us-east-1
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Update Lambda function
-        uses: aws-actions/aws-cli@v1
-        with:
-          args: >
-            lambda update-function-code --function-name scrape-books --s3-bucket stanleys-bucket --s3-key scrape-books.zip --region us-east-1
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: eu-east-1
+          function_name: scrape-books
+          zip_file: scrape-books.zip
