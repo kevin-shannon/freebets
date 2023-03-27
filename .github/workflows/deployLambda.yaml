@@ -38,4 +38,5 @@ jobs:
           function_name: scrape-books
           zip_file: scrape-books.zip
           handler: main.lambda_handler
+          role: arn:aws:iam::184082431850:role/my-s3-function-role
           timeout: 15
