@@ -16,7 +16,7 @@ data = {
     'fanduel': generate_fanduel(),
     'pointsbet': generate_pointsbet(),
     'superbook': generate_superbook(),
-    #'unibet': generate_unibet()
+    'unibet': generate_unibet()
 }
 
 def aggregate(data):
@@ -40,7 +40,7 @@ def aggregate(data):
     return list(bets.values())
 
 def lambda_handler(event, context):
-    # Define the S3 bucket and key (file path) where you want to save the data
+    # Define the S3 bucket and key
     bucket_name = "stanleys-bucket"
     key = "output.json"
     

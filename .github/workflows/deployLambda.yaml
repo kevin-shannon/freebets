@@ -25,11 +25,8 @@ jobs:
 
       - name: Zip code
         run: |
-          zip -r scrape-books.zip src/scrape
-
-      - name: Check if it's there
-        run: |
-          du -h
+          cd src/scrape
+          zip -r scrape-books.zip ./
 
       - name: Deploy
         uses: appleboy/lambda-action@master
@@ -39,4 +36,5 @@ jobs:
           aws_region: us-east-1
           function_name: scrape-books
           zip_file: scrape-books.zip
+          handler: main
           timeout: 15
