@@ -35,4 +35,4 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: eu-east-1
           function_name: scrape-books
-          zip_file: scrape-books.zip
+          zip_file: ../scrape-books.zip
