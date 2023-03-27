@@ -20,13 +20,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd src/scrape
           pip install --upgrade pip
-          pip install -r ./requirements.txt --target ./
+          pip install -r src/scrape/requirements.txt --target src/scrape
 
       - name: Zip code
         run: |
-          zip -r ../scrape-books.zip .
+          zip -r scrape-books.zip src/scrape
+
+      - name: Check if it's there
+        run: |
+          ls
 
       - name: Deploy
         uses: appleboy/lambda-action@master
@@ -35,4 +38,4 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: eu-east-1
           function_name: scrape-books
-          zip_file: ../scrape-books.zip
+          zip_file: scrape-books.zip
