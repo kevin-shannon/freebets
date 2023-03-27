@@ -37,5 +37,5 @@ jobs:
           aws_region: us-east-1
           function_name: scrape-books
           zip_file: scrape-books.zip
-          handler: main
+          handler: main.lambda_handler
           timeout: 15
