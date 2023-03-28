@@ -16,7 +16,7 @@ data = {
     'fanduel': generate_fanduel(),
     'pointsbet': generate_pointsbet(),
     'superbook': generate_superbook(),
-    #'unibet': generate_unibet()
+    'unibet': generate_unibet()
 }
 
 def aggregate(data):
