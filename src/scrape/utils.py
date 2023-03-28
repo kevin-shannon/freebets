@@ -23,8 +23,7 @@ def compute_conversion(odds_a, odds_b):
     b = convert_american_to_decimal(odds_b)
     if a > b:
         return (a-1) - (a-1)/b
-    else:
-        return (b-1) - (b-1)/a
+    return (b-1) - (b-1)/a
     
 def generate_event_name(team_a, team_b):
     team_a = convert_team_name_nhl(team_a)
