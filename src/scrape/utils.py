@@ -1,39 +1,7 @@
-def convert_decimal_to_american(dec):
-    if dec < 2:
-        return int(100/(1-dec))
-    else:
-        return int((dec-1)*100)
-    
-def convert_american_to_decimal(american):
-    if american > 0:
-        return 1+american/100
-    else:
-        return 1-100/american
-
-def compute_ev(odds_a, odds_b):
-    a = convert_american_to_decimal(odds_a)
-    b = convert_american_to_decimal(odds_b)
-    if a > b:
-        return a/(a/b+1)
-    else:
-        return b/(b/a+1)
-
-def compute_conversion(odds_a, odds_b):
-    a = convert_american_to_decimal(odds_a)
-    b = convert_american_to_decimal(odds_b)
-    if a > b:
-        return (a-1) - (a-1)/b
-    return (b-1) - (b-1)/a
-    
 def generate_event_name(team_a, team_b):
     team_a = convert_team_name_nhl(team_a)
     team_b = convert_team_name_nhl(team_b)
     return f'{team_a} vs {team_b}' if team_a < team_b else f'{team_b} vs {team_a}'
-
-def convert_market_name(name):
-    name = name.replace('|', '').replace('Live', '').replace(' - Inc. OT and Shootout', '').strip()
-    if name.lower() == 'money line' or name.lower() == 'moneyline' or name.lower() == 'money_line':
-        return 'Moneyline'
 
 def convert_outcome_name(name):
     name = name.replace('|', '').strip()
@@ -63,6 +31,16 @@ def convert_spread_nhl(spread, market_name=None):
     else:
         team, line = ' '.join(spread.split(' ')[:-1]), spread.split(' ')[-1]
     return f'{convert_team_name_nhl(team)} {line}'
+
+def build_spread_market_name(teams, spread):
+    team_a, team_b = teams
+    team = ' '.join(spread.split(' ')[:-1])
+    line = float(spread.split(' ')[-1])
+    if line < 0:
+        return construct_spread_market_name(convert_team_name_nhl(team), line)
+    else:
+        other_team = team_a if team == team_b else team_b
+        return construct_spread_market_name(convert_team_name_nhl(other_team), -line)
 
 def construct_total_market_name(line):
     return f'Total: {line}'
