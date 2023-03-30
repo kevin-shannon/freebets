@@ -1,3 +1,9 @@
+def convert_decimal_to_american(dec):
+    if dec < 2:
+        return int(100/(1-dec))
+    else:
+        return int((dec-1)*100)
+
 def generate_event_name(team_a, team_b):
     team_a = convert_team_name_nhl(team_a)
     team_b = convert_team_name_nhl(team_b)
