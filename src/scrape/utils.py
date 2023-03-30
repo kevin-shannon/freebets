@@ -35,7 +35,7 @@ def convert_spread_nhl(spread, market_name=None):
             line = -line
     else:
         team, line = ' '.join(spread.split(' ')[:-1]), spread.split(' ')[-1]
-    line = '+' + str(line) if float(line) > 0 else str(line)
+    line = '+' + str(float(line)) if float(line) > 0 else str(line)
     return f'{convert_team_name_nhl(team)} {line}'
 
 def build_spread_market_name(teams, spread):

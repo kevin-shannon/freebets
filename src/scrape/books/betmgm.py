@@ -70,9 +70,9 @@ def generate_betmgm_nhl_formatted_events():
             # Moneyline
             if label == MONEYLINE:
                 try:
-                    formatted_events[event_name]['offers'][market_name] = [{'name': convert_team_name_nhl(outcome['name']['value']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
+                    formatted_events[event_name]['offers']['Moneyline'] = [{'name': convert_team_name_nhl(outcome['name']['value']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
-                    print('something went wrong adding market')
+                    print('something went wrong adding market moneyline')
             # Team Totals
             if 'How many goals will' in label and '(including overtime and shoot-outs)' in label:
                 try:
@@ -81,7 +81,7 @@ def generate_betmgm_nhl_formatted_events():
                     market_name = construct_team_total_market_name(team, line)
                     formatted_events[event_name]['offers'][market_name] = [{'name': convert_outcome_name(outcome['totalsPrefix']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
-                    print('something went wrong adding market')
+                    print('something went wrong adding market team total')
             # Totals
             if label == TOTAL:
                 try:
@@ -89,7 +89,7 @@ def generate_betmgm_nhl_formatted_events():
                     market_name = construct_total_market_name(line)
                     formatted_events[event_name]['offers'][market_name] = [{'name': convert_outcome_name(outcome['totalsPrefix']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
-                    print('something went wrong adding market')
+                    print('something went wrong adding market total')
             # Spreads
             if label == SPREAD:
                 try:
@@ -102,5 +102,5 @@ def generate_betmgm_nhl_formatted_events():
                     market_name = construct_spread_market_name(team, line)
                     formatted_events[event_name]['offers'][market_name] = [{'name': convert_spread_nhl(outcome['name']['value']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
-                    print('something went wrong adding market')                    
+                    print('something went wrong adding market spread')                    
     return formatted_events
