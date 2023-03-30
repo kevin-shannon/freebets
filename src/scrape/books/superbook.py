@@ -1,5 +1,9 @@
 import requests
-from utils import convert_event_name_nhl, convert_team_name_nhl, convert_market_name, convert_decimal_to_american
+from datetime import datetime
+
+from utils import convert_decimal_to_american
+from utils import convert_team_name_nhl
+from utils import convert_event_name_nhl
 
 def generate_superbook():
     return {
@@ -9,13 +13,45 @@ def generate_superbook():
 # SUPERBOOK
 # NHL
 def generate_superbook_nhl_formatted_events():
-    url = 'https://nj.superbook.com/cache/psmg/UK/52180.1.json'
-    res = requests.get(url).json()
     formatted_events = {}
-    for event in res['events']:
-        event_name = convert_event_name_nhl(event['eventname'])
-        for market in event['markets']:
-            market_name = convert_market_name(market['name'])
-            if market_name == 'Moneyline':
-                formatted_events[event_name] = {market_name : [{'name': convert_team_name_nhl(outcome['name']), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['selections']]}
+    url = 'https://nj.superbook.com/cache/psmg/UK/52180.1.json'
+    try:
+        res = requests.get(url).json()
+    except:
+        print('error getting url')
+        return formatted_events
+    try:
+        events = res['events']
+    except:
+        print('error getting events')
+    for event in events:
+        try:
+            event_name = convert_event_name_nhl(event['eventname'])
+        except:
+            print('error getting event name')
+            continue
+        formatted_events[event_name] = {'offers': {}}
+        try:
+            formatted_events[event_name]['start'] = datetime.strptime(event['tsstart'], '%Y-%m-%dT%H:%M:%S')
+        except ValueError:
+            print('error parsing date time')
+            formatted_events[event_name]['start'] = None
+        try:
+            markets = event['markets']
+        except:
+            print('error getting markets')
+            continue
+        for market in markets:
+            try:
+                label = market['name']
+            except:
+                print('error getting label')
+                continue
+            if label == 'Moneyline':
+                try:
+                    formatted_events[event_name]['offers']['Moneyline'] = [{'name': convert_team_name_nhl(outcome['name']), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['selections']]
+                except:
+                    print('something went wrong adding market moneyline')
     return formatted_events
+
+
