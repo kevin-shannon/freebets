@@ -97,7 +97,7 @@ function makeReadableDate(dateString) {
     return formattedDate;
   } else {
     // Format for other days: Day of week, date at XX:XX 12 hour clock
-    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const weekdays = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
     const dayOfWeek = weekdays[date.getDay()];
     const month = date.toLocaleString("default", { month: "long" });
     const day = date.getDate();
