@@ -32,9 +32,8 @@ jobs:
         run: |
           aws lambda update-function-code \
             --function-name scrape-books \
-            --zip-file fileb://scrape-books.zip \
-            --region us-east-2 \
-            --profile default
+            --zip-file scrape-books.zip \
+            --region us-east-2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
