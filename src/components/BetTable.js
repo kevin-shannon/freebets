@@ -30,6 +30,7 @@ function BetTable({ bets, betType }) {
       <thead>
         <tr>
           <th>{rate}</th>
+          <th>Date</th>
           <th>Event</th>
           <th>Market</th>
           <th>Bets</th>

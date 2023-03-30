@@ -5,7 +5,7 @@ export default function filterBets(data, betType, books_a, books_b) {
     const best = findBestPair(new Set(books_a), new Set(books_b), data[i]["outcomes"][0]["books"], data[i]["outcomes"][1]["books"], func);
     if (best !== null) {
       if (betType.value !== "arbitrage" && data[i]["market"].includes(".0")) continue;
-      let temp = { sport: data[i]["sport"], event: data[i]["event"], market: data[i]["market"], outcomes: [{}, {}], rate: best[1] };
+      let temp = { sport: data[i]["sport"], event: data[i]["event"], market: data[i]["market"], outcomes: [{}, {}], rate: best[1], date: data[i]["start"] };
       for (let j = 0; j < data[i]["outcomes"].length; j++) {
         temp["outcomes"][j]["name"] = data[i]["outcomes"][j]["name"];
         temp["outcomes"][j]["odds"] = best[0][j];
