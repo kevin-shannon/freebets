@@ -8,9 +8,9 @@ from utils import convert_outcome_name
 from utils import convert_spread_nhl
 from utils import convert_team_name_nhl
 
-MONEYLINE = 'Money Line'
-TOTAL = 'Alternative Total Goals'
-SPREAD = 'Alternative Puck Line Handicap'
+MONEYLINE = '|Money Line|'
+TOTAL = '|Alternative Total Goals|'
+SPREAD = '|Alternative Puck Line Handicap|'
 
 def generate_caesars():
     return {
@@ -62,21 +62,21 @@ def generate_caesars_nhl_formatted_events():
                 print('error getting label')
                 continue
             # Moneyline
-            if MONEYLINE in label:
+            if label == MONEYLINE:
                 try:
                     market_name = 'Moneyline'
                     formatted_events[event_name]['offers'][market_name] = [{'name': convert_team_name_nhl(outcome['name']), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
                 except:
                     print('something went wrong adding moneyline market')
             # Totals
-            if TOTAL in label:
+            elif label == TOTAL:
                 try:
                     market_name = construct_total_market_name(market['line'])
                     formatted_events[event_name]['offers'][market_name] = [{'name': convert_outcome_name(outcome['name']), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
                 except:
                     print('something went wrong adding total market')
             # Spreads
-            if SPREAD in label:
+            elif label == SPREAD:
                 try:
                     line = float(market['line'])
                     if line < 0:
