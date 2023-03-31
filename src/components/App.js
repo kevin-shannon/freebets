@@ -37,7 +37,7 @@ function App() {
   return (
     <div>
       <FilterBar betType={betType} onBetTypeChange={setBetType} bookA={bookA} onBookAChange={setBookA} bookB={bookB} onBookBChange={setBookB} />
-      {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <PaginatedBets betsPerPage={10} maxPagesToShow={7} bets={bets} betType={betType} />}
+      {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <PaginatedBets betsPerPage={10} bets={bets} betType={betType} />}
     </div>
   );
 }

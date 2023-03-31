@@ -1,9 +1,10 @@
 import "./BetTable.css";
 import BetRow from "./BetRow";
 import React, { useState } from "react";
-import Pagination from "./Pagination";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
-export default function PaginatedBets({ betsPerPage, maxPagesToShow, bets, betType }) {
+export default function PaginatedBets({ betsPerPage, bets, betType }) {
   const [page, setPage] = useState(1);
   const start = (page - 1) * betsPerPage;
   const end = page * betsPerPage;
@@ -11,10 +12,10 @@ export default function PaginatedBets({ betsPerPage, maxPagesToShow, bets, betTy
   const totalPages = Math.ceil(bets.length / betsPerPage);
 
   return (
-    <>
+    <Stack alignItems="center" spacing={4}>
       <BetTable bets={currentBets} betType={betType} />
-      <Pagination currentPage={page} totalPages={totalPages} maxPagesToShow={maxPagesToShow} onPageChange={setPage} />
-    </>
+      <Pagination count={totalPages} onChange={(_, value) => setPage(value)} shape="rounded" />
+    </Stack>
   );
 }
 
