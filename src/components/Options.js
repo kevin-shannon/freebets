@@ -14,3 +14,12 @@ export const bet_type_options = [
   { value: "arbitrage", label: "Arbitrage" },
   { value: "free bet", label: "Free Bet" },
 ];
+
+export const sport_options = [
+  { value: "nba", label: "NBA" },
+  { value: "mlb", label: "MLB" },
+  { value: "nhl", label: "NHL" },
+  { value: "nfl", label: "NFL" },
+  { value: "college basketball", label: "College Basketball" },
+  { value: "tennis", label: "Tennis" },
+];

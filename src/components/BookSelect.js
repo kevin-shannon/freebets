@@ -39,6 +39,13 @@ function onBooksChange(input, onBookChange) {
   });
 }
 
+const dropdownStyle = {
+  control: (base) => ({
+    ...base,
+    backgroundColor: "#fafafa",
+  }),
+};
+
 export default function BookSelect({ allowSelectAll, book, onBookChange, helperText }) {
   const handleSelectAll = (selectAll) => {
     selectAll ? (allowSelectAll ? onBooksChange(book_options_all, onBookChange) : onBooksChange(book_options, onBookChange)) : onBooksChange([], onBookChange);
@@ -61,6 +68,7 @@ export default function BookSelect({ allowSelectAll, book, onBookChange, helperT
     <div>
       <label htmlFor={helperText}>{helperText}</label>
       <Select
+        styles={dropdownStyle}
         id={helperText}
         className="dropdown"
         isMulti={true}
