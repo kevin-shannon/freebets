@@ -5,7 +5,10 @@ import { bet_type_options } from "./Options";
 export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChange, bookB, onBookBChange }) {
   return (
     <div style={{ display: "flex" }}>
-      <Select className="dropdown" value={betType} options={bet_type_options} isSearchable={false} onChange={onBetTypeChange} />
+      <div>
+        <label htmlFor="Bet Type">Bet Type</label>
+        <Select id="Bet Type" className="dropdown" value={betType} options={bet_type_options} isSearchable={false} onChange={onBetTypeChange} />
+      </div>
       <BookFilters betType={betType} bookA={bookA} onBookAChange={onBookAChange} bookB={bookB} onBookBChange={onBookBChange} />
     </div>
   );

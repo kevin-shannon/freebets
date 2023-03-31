@@ -3,7 +3,7 @@ import BooksBlock from "./BooksBlock";
 
 export default function BetRow({ bet }) {
   return (
-    <tr>
+    <tr className="bet-row">
       <td>{(bet.rate * 100).toFixed(1)}%</td>
       <td>{bet.date}</td>
       <td>{bet.event}</td>

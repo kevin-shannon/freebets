@@ -39,7 +39,7 @@ function onBooksChange(input, onBookChange) {
   });
 }
 
-export default function BookSelect({ allowSelectAll, book, onBookChange }) {
+export default function BookSelect({ allowSelectAll, book, onBookChange, helperText }) {
   const handleSelectAll = (selectAll) => {
     selectAll ? (allowSelectAll ? onBooksChange(book_options_all, onBookChange) : onBooksChange(book_options, onBookChange)) : onBooksChange([], onBookChange);
   };
@@ -58,21 +58,25 @@ export default function BookSelect({ allowSelectAll, book, onBookChange }) {
   };
 
   return (
-    <Select
-      className="dropdown"
-      isMulti={true}
-      components={{
-        MultiValueContainer: () => null,
-        Option,
-        ValueContainer,
-      }}
-      hideSelectedOptions={false}
-      closeMenuOnSelect={false}
-      isSearchable={false}
-      isClearable={false}
-      options={allowSelectAll ? book_options_all : book_options}
-      value={book}
-      onChange={handleChange}
-    />
+    <div>
+      <label htmlFor={helperText}>{helperText}</label>
+      <Select
+        id={helperText}
+        className="dropdown"
+        isMulti={true}
+        components={{
+          MultiValueContainer: () => null,
+          Option,
+          ValueContainer,
+        }}
+        hideSelectedOptions={false}
+        closeMenuOnSelect={false}
+        isSearchable={false}
+        isClearable={false}
+        options={allowSelectAll ? book_options_all : book_options}
+        value={book}
+        onChange={handleChange}
+      />
+    </div>
   );
 }
