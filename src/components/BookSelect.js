@@ -14,6 +14,38 @@ const Option = (props) => {
   );
 };
 
+const bookSelectStyle = {
+  control: (base) => ({
+    ...base,
+    backgroundColor: "#fafafa",
+  }),
+  menuList: (base) => ({
+    ...base,
+    backgroundColor: "#fafafa",
+    "::-webkit-scrollbar": {
+      width: "4px",
+      height: "0px",
+    },
+    "::-webkit-scrollbar-track": {
+      background: "#f1f1f1",
+    },
+    "::-webkit-scrollbar-thumb": {
+      background: "#888",
+    },
+    "::-webkit-scrollbar-thumb:hover": {
+      background: "#555",
+    },
+  }),
+  option: (base, _) => ({
+    ...base,
+    backgroundColor: null,
+    color: null,
+    "&:hover": {
+      backgroundColor: "#f0f0f0",
+    },
+  }),
+};
+
 const ValueContainer = ({ children, ...props }) => {
   const { getValue, hasValue } = props;
   const newChildren = [];
@@ -39,13 +71,6 @@ function onBooksChange(input, onBookChange) {
   });
 }
 
-const dropdownStyle = {
-  control: (base) => ({
-    ...base,
-    backgroundColor: "#fafafa",
-  }),
-};
-
 export default function BookSelect({ allowSelectAll, book, onBookChange, helperText }) {
   const handleSelectAll = (selectAll) => {
     selectAll ? (allowSelectAll ? onBooksChange(book_options_all, onBookChange) : onBooksChange(book_options, onBookChange)) : onBooksChange([], onBookChange);
@@ -66,9 +91,8 @@ export default function BookSelect({ allowSelectAll, book, onBookChange, helperT
 
   return (
     <div>
-      <label htmlFor={helperText}>{helperText}</label>
       <Select
-        styles={dropdownStyle}
+        styles={bookSelectStyle}
         id={helperText}
         className="dropdown"
         isMulti={true}
