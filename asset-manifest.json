@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/freebets/static/css/main.a24bd4d8.css",
-    "main.js": "/freebets/static/js/main.6de5613c.js",
+    "main.js": "/freebets/static/js/main.a2389557.js",
     "index.html": "/freebets/index.html",
     "main.a24bd4d8.css.map": "/freebets/static/css/main.a24bd4d8.css.map",
-    "main.6de5613c.js.map": "/freebets/static/js/main.6de5613c.js.map"
+    "main.a2389557.js.map": "/freebets/static/js/main.a2389557.js.map"
   },
   "entrypoints": [
     "static/css/main.a24bd4d8.css",
-    "static/js/main.6de5613c.js"
+    "static/js/main.a2389557.js"
   ]
 }
