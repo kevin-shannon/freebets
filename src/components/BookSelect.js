@@ -101,11 +101,9 @@ export default function BookSelect({ allowSelectAll, book, onBookChange, helperT
           Option,
           ValueContainer,
         }}
-        MenuProps={{
-          disableCloseOnSelect: true,
-        }}
         hideSelectedOptions={false}
         closeMenuOnSelect={false}
+        blurInputOnSelect={false}
         isSearchable={false}
         isClearable={false}
         options={allowSelectAll ? book_options_all : book_options}
