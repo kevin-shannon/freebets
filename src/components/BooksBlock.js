@@ -16,11 +16,15 @@ export default function BooksBlock({ bet }) {
       <tbody>
         <tr>
           <td className="odds-value">{bet.outcomes[0].odds > 0 ? "+" + bet.outcomes[0].odds : bet.outcomes[0].odds}</td>
-          <td>{books_a}</td>
+          <td>
+            <div>{books_a}</div>
+          </td>
         </tr>
         <tr>
           <td className="odds-value">{bet.outcomes[1].odds > 0 ? "+" + bet.outcomes[1].odds : bet.outcomes[1].odds}</td>
-          <td>{books_b}</td>
+          <td>
+            <div>{books_b}</div>
+          </td>
         </tr>
       </tbody>
     </table>

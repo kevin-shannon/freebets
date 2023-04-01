@@ -1,11 +1,12 @@
-export default function filterBets(data, betType, books_a, books_b) {
+export default function filterBets(data, betType, books_a, books_b, show_live, show_push) {
   let bets = [];
   const func = betType.value === "arbitrage" ? computeEv : computeConversion;
   for (let i = 0; i < data.length; i++) {
     if (data[i]["outcomes"].length !== 2) continue;
     const best = findBestPair(new Set(books_a), new Set(books_b), data[i]["outcomes"][0]["books"], data[i]["outcomes"][1]["books"], func);
     if (best !== null) {
-      if (betType.value !== "arbitrage" && data[i]["market"].includes(".0")) continue;
+      if (!show_push && data[i]["market"].includes(".0")) continue;
+      if (!show_live && isInPast(data[i]["start"])) continue;
       let temp = {
         sport: data[i]["sport"],
         event: data[i]["event"],
@@ -107,4 +108,10 @@ function makeReadableDate(dateString) {
     const formattedDate = `${dayOfWeek}, ${month} ${day} at ${hours}:${minutes} ${ampm}`;
     return formattedDate;
   }
+}
+
+function isInPast(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  return date < now;
 }

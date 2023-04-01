@@ -16,7 +16,7 @@ const betTypeStyle = {
     backgroundColor: "#fafafa",
   }),
   formControl: {
-    borderRadius: "10px", // add rounded corners
+    borderRadius: "10px",
     minWidth: 120,
     "& .MuiSelect-select:focus": {
       backgroundColor: "transparent",
@@ -28,7 +28,7 @@ const betTypeStyle = {
     },
   },
   selectedOption: {
-    backgroundColor: "#F5F5F5", // adjust the color of the selected option
+    backgroundColor: "#F5F5F5",
     borderRadius: "10px",
   },
 };
@@ -45,7 +45,7 @@ const BlueSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChange, bookB, onBookBChange }) {
+export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChange, bookB, onBookBChange, setShowLive, setShowPush }) {
   return (
     <table id="filter-bar">
       <tbody>
@@ -87,8 +87,30 @@ export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChan
         <tr>
           <td>
             <div className="filter-cell" id="switch-panel">
-              <FormControlLabel id="show-live" className="switch-element" control={<BlueSwitch />} label="Show Live Bets" />
-              <FormControlLabel id="show-push" className="switch-element-" control={<BlueSwitch />} label="Show Push Bets" />
+              <FormControlLabel
+                id="show-live"
+                className="switch-element"
+                control={
+                  <BlueSwitch
+                    onChange={(event) => {
+                      setShowLive(event.target.checked);
+                    }}
+                  />
+                }
+                label="Show Live Bets"
+              />
+              <FormControlLabel
+                id="show-push"
+                className="switch-element-"
+                control={
+                  <BlueSwitch
+                    onChange={(event) => {
+                      setShowPush(event.target.checked);
+                    }}
+                  />
+                }
+                label="Show Push Bets"
+              />
             </div>
           </td>
           <td>

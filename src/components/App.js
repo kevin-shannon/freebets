@@ -19,6 +19,8 @@ function App() {
   const [betType, setBetType] = useState(bet_type_options[0]);
   const [bookA, setBookA] = useState(book_options_all);
   const [bookB, setBookB] = useState(book_options_all);
+  const [showLive, setShowLive] = useState(false);
+  const [showPush, setShowPush] = useState(false);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -32,11 +34,20 @@ function App() {
       });
   }, []);
 
-  const bets = filterBets(data, betType, readyBookList(bookA), readyBookList(bookB));
+  const bets = filterBets(data, betType, readyBookList(bookA), readyBookList(bookB), showLive, showPush);
 
   return (
     <div>
-      <FilterBar betType={betType} onBetTypeChange={setBetType} bookA={bookA} onBookAChange={setBookA} bookB={bookB} onBookBChange={setBookB} />
+      <FilterBar
+        betType={betType}
+        onBetTypeChange={setBetType}
+        bookA={bookA}
+        onBookAChange={setBookA}
+        bookB={bookB}
+        onBookBChange={setBookB}
+        setShowLive={setShowLive}
+        setShowPush={setShowPush}
+      />
       {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <PaginatedBets betsPerPage={10} bets={bets} betType={betType} />}
     </div>
   );
