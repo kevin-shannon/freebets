@@ -1,0 +1,13 @@
+footer {
+    display: flex;
+    flex-shrink: 0;
+}
+
+.footer-container {
+    margin: 40px auto 20px auto;
+}
+
+#octo {
+    color: black;
+}
+

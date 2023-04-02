@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import FilterBar from "./FilterBar";
 import PaginatedBets from "./BetTable";
+import Footer from "./Footer";
 import filterBets from "../Utils.js";
 import { book_options_all, bet_type_options } from "./Options";
 import axios from "axios";
@@ -37,18 +38,21 @@ function App() {
   const bets = filterBets(data, betType, readyBookList(bookA), readyBookList(bookB), showLive, showPush);
 
   return (
-    <div>
-      <FilterBar
-        betType={betType}
-        onBetTypeChange={setBetType}
-        bookA={bookA}
-        onBookAChange={setBookA}
-        bookB={bookB}
-        onBookBChange={setBookB}
-        setShowLive={setShowLive}
-        setShowPush={setShowPush}
-      />
-      {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <PaginatedBets betsPerPage={10} bets={bets} betType={betType} />}
+    <div className="site">
+      <div className="content">
+        <FilterBar
+          betType={betType}
+          onBetTypeChange={setBetType}
+          bookA={bookA}
+          onBookAChange={setBookA}
+          bookB={bookB}
+          onBookBChange={setBookB}
+          setShowLive={setShowLive}
+          setShowPush={setShowPush}
+        />
+        {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <PaginatedBets betsPerPage={10} bets={bets} betType={betType} />}
+      </div>
+      <Footer />
     </div>
   );
 }

@@ -1,9 +1,19 @@
-.book {
-  height: 2em;
+.site {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;  
 }
 
-th {
-  text-align: left;
+.content {
+  flex-grow: 1;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #fafafa;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
 }
 
 table {
@@ -11,13 +21,20 @@ table {
   border-collapse: collapse;
 }
 
-body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: #fafafa;
+th {
+  text-align: left;
 }
 
 .bet-row { 
   border: solid;
   border-width: 1px 0;
   border-color: #cccccc
+}
+
+.book {
+  height: 2em;
+}
+
+a:hover {
+  cursor: pointer;
 }
