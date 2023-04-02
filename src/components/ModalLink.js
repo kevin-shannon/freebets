@@ -23,9 +23,9 @@ export default function ModalLink({ linkName, content }) {
 
   return (
     <div>
-      <a className="foot-link" onClick={handleOpen}>
+      <button className="foot-link" onClick={handleOpen}>
         {linkName}
-      </a>
+      </button>
       <Modal open={open} onClose={handleClose} disableAutoFocus={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
           <h2>{linkName}</h2>
