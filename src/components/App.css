@@ -6,10 +6,13 @@
 
 .content {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Robotto', sans-serif;
   background-color: #fafafa;
   margin-top: 0;
   margin-bottom: 0;
@@ -25,6 +28,10 @@ th {
   text-align: left;
 }
 
+td {
+  padding: 0 15px 0 0;
+}
+
 .bet-row { 
   border: solid;
   border-width: 1px 0;
@@ -33,4 +40,9 @@ th {
 
 .book {
   height: 2em;
+}
+
+.books-container {
+  display: flex;
+  margin: 4px 0 4px 0;
 }

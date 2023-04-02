@@ -17,13 +17,13 @@ export default function BooksBlock({ bet }) {
         <tr>
           <td className="odds-value">{bet.outcomes[0].odds > 0 ? "+" + bet.outcomes[0].odds : bet.outcomes[0].odds}</td>
           <td>
-            <div>{books_a}</div>
+            <div className="books-container">{books_a}</div>
           </td>
         </tr>
-        <tr>
+        <tr style={{ borderTop: "1px solid #cccccc" }}>
           <td className="odds-value">{bet.outcomes[1].odds > 0 ? "+" + bet.outcomes[1].odds : bet.outcomes[1].odds}</td>
           <td>
-            <div>{books_b}</div>
+            <div className="books-container">{books_b}</div>
           </td>
         </tr>
       </tbody>
