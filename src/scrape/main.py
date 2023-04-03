@@ -20,6 +20,19 @@ data = {
     'unibet': generate_unibet()
 }
 
+def make_market_simple(market):
+    return market.split(':')[0]
+
+def make_outcome_simple(market, outcome):
+    if market == 'Moneyline':
+        return outcome['name']
+    elif market.startswith('Team Total:'):
+        return f'{market.split(":")[1].strip()} {outcome["name"]} {market.split(":")[2].strip()}'
+    elif market.startswith('Total:'):
+        return f'{outcome["name"]} {market.split(":")[1].strip()}'
+    elif market.startswith('Spread:'):
+        return outcome['name']
+
 def aggregate(data):
     bets = {}
     for book in data:
@@ -31,8 +44,8 @@ def aggregate(data):
                     key = frozenset([sport, event, market])
                     outcomes = data[book][sport][event]['offers'][market]
                     if key not in bets:
-                        bets[key] = {'sport': sport, 'event': event, 'market': market, 'start': start_string}
-                        bets[key]['outcomes'] = [{'name': outcome['name'], 'books': {}} for outcome in outcomes]
+                        bets[key] = {'sport': sport, 'event': event, 'market': make_market_simple(market), 'start': start_string}
+                        bets[key]['outcomes'] = [{'name': make_outcome_simple(market, outcome), 'books': {}} for outcome in outcomes]
                     for i in range(len(outcomes)):
                         for j in range(len(bets[key]['outcomes'])):
                             if bets[key]['outcomes'][j]['name'] == outcomes[i]['name']:

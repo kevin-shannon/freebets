@@ -4,7 +4,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { alpha, styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import BookSelect from "./BookSelect";
-import { bet_type_options } from "./Options";
+import { bet_type_options } from "../../Options";
 
 const betTypeStyle = {
   control: (base) => ({

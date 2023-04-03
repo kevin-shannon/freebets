@@ -23,7 +23,7 @@ function BetTable({ bets, betType }) {
   const rows = [];
   const rate = betType.value === "arbitrage" ? "EV" : "Conversion";
   bets.forEach((bet) => {
-    rows.push(<BetRow bet={bet} key={bet.event + bet.market} />);
+    rows.push(<BetRow bet={bet} betType={betType} key={bet.event + bet.market} />);
   });
 
   return (

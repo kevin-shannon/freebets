@@ -1,7 +1,7 @@
 import "./BookSelect.css";
 import Select from "react-select";
 import { components } from "react-select";
-import { book_options_all, book_options } from "./Options";
+import { book_options_all, book_options } from "../../Options";
 
 const Option = (props) => {
   return (

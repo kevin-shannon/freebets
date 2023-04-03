@@ -1,5 +1,5 @@
 import "./BooksBlock.css";
-import Book from "./Book.js";
+import Book from "../common/Book.js";
 
 export default function BooksBlock({ bet }) {
   const books_a = [];

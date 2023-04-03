@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import Stack from "@mui/material/Stack";
 import "./Footer.css";
-import ModalLink from "./ModalLink";
+import ModalLink from "../common/ModalLink";
 
 const disclaimerContent = (
   <p>

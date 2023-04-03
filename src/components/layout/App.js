@@ -1,10 +1,10 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import FilterBar from "./FilterBar";
-import PaginatedBets from "./BetTable";
+import FilterBar from "../filter/FilterBar";
+import BetTable from "../list/BetTable";
 import Footer from "./Footer";
-import filterBets from "../Utils.js";
-import { book_options_all, bet_type_options } from "./Options";
+import filterBets from "../../Utils.js";
+import { book_options_all, bet_type_options } from "../../Options";
 import axios from "axios";
 
 function readyBookList(book) {
@@ -50,7 +50,7 @@ function App() {
           setShowLive={setShowLive}
           setShowPush={setShowPush}
         />
-        {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <PaginatedBets betsPerPage={10} bets={bets} betType={betType} />}
+        {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <BetTable betsPerPage={10} bets={bets} betType={betType} />}
       </div>
       <Footer />
     </div>
