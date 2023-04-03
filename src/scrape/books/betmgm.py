@@ -77,7 +77,7 @@ def generate_betmgm_nhl_formatted_events():
             if 'How many goals will' in label and '(including overtime and shoot-outs)' in label:
                 try:
                     team = label.replace('How many goals will the ', '').replace(' score? (including overtime and shoot-outs)', '')
-                    line =  game['attr']
+                    line =  float(game['attr'])
                     market_name = construct_team_total_market_name(team, line)
                     formatted_events[event_name]['offers'][market_name] = [{'name': convert_outcome_name(outcome['totalsPrefix']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
@@ -85,7 +85,7 @@ def generate_betmgm_nhl_formatted_events():
             # Totals
             if label == TOTAL:
                 try:
-                    line =  game['attr']
+                    line = float(game['attr'])
                     market_name = construct_total_market_name(line)
                     formatted_events[event_name]['offers'][market_name] = [{'name': convert_outcome_name(outcome['totalsPrefix']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
