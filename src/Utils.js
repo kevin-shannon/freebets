@@ -5,7 +5,7 @@ export default function filterBets(data, betType, books_a, books_b, show_live, s
     if (data[i]["outcomes"].length !== 2) continue;
     const best = findBestPair(new Set(books_a), new Set(books_b), data[i]["outcomes"][0]["books"], data[i]["outcomes"][1]["books"], func);
     if (best !== null) {
-      if (!show_push && data[i]["market"].includes(".0")) continue;
+      if (!show_push && data[i]["outcomes"][0]["name"].includes(".0")) continue;
       if (!show_live && isInPast(data[i]["start"])) continue;
       let temp = {
         sport: data[i]["sport"],
