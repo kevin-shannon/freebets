@@ -48,7 +48,7 @@ def aggregate(data):
                         bets[key]['outcomes'] = [{'name': make_outcome_simple(market, outcome), 'books': {}} for outcome in outcomes]
                     for i in range(len(outcomes)):
                         for j in range(len(bets[key]['outcomes'])):
-                            if bets[key]['outcomes'][j]['name'] == outcomes[i]['name']:
+                            if bets[key]['outcomes'][j]['name'] == make_outcome_simple(market, outcomes[i]):
                                 if outcomes[i]['odds'] in bets[key]['outcomes'][j]['books']:
                                     bets[key]['outcomes'][j]['books'][outcomes[i]['odds']].append(book)
                                 else:
