@@ -1,0 +1,61 @@
+.betcard-info, .card-outcome {
+    text-align: center;
+}
+
+.betcard-outcomes {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-top: 1px solid #cccccc;
+}
+
+.card-rate {
+    font-size: xx-large;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.rate-container {
+    margin:0 auto; 
+    position:relative; 
+}
+  
+.calc {
+    padding-left: 20px;
+    padding-top: 5px;
+    position:absolute;
+    left:100%;
+    top: 0%;
+    font-size: x-large;
+}
+
+.card-event {
+    padding-top: 4px;
+    padding-bottom: 8px;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.card-market {
+    font-size: large;
+    padding-bottom: 5px;
+    font-weight: 500;
+}
+
+.card-outcome:first-child {
+    border-right: 1px solid #cccccc;
+}
+
+.betcard {
+    border-radius: 15px;
+    max-width: 550px;
+    min-width: 300px;
+    margin: 3px auto 3px auto;
+    padding: 5px;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+
+.card-outcome-name, .card-outcome-odds {
+    padding: 2px;
+}

@@ -32,6 +32,15 @@ const howItWorksContent = (
   </p>
 );
 
+const missionContent = (
+  <p>
+    This site is not the first of its kind. There are many other similar services, but they are all behind paywalls. I was motivated to create this site when I
+    was trying to promo farm myself and found that to get the most value out of my promotions, I would have to pay one of these services a cut of my winnings to
+    find the best bets. I knew that it didn't take a crazy amount of computing power to do what they were doing, and anyone with a little bit of know-how could
+    hobble together something similar. So that's exactly what I did.
+  </p>
+);
+
 export default function Footer() {
   return (
     <footer>
@@ -39,7 +48,7 @@ export default function Footer() {
         <Stack direction="row" spacing={3}>
           <ModalLink linkName="About" content={aboutContent} />
           <ModalLink linkName="Disclaimer" content={disclaimerContent} />
-          <ModalLink linkName="How it works" content={howItWorksContent} />
+          <ModalLink linkName="Mission" content={missionContent} />
           <a href="https://github.com/kevin-shannon/freebets">
             <FontAwesomeIcon className="foot-link" size="xl" id="octo" icon={faGithub} />
           </a>

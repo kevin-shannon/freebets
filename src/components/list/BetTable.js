@@ -19,19 +19,38 @@ export default function PaginatedBets({ betsPerPage, bets, betType }) {
   );
 }
 
+const useViewport = () => {
+  const [width, setWidth] = React.useState(window.innerWidth);
+
+  React.useEffect(() => {
+    const handleWindowResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+
+  return { width };
+};
+
 function BetTable({ bets, betType }) {
   const rows = [];
   const rate = betType.value === "arbitrage" ? "EV" : "Conversion";
+  const { width } = useViewport();
+  const breakpoint1 = 1100;
+  const breakpoint2 = 850;
+  const mode = width < breakpoint2 ? 2 : width < breakpoint1 ? 1 : 0;
+
   bets.forEach((bet) => {
-    rows.push(<BetRow bet={bet} betType={betType} key={bet.event + bet.market + bet.outcomes[0].name} />);
+    rows.push(<BetRow bet={bet} betType={betType} mode={mode} key={bet.event + bet.market + bet.outcomes[0].name} />);
   });
 
-  return (
+  return mode === 2 ? (
+    <Stack>{rows}</Stack>
+  ) : (
     <table className="bet-table">
       <thead>
         <tr>
           <th>{rate}</th>
-          <th>Date</th>
+          {mode === 1 ? null : <th>Date</th>}
           <th>Event</th>
           <th>Market</th>
           <th>Bets</th>

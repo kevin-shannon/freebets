@@ -12,7 +12,7 @@
 }
 
 body {
-  font-family: 'Robotto', sans-serif;
+  font-family: "Roboto";
   background-color: #fafafa;
   margin-top: 0;
   margin-bottom: 0;
@@ -26,10 +26,6 @@ table {
 
 th {
   text-align: left;
-}
-
-td {
-  padding: 0 15px 0 0;
 }
 
 .bet-row { 
