@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/freebets/static/css/main.46fbf936.css",
+    "main.css": "/freebets/static/css/main.4df7b718.css",
     "main.js": "/freebets/static/js/main.6038e313.js",
     "static/media/roboto-latin-900italic.woff": "/freebets/static/media/roboto-latin-900italic.c20d916c1a1b094c1cec.woff",
     "static/media/roboto-latin-300italic.woff": "/freebets/static/media/roboto-latin-300italic.bd5b7a13f2c52b531a2a.woff",
@@ -27,11 +27,11 @@
     "static/media/roboto-latin-400.woff2": "/freebets/static/media/roboto-latin-400.176f8f5bd5f02b3abfcf.woff2",
     "static/media/roboto-latin-900.woff2": "/freebets/static/media/roboto-latin-900.870c8c1486f76054301a.woff2",
     "index.html": "/freebets/index.html",
-    "main.46fbf936.css.map": "/freebets/static/css/main.46fbf936.css.map",
+    "main.4df7b718.css.map": "/freebets/static/css/main.4df7b718.css.map",
     "main.6038e313.js.map": "/freebets/static/js/main.6038e313.js.map"
   },
   "entrypoints": [
-    "static/css/main.46fbf936.css",
+    "static/css/main.4df7b718.css",
     "static/js/main.6038e313.js"
   ]
 }
