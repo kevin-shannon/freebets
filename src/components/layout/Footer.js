@@ -10,7 +10,7 @@ const disclaimerContent = (
     The information provided on our website is for informational purposes only. We make no guarantee as to the accuracy or completeness of the information
     provided. We are not responsible for any losses that users may incur as a result of using the information on our site. Users should carefully consider their
     betting decisions and understand that all bets carry inherent risks. Please note that our website is not a betting site and we do not offer any gambling
-    services.
+    services. If you or someone you know has a gambling problem and wants help, call 1-800 GAMBLER
   </p>
 );
 
