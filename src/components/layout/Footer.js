@@ -25,13 +25,6 @@ const aboutContent = (
   </p>
 );
 
-const howItWorksContent = (
-  <p>
-    Every minute, odds are pulled by a script running in an AWS Lambda instance. For each bet, we compare the odds of all books and pick the best odds. Finally,
-    we sort bets by some evaluation criteria, either Expected Value or Conversion %.
-  </p>
-);
-
 const missionContent = (
   <p>
     This site is not the first of its kind. There are many other similar services, but they are all behind paywalls. I was motivated to create this site when I
