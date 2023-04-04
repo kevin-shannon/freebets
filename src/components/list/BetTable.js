@@ -1,8 +1,9 @@
 import "./BetTable.css";
-import BetRow from "./BetRow";
 import React, { useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import BetCard from "./BetCard";
+import BetSlab from "./BetSlab";
 
 export default function PaginatedBets({ betsPerPage, bets, betType }) {
   const [page, setPage] = useState(1);
@@ -40,7 +41,8 @@ function BetTable({ bets, betType }) {
   const mode = width < breakpoint2 ? 2 : width < breakpoint1 ? 1 : 0;
 
   bets.forEach((bet) => {
-    rows.push(<BetRow bet={bet} betType={betType} mode={mode} key={bet.event + bet.market + bet.outcomes[0].name} />);
+    const key = bet.event + bet.market + bet.outcomes[0].name;
+    rows.push(mode === 2 ? <BetCard bet={bet} betType={betType} mode={mode} key={key} /> : <BetSlab bet={bet} betType={betType} mode={mode} key={key} />);
   });
 
   return mode === 2 ? (

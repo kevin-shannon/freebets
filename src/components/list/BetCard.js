@@ -2,8 +2,7 @@ import "./BetCard.css";
 import Book from "../common/Book";
 import ImageList from "@mui/material/ImageList";
 import Stack from "@mui/material/Stack";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalculator } from "@fortawesome/free-solid-svg-icons";
+import CalcLink from "../common/CalcLink";
 
 export function readableRate(rate, betType) {
   if (betType === "arbitrage") {
@@ -32,7 +31,7 @@ function OutcomeBlock({ outcome }) {
   );
 }
 
-export default function BetCard({ bet, betType }) {
+export default function BetCard({ bet, betType, mode }) {
   let outcomes = [];
   bet.outcomes.forEach((outcome, index) => {
     outcomes.push(
@@ -46,7 +45,7 @@ export default function BetCard({ bet, betType }) {
       <Stack className="betcard-info">
         <div className="rate-container">
           <span className="card-rate">{readableRate(bet.rate, betType.value)}%</span>
-          <FontAwesomeIcon className="calc" size="2x" icon={faCalculator} />
+          <CalcLink bet={bet} mode={mode} />
         </div>
         <span className="card-event">{bet.event}</span>
         <span className="card-market">{bet.market}</span>

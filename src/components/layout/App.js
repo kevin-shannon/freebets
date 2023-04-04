@@ -18,7 +18,7 @@ function readyBookList(book) {
 }
 
 function App() {
-  const [betType, setBetType] = useState(bet_type_options[0]);
+  const [betType, setBetType] = useState(bet_type_options[1]);
   const [bookA, setBookA] = useState(book_options_all);
   const [bookB, setBookB] = useState(book_options_all);
   const [showLive, setShowLive] = useState(false);
