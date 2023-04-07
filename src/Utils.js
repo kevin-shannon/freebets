@@ -1,6 +1,8 @@
-export default function filterBets(data, betType, books_a, books_b, show_live, show_push) {
+import { BetType } from "./enums";
+
+export function filterBets(data, betType, books_a, books_b, show_live, show_push) {
   let bets = [];
-  const func = betType.value === "arbitrage" ? computeEv : computeConversion;
+  const func = betType.value === BetType.ARBITRAGE ? computeEv : computeConversion;
   for (let i = 0; i < data.length; i++) {
     if (data[i]["outcomes"].length !== 2) continue;
     const best = findBestPair(new Set(books_a), new Set(books_b), data[i]["outcomes"][0]["books"], data[i]["outcomes"][1]["books"], func);
@@ -26,6 +28,75 @@ export default function filterBets(data, betType, books_a, books_b, show_live, s
   bets.sort((a, b) => b.rate - a.rate);
   return bets;
 }
+
+export function calcHedge(betType, amount, odds_a, odds_b, conversion = 0.7) {
+  const decimal_a = convertAmericanToDecimal(odds_a);
+  const decimal_b = convertAmericanToDecimal(odds_b);
+  let payout = amount * decimal_a;
+  if (betType.value === BetType.ARBITRAGE) {
+    ;
+  } else if (betType.value === BetType.FREEBET) {
+    payout -= amount;
+  } else if (betType.value === BetType.RISKFREE) {
+    payout -= conversion * amount;
+  } else {
+    throw new Error(`Invalid bet type: ${betType.value}`);
+  }
+  const perfect_hedge = payout/decimal_b;
+  return roundHedge(perfect_hedge);
+}
+
+export function calcProfitNum(betType, amount, hedge, odds_a, odds_b, conversion = 0.7) {
+  const decimal_a = convertAmericanToDecimal(odds_a);
+  const decimal_b = convertAmericanToDecimal(odds_b);
+  let payout_a = amount*decimal_a;
+  let payout_b = hedge*decimal_b;
+  let sunk = hedge;
+  if (betType.value === BetType.ARBITRAGE) {
+    sunk += amount;
+  } else if (betType.value === BetType.FREEBET) {
+    payout_a -= amount;
+  } else if (betType.value === BetType.RISKFREE) {
+    sunk += amount;
+    payout_b += conversion*amount;
+  } else {
+    throw new Error(`Invalid bet type: ${betType.value}`);
+  }
+  const profit_a = (payout_a - sunk).toFixed(2);
+  const profit_b = (payout_b - sunk).toFixed(2);
+  return [profit_a, profit_b];
+}
+
+export function calcProfitPerc(betType, amount, hedge, profit) {
+  let sunk = amount;
+  if (betType.value === BetType.ARBITRAGE) {
+    sunk += hedge;
+  }
+  const profit_a = (profit[0]/sunk*100).toFixed(2);
+  const profit_b = (profit[1]/sunk*100).toFixed(2);
+  return [profit_a, profit_b]
+}
+
+function roundHedge(num) {
+  if (num < 100) {
+    return Math.round(num);
+  } else if (num < 500) {
+    const rounded2 = Math.round(num / 2) * 2;
+    const rounded5 = Math.round(num / 5) * 5;
+    if (Math.abs(num - rounded2) < Math.abs(num - rounded5)) {
+      return rounded2;
+    } else {
+      return rounded5;
+    }
+  } else if (num <= 2000) {
+    const rounded = Math.round(num / 5) * 5;
+    return rounded;
+  } else {
+    const rounded = Math.round(num / 10) * 10;
+    return rounded;
+  }
+}
+
 
 function convertAmericanToDecimal(american) {
   if (american > 0) {

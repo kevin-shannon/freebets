@@ -2,9 +2,10 @@ import "./BetSlab.css";
 import ImageList from "@mui/material/ImageList";
 import Book from "../common/Book.js";
 import CalcLink from "../common/CalcLink";
+import { BetType } from "../../enums"
 
 function readableRate(rate, betType) {
-  if (betType === "arbitrage") {
+  if (betType === BetType.ARBITRAGE) {
     return rate > 1 ? "+" + ((rate - 1) * 100).toFixed(1) : ((rate - 1) * 100).toFixed(1);
   } else {
     return (rate * 100).toFixed(1);
@@ -72,7 +73,7 @@ export default function BetSlab({ bet, betType, mode }) {
         <BooksBlock bet={bet} />
       </td>
       <td>
-        <CalcLink bet={bet} mode={mode} />
+        <CalcLink bet={bet} betType={betType} mode={mode} />
       </td>
     </tr>
   );

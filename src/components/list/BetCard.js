@@ -3,9 +3,10 @@ import Book from "../common/Book";
 import ImageList from "@mui/material/ImageList";
 import Stack from "@mui/material/Stack";
 import CalcLink from "../common/CalcLink";
+import { BetType } from "../../enums"
 
 export function readableRate(rate, betType) {
-  if (betType === "arbitrage") {
+  if (betType === BetType.ARBITRAGE) {
     return rate > 1 ? "+" + ((rate - 1) * 100).toFixed(1) : ((rate - 1) * 100).toFixed(1);
   } else {
     return (rate * 100).toFixed(1);
@@ -45,7 +46,7 @@ export default function BetCard({ bet, betType, mode }) {
       <Stack className="betcard-info">
         <div className="rate-container">
           <span className="card-rate">{readableRate(bet.rate, betType.value)}%</span>
-          <CalcLink bet={bet} mode={mode} />
+          <CalcLink bet={bet} betType={betType} mode={mode} />
         </div>
         <span className="card-event">{bet.event}</span>
         <span className="card-market">{bet.market}</span>

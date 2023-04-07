@@ -4,6 +4,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import BetCard from "./BetCard";
 import BetSlab from "./BetSlab";
+import { BetType } from "../../enums"
 
 export default function PaginatedBets({ betsPerPage, bets, betType }) {
   const [page, setPage] = useState(1);
@@ -34,7 +35,7 @@ const useViewport = () => {
 
 function BetTable({ bets, betType }) {
   const rows = [];
-  const rate = betType.value === "arbitrage" ? "EV" : "Conversion";
+  const rate = betType.value === BetType.ARBITRAGE ? "EV" : "Conversion";
   const { width } = useViewport();
   const breakpoint1 = 1100;
   const breakpoint2 = 850;

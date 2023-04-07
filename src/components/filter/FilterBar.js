@@ -5,6 +5,7 @@ import { alpha, styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import BookSelect from "./BookSelect";
 import { bet_type_options } from "../../Options";
+import { BetType } from "../../enums"
 
 const betTypeStyle = {
   control: (base) => ({
@@ -67,7 +68,7 @@ export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChan
             </div>
           </td>
           <td>
-            {betType.value === "arbitrage" ? (
+            {betType.value === BetType.ARBITRAGE ? (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="books-select">
                   Books
@@ -114,7 +115,7 @@ export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChan
             </div>
           </td>
           <td>
-            {betType.value === "arbitrage" ? null : (
+            {betType.value === BetType.ARBITRAGE ? null : (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="hedge-book-select">
                   Hedge Book

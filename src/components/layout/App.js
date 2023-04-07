@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import FilterBar from "../filter/FilterBar";
 import BetTable from "../list/BetTable";
 import Footer from "./Footer";
-import filterBets from "../../Utils.js";
+import { filterBets } from "../../Utils.js";
+import { BetType } from "../../enums.js"
 import { book_options_all, bet_type_options } from "../../Options";
 import axios from "axios";
 import "typeface-roboto";

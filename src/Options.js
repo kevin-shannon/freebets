@@ -13,6 +13,7 @@ export const book_options_all = [{ label: "All", value: "all" }, ...book_options
 export const bet_type_options = [
   { value: "arbitrage", label: "Arbitrage" },
   { value: "free bet", label: "Free Bet" },
+  { value: "risk free", label: "Risk Free"}
 ];
 
 export const sport_options = [
