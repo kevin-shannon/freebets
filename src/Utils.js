@@ -106,7 +106,7 @@ function convertAmericanToDecimal(american) {
   }
 }
 
-function computeEv(oddsA, oddsB) {
+export function computeEv(oddsA, oddsB) {
   const a = convertAmericanToDecimal(oddsA);
   const b = convertAmericanToDecimal(oddsB);
   if (a > b) {
@@ -116,7 +116,7 @@ function computeEv(oddsA, oddsB) {
   }
 }
 
-function computeConversion(oddsA, oddsB) {
+export function computeConversion(oddsA, oddsB) {
   const a = convertAmericanToDecimal(oddsA);
   const b = convertAmericanToDecimal(oddsB);
   return a - 1 - (a - 1) / b;
