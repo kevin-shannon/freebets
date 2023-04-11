@@ -54,6 +54,15 @@ export default function ModalLink({ bet, betType, mode }) {
     }
   }
 
+  function handleInput(event) {
+    const inputValue = event.target.value;
+    
+    if (inputValue.startsWith('.') ||
+        (inputValue === '' && (event.data === '.' || event.data === '-'))) {
+      event.target.value = '';
+    }
+  }
+
   return (
     <div>
       <button className="foot-link" onClick={handleOpen}>
@@ -80,7 +89,7 @@ export default function ModalLink({ bet, betType, mode }) {
               <tr>
                 <td>
                   <label>Free Bet</label>
-                  <input className="usr-input-bet-amount" value={amount_a} type="number" onChange={handleChange} min="0" onKeyDown={handleKeyDown}></input>
+                  <input className="usr-input-bet-amount" value={amount_a} type="number" onChange={handleChange} min="0" onKeyDown={handleKeyDown} onInput={handleInput}></input>
                 </td>
                 <td>
                   <label>Hedge Bet</label>

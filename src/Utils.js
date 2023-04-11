@@ -30,7 +30,7 @@ export function filterBets(data, betType, books_a, books_b, show_live, show_push
 }
 
 export function calcHedge(betType, amount_a, odds_a, odds_b, conversion = 0.7) {
-  if (amount_a === '') return '';
+  if (amount_a === 0) return '';
   const decimal_a = convertAmericanToDecimal(odds_a);
   const decimal_b = convertAmericanToDecimal(odds_b);
   let payout = amount_a * decimal_a;
