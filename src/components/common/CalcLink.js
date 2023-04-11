@@ -30,9 +30,9 @@ export default function ModalLink({ bet, betType, mode }) {
   const ab = Math.abs(func(bet.outcomes[1].odds, bet.outcomes[0].odds) - bet.rate);
   const odds_a = (ab > ba) ? bet.outcomes[0].odds : bet.outcomes[1].odds;
   const odds_b = (ab > ba) ? bet.outcomes[1].odds : bet.outcomes[0].odds;
-  const amount_b = calcHedge(betType, amount_a, odds_a, odds_b)
-  const profit = calcProfitNum(betType, amount_a, amount_b, odds_a, odds_b);
-  const perc = calcProfitPerc(betType, amount_a, amount_b, profit);
+  const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b)
+  const profit = calcProfitNum(betType, Number(amount_a), Number(amount_b), odds_a, odds_b);
+  const perc = calcProfitPerc(betType, Number(amount_a), Number(amount_b), profit);
 
   function handleChange(event) {
     const input = event.target.value || '';
@@ -41,14 +41,15 @@ export default function ModalLink({ bet, betType, mode }) {
     const decimalIndex = filteredInput.indexOf('.');
     
     if (decimalIndex !== -1 && filteredInput.length - decimalIndex > 3) return;
-    if (/e/i.test(filteredInput) || /^-|\+/.test(filteredInput)) return;
-    if (filteredInput !== '' && !/^(\+|-)?(\.)?(\d+)(\.(\d+))?$/g.test(filteredInput) || parseFloat(filteredInput) >= 100000) return;
+    if (/e/i.test(filteredInput) || /^-|\+/.test(filteredInput) || /^(\.)+/.test(filteredInput)) return;
+    if (filteredInput !== '' && !/^(\+|-)?(\d+)?(\.)?(\d+)?$/g.test(filteredInput) || parseFloat(filteredInput) >= 100000) return;
     
     setAmount_a(filteredInput);
   }
 
   function handleKeyDown(event) {
-    if (event.key === '-' || event.key === '+' || event.key ==='e' || event.key === 'E') {
+    if ((event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E') || 
+      (event.target.value === '' && event.key === '.')) {
       event.preventDefault();
     }
   }
@@ -64,14 +65,30 @@ export default function ModalLink({ bet, betType, mode }) {
       </button>
       <Modal open={open} onClose={handleClose} disableAutoFocus={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <label>Free Bet</label>
-          <input className="usr-input-bet-amount" value={amount_a} type="number" onChange={handleChange} min="0" onKeyDown={handleKeyDown}></input>
-          <label>Odds</label>
-          <input value={odds_a} readOnly></input>
-          <label>Hedge Bet</label>
-          <input type="number" value={amount_b} readOnly></input>
-          <label>Odds</label>
-          <input value={odds_b} readOnly></input>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <label>Odds</label>
+                  <input value={odds_a} readOnly></input>
+                </td>
+                <td>
+                  <label>Odds</label>
+                  <input value={odds_b} readOnly></input>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label>Free Bet</label>
+                  <input className="usr-input-bet-amount" value={amount_a} type="number" onChange={handleChange} min="0" onKeyDown={handleKeyDown}></input>
+                </td>
+                <td>
+                  <label>Hedge Bet</label>
+                  <input type="number" value={amount_b} readOnly></input>
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <span>Profit: ${profit[0]} - ${profit[1]}</span>
           <br />
           <span>% Profit: {perc[0]}% - {perc[1]}%</span>
