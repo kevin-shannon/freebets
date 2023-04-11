@@ -42,7 +42,7 @@ export default function ModalLink({ bet, betType, mode }) {
     
     if (decimalIndex !== -1 && filteredInput.length - decimalIndex > 3) return;
     if (/e/i.test(filteredInput) || /^-|\+/.test(filteredInput) || /^(\.)+/.test(filteredInput)) return;
-    if (filteredInput !== '' && !/^(\+|-)?(\d+)?(\.)?(\d+)?$/g.test(filteredInput) || parseFloat(filteredInput) >= 100000) return;
+    if ((filteredInput !== '' && !/^(\+|-)?(\d+)?(\.)?(\d+)?$/g.test(filteredInput)) || parseFloat(filteredInput) >= 100000) return;
     
     setAmount_a(filteredInput);
   }
