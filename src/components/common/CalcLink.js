@@ -35,6 +35,7 @@ export default function ModalLink({ bet, betType, mode }) {
   const odds_b = ab > ba ? bet.outcomes[1].odds : bet.outcomes[0].odds;
   const bet_a = ab > ba ? bet.outcomes[0].name : bet.outcomes[1].name;
   const bet_b = ab > ba ? bet.outcomes[1].name : bet.outcomes[0].name;
+  if (amount_a === undefined) setAmount_a(0);
   const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b);
   const profit = calcProfitNum(betType, Number(amount_a), Number(amount_b), odds_a, odds_b);
 
@@ -66,7 +67,7 @@ export default function ModalLink({ bet, betType, mode }) {
                   <div className="input-container">
                     <div className="input-cell">
                       <label className="input-label">Odds</label>
-                      <input className="calc-input" value={formatOddsNumber(odds_a)} readOnly></input>
+                      <input className="calc-input" disabled={true} value={formatOddsNumber(odds_a)} readOnly></input>
                     </div>
                   </div>
                 </td>
@@ -74,7 +75,7 @@ export default function ModalLink({ bet, betType, mode }) {
                   <div className="input-container">
                     <div className="input-cell">
                       <label className="input-label">Odds</label>
-                      <input className="calc-input" value={formatOddsNumber(odds_b)} readOnly></input>
+                      <input className="calc-input" disabled={true} value={formatOddsNumber(odds_b)} readOnly></input>
                     </div>
                   </div>
                 </td>
@@ -85,7 +86,7 @@ export default function ModalLink({ bet, betType, mode }) {
                     <div className="input-cell">
                       <label className="input-label">Free Bet</label>
                       <CurrencyInput
-                        className="calc-input"
+                        className={amount_a === "" || amount_a === 0 ? "calc-input empty" : "calc-input"}
                         decimalsLimit={2}
                         prefix="$"
                         disableAbbreviations={true}
@@ -117,15 +118,15 @@ export default function ModalLink({ bet, betType, mode }) {
             </tbody>
           </table>
           <Box className="profit-box" display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
-            <Typography>
-              <span style={{ fontFamily: "Roboto Mono, monospace" }}>$</span> <span style={{ fontSize: "large" }}>Profit</span>
+            <Typography style={{ fontSize: "x-large" }}>
+              <span style={{ fontFamily: "Roboto Mono, monospace" }}>$</span> <span>Profit</span>
               <span> ~ </span>
-              <span style={{ fontSize: "large" }}>{formatMoneyNumber((Number(profit[0]) + Number(profit[1])) / 2)}</span>
+              <span>{formatMoneyNumber((Number(profit[0]) + Number(profit[1])) / 2)}</span>
             </Typography>
-            <Typography>
-              <span style={{ fontFamily: "Roboto Mono, monospace" }}>%</span> <span style={{ fontSize: "large" }}>Profit</span>
+            <Typography style={{ fontSize: "large" }}>
+              <span style={{ fontFamily: "Roboto Mono, monospace" }}>%</span> <span>Profit</span>
               <span> ~ </span>
-              <span style={{ fontSize: "large" }}>{(bet.rate * 100).toFixed(2)}%</span>
+              <span>{(bet.rate * 100).toFixed(2)}%</span>
             </Typography>
           </Box>
         </Box>
