@@ -66,7 +66,7 @@ export default function ModalLink({ bet, betType, mode }) {
                   <div className="input-container">
                     <div className="input-cell">
                       <label className="input-label">Odds</label>
-                      <input value={formatOddsNumber(odds_a)} readOnly></input>
+                      <input className="calc-input" value={formatOddsNumber(odds_a)} readOnly></input>
                     </div>
                   </div>
                 </td>
@@ -74,7 +74,7 @@ export default function ModalLink({ bet, betType, mode }) {
                   <div className="input-container">
                     <div className="input-cell">
                       <label className="input-label">Odds</label>
-                      <input value={formatOddsNumber(odds_b)} readOnly></input>
+                      <input className="calc-input" value={formatOddsNumber(odds_b)} readOnly></input>
                     </div>
                   </div>
                 </td>
@@ -85,6 +85,7 @@ export default function ModalLink({ bet, betType, mode }) {
                     <div className="input-cell">
                       <label className="input-label">Free Bet</label>
                       <CurrencyInput
+                        className="calc-input"
                         decimalsLimit={2}
                         prefix="$"
                         disableAbbreviations={true}
@@ -100,7 +101,15 @@ export default function ModalLink({ bet, betType, mode }) {
                   <div className="input-container">
                     <div className="input-cell">
                       <label className="input-label">Hedge Bet</label>
-                      <CurrencyInput decimalsLimit={2} prefix="$" allowNegativeValue={false} disableAbbreviations={true} value={amount_b} readOnly />
+                      <CurrencyInput
+                        className="calc-input"
+                        decimalsLimit={2}
+                        prefix="$"
+                        allowNegativeValue={false}
+                        disableAbbreviations={true}
+                        value={amount_b}
+                        readOnly
+                      />
                     </div>
                   </div>
                 </td>
