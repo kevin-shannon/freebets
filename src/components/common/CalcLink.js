@@ -38,6 +38,19 @@ export default function ModalLink({ bet, betType, mode }) {
   if (amount_a === undefined) setAmount_a(0);
   const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b);
   const profit = calcProfitNum(betType, Number(amount_a), Number(amount_b), odds_a, odds_b);
+  let label_a, label_b;
+  if (betType.value === BetType.ARBITRAGE) {
+    label_a = "Bet Amount";
+    label_b = "Bet Amount";
+  } else if (betType.value === BetType.FREEBET) {
+    label_a = "Free Bet";
+    label_b = "Hedge Bet";
+  } else if (betType.value === BetType.RISKFREE) {
+    label_a = "Risk Free Bet";
+    label_b = "Hedge Bet";
+  } else {
+    throw new Error(`Invalid bet type: ${betType.value}`);
+  }
 
   function handleKeyDown(event) {
     if (event.key === "-" || event.key === "+" || event.key === "e" || event.key === "E" || (event.target.value === "" && event.key === ".")) {
@@ -84,7 +97,7 @@ export default function ModalLink({ bet, betType, mode }) {
                 <td>
                   <div className="input-container">
                     <div className="input-cell">
-                      <label className="input-label">Free Bet</label>
+                      <label className="input-label">{label_a}</label>
                       <CurrencyInput
                         className={amount_a === "" || amount_a === 0 ? "calc-input empty" : "calc-input"}
                         decimalsLimit={2}
@@ -101,7 +114,7 @@ export default function ModalLink({ bet, betType, mode }) {
                 <td>
                   <div className="input-container">
                     <div className="input-cell">
-                      <label className="input-label">Hedge Bet</label>
+                      <label className="input-label">{label_b}</label>
                       <CurrencyInput
                         className="calc-input"
                         decimalsLimit={2}
@@ -126,7 +139,7 @@ export default function ModalLink({ bet, betType, mode }) {
             <Typography style={{ fontSize: "large" }}>
               <span style={{ fontFamily: "Roboto Mono, monospace" }}>%</span> <span>Profit</span>
               <span> ~ </span>
-              <span>{(bet.rate * 100).toFixed(2)}%</span>
+              <span>{betType.value === BetType.ARBITRAGE ? ((bet.rate - 1) * 100).toFixed(2) : (bet.rate * 100).toFixed(2)}%</span>
             </Typography>
           </Box>
         </Box>
