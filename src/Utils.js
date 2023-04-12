@@ -77,6 +77,10 @@ export function formatMoneyNumber(number) {
   return `${sign}$${integerPart}.${decimalPart}`;
 }
 
+export function formatOddsNumber(number) {
+  return number < 0 ? number : "+" + number;
+}
+
 function roundHedge(num) {
   if (num < 100) {
     return Math.round(num);

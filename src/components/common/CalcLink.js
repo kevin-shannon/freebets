@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import { calcHedge, calcProfitNum, computeEv, computeConversion, formatMoneyNumber } from "../../Utils";
+import { calcHedge, calcProfitNum, computeEv, computeConversion, formatMoneyNumber, formatOddsNumber } from "../../Utils";
 import { BetType } from "../../enums";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
@@ -33,6 +33,8 @@ export default function ModalLink({ bet, betType, mode }) {
   const ab = Math.abs(func(bet.outcomes[1].odds, bet.outcomes[0].odds) - bet.rate);
   const odds_a = ab > ba ? bet.outcomes[0].odds : bet.outcomes[1].odds;
   const odds_b = ab > ba ? bet.outcomes[1].odds : bet.outcomes[0].odds;
+  const bet_a = ab > ba ? bet.outcomes[0].name : bet.outcomes[1].name;
+  const bet_b = ab > ba ? bet.outcomes[1].name : bet.outcomes[0].name;
   const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b);
   const profit = calcProfitNum(betType, Number(amount_a), Number(amount_b), odds_a, odds_b);
 
@@ -56,11 +58,15 @@ export default function ModalLink({ bet, betType, mode }) {
           <table className="calc-table">
             <tbody>
               <tr>
+                <td className="calc-bet-name">{bet_a}</td>
+                <td className="calc-bet-name">{bet_b}</td>
+              </tr>
+              <tr>
                 <td>
                   <div className="input-container">
                     <div className="input-cell">
                       <label className="input-label">Odds</label>
-                      <input value={odds_a} readOnly></input>
+                      <input value={formatOddsNumber(odds_a)} readOnly></input>
                     </div>
                   </div>
                 </td>
@@ -68,7 +74,7 @@ export default function ModalLink({ bet, betType, mode }) {
                   <div className="input-container">
                     <div className="input-cell">
                       <label className="input-label">Odds</label>
-                      <input value={odds_b} readOnly></input>
+                      <input value={formatOddsNumber(odds_b)} readOnly></input>
                     </div>
                   </div>
                 </td>
@@ -82,6 +88,7 @@ export default function ModalLink({ bet, betType, mode }) {
                         decimalsLimit={2}
                         prefix="$"
                         disableAbbreviations={true}
+                        allowNegativeValue={false}
                         maxLength={7}
                         onValueChange={setAmount_a}
                         onKeyDown={handleKeyDown}
@@ -93,7 +100,7 @@ export default function ModalLink({ bet, betType, mode }) {
                   <div className="input-container">
                     <div className="input-cell">
                       <label className="input-label">Hedge Bet</label>
-                      <CurrencyInput decimalsLimit={2} prefix="$" disableAbbreviations={true} value={amount_b} readOnly />
+                      <CurrencyInput decimalsLimit={2} prefix="$" allowNegativeValue={false} disableAbbreviations={true} value={amount_b} readOnly />
                     </div>
                   </div>
                 </td>
