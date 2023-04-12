@@ -30,12 +30,11 @@ export function filterBets(data, betType, books_a, books_b, show_live, show_push
 }
 
 export function calcHedge(betType, amount_a, odds_a, odds_b, conversion = 0.7) {
-  if (amount_a === 0) return '';
+  if (amount_a === 0) return "";
   const decimal_a = convertAmericanToDecimal(odds_a);
   const decimal_b = convertAmericanToDecimal(odds_b);
   let payout = amount_a * decimal_a;
   if (betType.value === BetType.ARBITRAGE) {
-    ;
   } else if (betType.value === BetType.FREEBET) {
     payout -= amount_a;
   } else if (betType.value === BetType.RISKFREE) {
@@ -43,15 +42,15 @@ export function calcHedge(betType, amount_a, odds_a, odds_b, conversion = 0.7) {
   } else {
     throw new Error(`Invalid bet type: ${betType.value}`);
   }
-  const perfect_hedge = payout/decimal_b;
+  const perfect_hedge = payout / decimal_b;
   return roundHedge(perfect_hedge);
 }
 
 export function calcProfitNum(betType, amount_a, amount_b, odds_a, odds_b, conversion = 0.7) {
   const decimal_a = convertAmericanToDecimal(odds_a);
   const decimal_b = convertAmericanToDecimal(odds_b);
-  let payout_a = amount_a*decimal_a;
-  let payout_b = amount_b*decimal_b;
+  let payout_a = amount_a * decimal_a;
+  let payout_b = amount_b * decimal_b;
   let sunk = amount_b;
   if (betType.value === BetType.ARBITRAGE) {
     sunk += amount_a;
@@ -59,7 +58,7 @@ export function calcProfitNum(betType, amount_a, amount_b, odds_a, odds_b, conve
     payout_a -= amount_a;
   } else if (betType.value === BetType.RISKFREE) {
     sunk += amount_a;
-    payout_b += conversion*amount_a;
+    payout_b += conversion * amount_a;
   } else {
     throw new Error(`Invalid bet type: ${betType.value}`);
   }
@@ -68,14 +67,14 @@ export function calcProfitNum(betType, amount_a, amount_b, odds_a, odds_b, conve
   return [profit_a, profit_b];
 }
 
-export function calcProfitPerc(betType, amount_a, amount_b, profit) {
-  let sunk = amount_a;
-  if (betType.value === BetType.ARBITRAGE) {
-    sunk += amount_b;
-  }
-  const profit_a = (profit[0]/sunk*100).toFixed(2);
-  const profit_b = (profit[1]/sunk*100).toFixed(2);
-  return [profit_a, profit_b]
+export function formatMoneyNumber(number) {
+  const sign = number < 0 ? "-" : "";
+  const absNumber = Math.abs(number);
+  const integerPart = Math.floor(absNumber)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const decimalPart = (absNumber % 1).toFixed(2).slice(2);
+  return `${sign}$${integerPart}.${decimalPart}`;
 }
 
 function roundHedge(num) {
@@ -97,7 +96,6 @@ function roundHedge(num) {
     return rounded;
   }
 }
-
 
 function convertAmericanToDecimal(american) {
   if (american > 0) {

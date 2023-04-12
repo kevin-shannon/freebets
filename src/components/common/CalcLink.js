@@ -1,10 +1,13 @@
+import "./CalcLink.css";
 import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { calcHedge, calcProfitPerc, calcProfitNum, computeEv, computeConversion } from "../../Utils"
+import { Typography } from "@mui/material";
+import { calcHedge, calcProfitNum, computeEv, computeConversion, formatMoneyNumber } from "../../Utils";
 import { BetType } from "../../enums";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
+import CurrencyInput from "react-currency-input-field";
 
 const style = {
   position: "absolute",
@@ -28,38 +31,14 @@ export default function ModalLink({ bet, betType, mode }) {
   const func = betType.value === BetType.ARBITRAGE ? computeEv : computeConversion;
   const ba = Math.abs(func(bet.outcomes[0].odds, bet.outcomes[1].odds) - bet.rate);
   const ab = Math.abs(func(bet.outcomes[1].odds, bet.outcomes[0].odds) - bet.rate);
-  const odds_a = (ab > ba) ? bet.outcomes[0].odds : bet.outcomes[1].odds;
-  const odds_b = (ab > ba) ? bet.outcomes[1].odds : bet.outcomes[0].odds;
-  const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b)
+  const odds_a = ab > ba ? bet.outcomes[0].odds : bet.outcomes[1].odds;
+  const odds_b = ab > ba ? bet.outcomes[1].odds : bet.outcomes[0].odds;
+  const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b);
   const profit = calcProfitNum(betType, Number(amount_a), Number(amount_b), odds_a, odds_b);
-  const perc = calcProfitPerc(betType, Number(amount_a), Number(amount_b), profit);
-
-  function handleChange(event) {
-    const input = event.target.value || '';
-    const trimmedInput = input.replace(/^0+/, '');
-    const filteredInput = trimmedInput.replace(/[^\d.-]|(?<=\..*)\./g, '');
-    const decimalIndex = filteredInput.indexOf('.');
-    
-    if (decimalIndex !== -1 && filteredInput.length - decimalIndex > 3) return;
-    if (/e/i.test(filteredInput) || /^-|\+/.test(filteredInput) || /^(\.)+/.test(filteredInput)) return;
-    if ((filteredInput !== '' && !/^(\+|-)?(\d+)?(\.)?(\d+)?$/g.test(filteredInput)) || parseFloat(filteredInput) >= 100000) return;
-    
-    setAmount_a(filteredInput);
-  }
 
   function handleKeyDown(event) {
-    if ((event.key === '-' || event.key === '+' || event.key === 'e' || event.key === 'E') || 
-      (event.target.value === '' && event.key === '.')) {
+    if (event.key === "-" || event.key === "+" || event.key === "e" || event.key === "E" || (event.target.value === "" && event.key === ".")) {
       event.preventDefault();
-    }
-  }
-
-  function handleInput(event) {
-    const inputValue = event.target.value;
-    
-    if (inputValue.startsWith('.') ||
-        (inputValue === '' && (event.data === '.' || event.data === '-'))) {
-      event.target.value = '';
     }
   }
 
@@ -74,33 +53,65 @@ export default function ModalLink({ bet, betType, mode }) {
       </button>
       <Modal open={open} onClose={handleClose} disableAutoFocus={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <table>
+          <table className="calc-table">
             <tbody>
               <tr>
                 <td>
-                  <label>Odds</label>
-                  <input value={odds_a} readOnly></input>
+                  <div className="input-container">
+                    <div className="input-cell">
+                      <label className="input-label">Odds</label>
+                      <input value={odds_a} readOnly></input>
+                    </div>
+                  </div>
                 </td>
                 <td>
-                  <label>Odds</label>
-                  <input value={odds_b} readOnly></input>
+                  <div className="input-container">
+                    <div className="input-cell">
+                      <label className="input-label">Odds</label>
+                      <input value={odds_b} readOnly></input>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <label>Free Bet</label>
-                  <input className="usr-input-bet-amount" value={amount_a} type="number" onChange={handleChange} min="0" onKeyDown={handleKeyDown} onInput={handleInput}></input>
+                  <div className="input-container">
+                    <div className="input-cell">
+                      <label className="input-label">Free Bet</label>
+                      <CurrencyInput
+                        decimalsLimit={2}
+                        prefix="$"
+                        disableAbbreviations={true}
+                        maxLength={7}
+                        onValueChange={setAmount_a}
+                        onKeyDown={handleKeyDown}
+                      />
+                    </div>
+                  </div>
                 </td>
                 <td>
-                  <label>Hedge Bet</label>
-                  <input type="number" value={amount_b} readOnly></input>
+                  <div className="input-container">
+                    <div className="input-cell">
+                      <label className="input-label">Hedge Bet</label>
+                      <CurrencyInput decimalsLimit={2} prefix="$" disableAbbreviations={true} value={amount_b} readOnly />
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
-          <span>Profit: ${profit[0]} - ${profit[1]}</span>
-          <br />
-          <span>% Profit: {perc[0]}% - {perc[1]}%</span>
+          <Box className="profit-box" display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
+            <Typography>
+              <span style={{ fontFamily: "Roboto Mono, monospace" }}>$</span> <span style={{ fontSize: "large" }}>Profit</span>
+              <span> ~ </span>
+              <span style={{ fontSize: "large" }}>{formatMoneyNumber((Number(profit[0]) + Number(profit[1])) / 2)}</span>
+            </Typography>
+            <Typography>
+              <span style={{ fontFamily: "Roboto Mono, monospace" }}>%</span> <span style={{ fontSize: "large" }}>Profit</span>
+              <span> ~ </span>
+              <span style={{ fontSize: "large" }}>{(bet.rate * 100).toFixed(2)}%</span>
+            </Typography>
+          </Box>
         </Box>
       </Modal>
     </div>
