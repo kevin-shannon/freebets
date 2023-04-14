@@ -26,11 +26,13 @@ const style = {
 export default function ModalLink({ bet, betType, mode }) {
   const [open, setOpen] = useState(false);
   const [amount_a, setAmount_a] = useState("");
+  const [amount_b, setAmount_b] = useState("");
   const [conversion, setConversion] = useState(70);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     setAmount_a("");
+    setAmount_b("");
     setConversion(70);
   };
   const func = betType.value === BetType.ARBITRAGE ? computeEv : computeConversion;
@@ -40,8 +42,7 @@ export default function ModalLink({ bet, betType, mode }) {
   const odds_b = ab > ba ? bet.outcomes[1].odds : bet.outcomes[0].odds;
   const bet_a = ab > ba ? bet.outcomes[0].name : bet.outcomes[1].name;
   const bet_b = ab > ba ? bet.outcomes[1].name : bet.outcomes[0].name;
-  if (amount_a === undefined) setAmount_a(0);
-  const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b, conversion / 100);
+  if (amount_a === undefined) setAmount_a("");
   const perc = calcPerc(betType, odds_a, odds_b, conversion / 100);
   const profit = (Number(perc) / 100) * Number(amount_a);
   let label_a, label_b;
@@ -54,15 +55,25 @@ export default function ModalLink({ bet, betType, mode }) {
   } else if (betType.value === BetType.RISKFREE) {
     label_a = "Risk Free Bet";
     label_b = "Hedge Bet";
-  } else {
-    throw new Error(`Invalid bet type: ${betType.value}`);
   }
 
-  const handleChange = (event) => {
+  const handleCoversionChange = (event) => {
     let input = event.target.value;
     input = input.replace(/^0+(?!$)|^00/, "");
     if (/^$|^(0|[1-9][0-9]?)$/.test(input) || input === "100") {
       setConversion(input);
+    }
+  };
+
+  const handleAmountAChange = (value) => {
+    setAmount_a(value);
+    setAmount_b(calcHedge(betType, Number(value), odds_a, odds_b, conversion / 100));
+  };
+
+  const handleAmountBChange = (value) => {
+    if (betType.value === BetType.ARBITRAGE) {
+      setAmount_a(calcHedge(betType, Number(value), odds_b, odds_a, conversion / 100));
+      setAmount_b(value);
     }
   };
 
@@ -110,10 +121,11 @@ export default function ModalLink({ bet, betType, mode }) {
                         className={amount_a === "" || amount_a === 0 ? "calc-input dynamic-cell empty" : "calc-input dynamic-cell"}
                         decimalsLimit={2}
                         prefix="$"
-                        disableAbbreviations={true}
                         allowNegativeValue={false}
+                        disableAbbreviations={true}
+                        value={amount_a}
+                        onValueChange={handleAmountAChange}
                         maxLength={7}
-                        onValueChange={setAmount_a}
                       />
                     </div>
                   </div>
@@ -129,7 +141,9 @@ export default function ModalLink({ bet, betType, mode }) {
                         allowNegativeValue={false}
                         disableAbbreviations={true}
                         value={amount_b}
-                        readOnly
+                        onValueChange={handleAmountBChange}
+                        maxLength={7}
+                        readOnly={betType.value === BetType.ARBITRAGE ? false : true}
                       />
                     </div>
                   </div>
@@ -141,7 +155,7 @@ export default function ModalLink({ bet, betType, mode }) {
             <div className="conversion-container">
               <label className="input-label">Conversion</label>
               <div className="conversion-full-input">
-                <input className="conversion-input" value={conversion} type="number" onChange={handleChange} />
+                <input className="conversion-input" value={conversion} type="number" onChange={handleCoversionChange} />
                 <div className="conversion-adornment">
                   <span>%</span>
                 </div>
