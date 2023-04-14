@@ -1,8 +1,5 @@
 .calc-input {
   box-sizing: border-box;
-  min-width: 120px;
-  width: 10vw;
-  max-width: 145px;
   height: 30px;
   padding: 8px;
   border: none;
@@ -11,6 +8,40 @@
   font-size: 16px;
   color: #333;
   outline: none;
+}
+
+.conversion-input {
+  outline: none;
+  border: none;
+  background-color: #f2f2f2;
+  height: 30px;
+  width: 60px;
+  font-size: 16px;
+  color: #333;
+}
+
+.conversion-adornment {
+  background-color: #f2f2f2;
+  height: 30px;
+  font-size: 18px;
+  color: #888;
+  padding: 1px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.conversion-container {
+  width: fit-content;
+  margin: 10px auto;
+}
+
+.conversion-full-input {
+  display: flex;
+  width: fit-content;
+  overflow: hidden;
+  border-radius: 5px;
+  background-color: #f2f2f2;
 }
 
 .calc-input.empty {
@@ -27,21 +58,21 @@
     width: 20vw;
     max-width: 250px;
 }
+
+.dynamic-cell {
+  min-width: 120px;
+  width: 10vw;
+  max-width: 145px;
+}
   
 .input-label {
     font-size: 14px;
-    margin-bottom: 5px;
-    min-width: 120px;
-    width: 10vw;
-    max-width: 145px;
+    margin-bottom: 3px;
 }
   
 .input-cell {
     display: flex;
     flex-direction: column;
-    min-width: 120px;
-    width: 10vw;
-    max-width: 145px;
     margin: auto;
 }
 

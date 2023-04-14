@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import { calcHedge, calcProfitNum, computeEv, computeConversion, formatMoneyNumber, formatOddsNumber } from "../../Utils";
+import { TextField, InputAdornment } from "@mui/material";
+import { calcHedge, calcPerc, computeEv, computeConversion, formatMoneyNumber, formatOddsNumber } from "../../Utils";
 import { BetType } from "../../enums";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
@@ -26,6 +27,7 @@ const style = {
 export default function ModalLink({ bet, betType, mode }) {
   const [open, setOpen] = useState(false);
   const [amount_a, setAmount_a] = useState("");
+  const [conversion, setConversion] = useState(70);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const func = betType.value === BetType.ARBITRAGE ? computeEv : computeConversion;
@@ -36,8 +38,9 @@ export default function ModalLink({ bet, betType, mode }) {
   const bet_a = ab > ba ? bet.outcomes[0].name : bet.outcomes[1].name;
   const bet_b = ab > ba ? bet.outcomes[1].name : bet.outcomes[0].name;
   if (amount_a === undefined) setAmount_a(0);
-  const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b);
-  const profit = calcProfitNum(betType, Number(amount_a), Number(amount_b), odds_a, odds_b);
+  const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b, conversion / 100);
+  const perc = calcPerc(betType, odds_a, odds_b, conversion / 100);
+  const profit = Number(perc) * Number(amount_a);
   let label_a, label_b;
   if (betType.value === BetType.ARBITRAGE) {
     label_a = "Bet Amount";
@@ -52,11 +55,13 @@ export default function ModalLink({ bet, betType, mode }) {
     throw new Error(`Invalid bet type: ${betType.value}`);
   }
 
-  function handleKeyDown(event) {
-    if (event.key === "-" || event.key === "+" || event.key === "e" || event.key === "E" || (event.target.value === "" && event.key === ".")) {
-      event.preventDefault();
+  const handleChange = (event) => {
+    let input = event.target.value;
+    input = input.replace(/^0+(?!$)|^00/, "");
+    if (/^$|^(0|[1-9][0-9]?)$/.test(input) || input === "100") {
+      setConversion(input);
     }
-  }
+  };
 
   return (
     <div>
@@ -78,17 +83,17 @@ export default function ModalLink({ bet, betType, mode }) {
               <tr>
                 <td>
                   <div className="input-container">
-                    <div className="input-cell">
+                    <div className="input-cell dynamic-cell">
                       <label className="input-label">Odds</label>
-                      <input className="calc-input" disabled={true} value={formatOddsNumber(odds_a)} readOnly></input>
+                      <input className="calc-input dynamic-cell" disabled={true} value={formatOddsNumber(odds_a)} readOnly></input>
                     </div>
                   </div>
                 </td>
                 <td>
                   <div className="input-container">
-                    <div className="input-cell">
+                    <div className="input-cell dynamic-cell">
                       <label className="input-label">Odds</label>
-                      <input className="calc-input" disabled={true} value={formatOddsNumber(odds_b)} readOnly></input>
+                      <input className="calc-input dynamic-cell" disabled={true} value={formatOddsNumber(odds_b)} readOnly></input>
                     </div>
                   </div>
                 </td>
@@ -96,27 +101,26 @@ export default function ModalLink({ bet, betType, mode }) {
               <tr>
                 <td>
                   <div className="input-container">
-                    <div className="input-cell">
+                    <div className="input-cell dynamic-cell">
                       <label className="input-label">{label_a}</label>
                       <CurrencyInput
-                        className={amount_a === "" || amount_a === 0 ? "calc-input empty" : "calc-input"}
+                        className={amount_a === "" || amount_a === 0 ? "calc-input dynamic-cell empty" : "calc-input dynamic-cell"}
                         decimalsLimit={2}
                         prefix="$"
                         disableAbbreviations={true}
                         allowNegativeValue={false}
                         maxLength={7}
                         onValueChange={setAmount_a}
-                        onKeyDown={handleKeyDown}
                       />
                     </div>
                   </div>
                 </td>
                 <td>
                   <div className="input-container">
-                    <div className="input-cell">
+                    <div className="input-cell dynamic-cell">
                       <label className="input-label">{label_b}</label>
                       <CurrencyInput
-                        className="calc-input"
+                        className="calc-input dynamic-cell"
                         decimalsLimit={2}
                         prefix="$"
                         allowNegativeValue={false}
@@ -130,16 +134,27 @@ export default function ModalLink({ bet, betType, mode }) {
               </tr>
             </tbody>
           </table>
+          {betType.value === BetType.RISKFREE ? (
+            <div className="conversion-container">
+              <label className="input-label">Conversion</label>
+              <div className="conversion-full-input">
+                <input className="conversion-input" value={conversion} onChange={handleChange} />
+                <div className="conversion-adornment">
+                  <span>%</span>
+                </div>
+              </div>
+            </div>
+          ) : null}
           <Box className="profit-box" display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
             <Typography style={{ fontSize: "x-large" }}>
               <span style={{ fontFamily: "Roboto Mono, monospace" }}>$</span> <span>Profit</span>
               <span> ~ </span>
-              <span>{formatMoneyNumber((Number(profit[0]) + Number(profit[1])) / 2)}</span>
+              <span>{formatMoneyNumber(profit)}</span>
             </Typography>
             <Typography style={{ fontSize: "large" }}>
               <span style={{ fontFamily: "Roboto Mono, monospace" }}>%</span> <span>Profit</span>
               <span> ~ </span>
-              <span>{betType.value === BetType.ARBITRAGE ? ((bet.rate - 1) * 100).toFixed(2) : (bet.rate * 100).toFixed(2)}%</span>
+              <span>{perc * 100}%</span>
             </Typography>
           </Box>
         </Box>

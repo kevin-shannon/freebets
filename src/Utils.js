@@ -46,6 +46,20 @@ export function calcHedge(betType, amount_a, odds_a, odds_b, conversion = 0.7) {
   return roundHedge(perfect_hedge);
 }
 
+export function calcPerc(betType, odds_a, odds_b, conversion = 0.7) {
+  if (betType.value === BetType.ARBITRAGE) {
+    return ((computeEv(odds_a, odds_b) - 1) * 100).toFixed(2);
+  } else if (betType.value === BetType.FREEBET) {
+    return (computeConversion(odds_a, odds_b) * 100).toFixed(2);
+  } else if (betType.value === BetType.RISKFREE) {
+    const decimal_a = convertAmericanToDecimal(odds_a);
+    const decimal_b = convertAmericanToDecimal(odds_b);
+    return (decimal_a - 1 - (decimal_a - conversion) / decimal_b).toFixed(4);
+  } else {
+    throw new Error(`Invalid bet type: ${betType.value}`);
+  }
+}
+
 export function calcProfitNum(betType, amount_a, amount_b, odds_a, odds_b, conversion = 0.7) {
   const decimal_a = convertAmericanToDecimal(odds_a);
   const decimal_b = convertAmericanToDecimal(odds_b);
