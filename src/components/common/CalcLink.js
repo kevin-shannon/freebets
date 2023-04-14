@@ -148,7 +148,14 @@ export default function ModalLink({ bet, betType, mode }) {
               </div>
             </div>
           ) : null}
-          <Box className="profit-box" display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
+          <Box
+            className={amount_a === "" || amount_a === 0 ? "profit-box hidden" : "profit-box"}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            height="100%"
+          >
             <Typography style={{ fontSize: "x-large" }}>
               <span style={{ fontFamily: "Roboto Mono, monospace" }}>$</span> <span>Profit</span>
               <span> ~ </span>

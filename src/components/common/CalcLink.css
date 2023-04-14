@@ -84,6 +84,10 @@
     padding-top: 25px;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .calc-bet-name {
     text-align: center;
     font-weight: 500;
