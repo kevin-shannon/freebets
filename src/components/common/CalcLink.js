@@ -28,7 +28,11 @@ export default function ModalLink({ bet, betType, mode }) {
   const [amount_a, setAmount_a] = useState("");
   const [conversion, setConversion] = useState(70);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setAmount_a("");
+    setConversion(70);
+  };
   const func = betType.value === BetType.ARBITRAGE ? computeEv : computeConversion;
   const ba = Math.abs(func(bet.outcomes[0].odds, bet.outcomes[1].odds) - bet.rate);
   const ab = Math.abs(func(bet.outcomes[1].odds, bet.outcomes[0].odds) - bet.rate);
