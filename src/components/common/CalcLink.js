@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import { TextField, InputAdornment } from "@mui/material";
 import { calcHedge, calcPerc, computeEv, computeConversion, formatMoneyNumber, formatOddsNumber } from "../../Utils";
 import { BetType } from "../../enums";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -40,7 +39,7 @@ export default function ModalLink({ bet, betType, mode }) {
   if (amount_a === undefined) setAmount_a(0);
   const amount_b = calcHedge(betType, Number(amount_a), odds_a, odds_b, conversion / 100);
   const perc = calcPerc(betType, odds_a, odds_b, conversion / 100);
-  const profit = Number(perc) * Number(amount_a);
+  const profit = (Number(perc) / 100) * Number(amount_a);
   let label_a, label_b;
   if (betType.value === BetType.ARBITRAGE) {
     label_a = "Bet Amount";
@@ -154,7 +153,7 @@ export default function ModalLink({ bet, betType, mode }) {
             <Typography style={{ fontSize: "large" }}>
               <span style={{ fontFamily: "Roboto Mono, monospace" }}>%</span> <span>Profit</span>
               <span> ~ </span>
-              <span>{perc * 100}%</span>
+              <span>{perc}%</span>
             </Typography>
           </Box>
         </Box>

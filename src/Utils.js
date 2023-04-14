@@ -54,7 +54,7 @@ export function calcPerc(betType, odds_a, odds_b, conversion = 0.7) {
   } else if (betType.value === BetType.RISKFREE) {
     const decimal_a = convertAmericanToDecimal(odds_a);
     const decimal_b = convertAmericanToDecimal(odds_b);
-    return (decimal_a - 1 - (decimal_a - conversion) / decimal_b).toFixed(4);
+    return ((decimal_a - 1 - (decimal_a - conversion) / decimal_b) * 100).toFixed(2);
   } else {
     throw new Error(`Invalid bet type: ${betType.value}`);
   }
