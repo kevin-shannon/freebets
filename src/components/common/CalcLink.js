@@ -123,7 +123,7 @@ export default function ModalLink({ bet, betType, mode }) {
                     <div className="input-cell dynamic-cell">
                       <label className="input-label">{label_b}</label>
                       <CurrencyInput
-                        className="calc-input dynamic-cell"
+                        className={betType.value === BetType.ARBITRAGE ? "calc-input dynamic-cell" : "calc-input dynamic-cell hedge-input"}
                         decimalsLimit={2}
                         prefix="$"
                         allowNegativeValue={false}
@@ -141,7 +141,7 @@ export default function ModalLink({ bet, betType, mode }) {
             <div className="conversion-container">
               <label className="input-label">Conversion</label>
               <div className="conversion-full-input">
-                <input className="conversion-input" value={conversion} onChange={handleChange} />
+                <input className="conversion-input" value={conversion} type="number" onChange={handleChange} />
                 <div className="conversion-adornment">
                   <span>%</span>
                 </div>

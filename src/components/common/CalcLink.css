@@ -45,7 +45,10 @@
 }
 
 .calc-input.empty {
-  border: 2px dashed #aaa;
+}
+
+.hedge-input {
+  background-color: rgba(0,0,0,0);
 }
 
 .calc-input:disabled {
