@@ -62,6 +62,7 @@ export default function ModalLink({ bet, betType, mode }) {
     input = input.replace(/^0+(?!$)|^00/, "");
     if (/^$|^(0|[1-9][0-9]?)$/.test(input) || input === "100") {
       setConversion(input);
+      setAmount_b(calcHedge(betType, amount_a, odds_a, odds_b, conversion / 100));
     }
   };
 
