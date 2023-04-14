@@ -157,14 +157,10 @@ export default function ModalLink({ bet, betType, mode }) {
             height="100%"
           >
             <Typography style={{ fontSize: "x-large" }}>
-              <span style={{ fontFamily: "Roboto Mono, monospace" }}>$</span> <span>Profit</span>
-              <span> ~ </span>
-              <span>{formatMoneyNumber(profit)}</span>
+              <span>$ Profit ~ {formatMoneyNumber(profit)}</span>
             </Typography>
             <Typography style={{ fontSize: "large" }}>
-              <span style={{ fontFamily: "Roboto Mono, monospace" }}>%</span> <span>Profit</span>
-              <span> ~ </span>
-              <span>{perc}%</span>
+              <span>% Profit ~ {perc}%</span>
             </Typography>
           </Box>
         </Box>
