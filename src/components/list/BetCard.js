@@ -3,7 +3,7 @@ import Book from "../common/Book";
 import ImageList from "@mui/material/ImageList";
 import Stack from "@mui/material/Stack";
 import CalcLink from "../common/CalcLink";
-import { BetType } from "../../enums"
+import { BetType } from "../../enums";
 
 export function readableRate(rate, betType) {
   if (betType === BetType.ARBITRAGE) {

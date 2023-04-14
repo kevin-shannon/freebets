@@ -92,3 +92,7 @@
     text-align: center;
     font-weight: 500;
 }
+
+.calc-button-container {
+  display: flex;
+}

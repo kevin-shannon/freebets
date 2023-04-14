@@ -79,7 +79,7 @@ export default function ModalLink({ bet, betType, mode }) {
   };
 
   return (
-    <div>
+    <div className="calc-button-container">
       <button className="foot-link" onClick={handleOpen}>
         {mode === 2 ? (
           <FontAwesomeIcon className="card-calc-link" size="2x" icon={faCalculator} />
