@@ -2,11 +2,12 @@ import requests
 from datetime import datetime
 
 from utils import construct_spread_market_name
+from utils import construct_team_spread_from_market_name
 from utils import construct_total_market_name
-from utils import convert_event_name_nhl
-from utils import convert_outcome_name
-from utils import convert_spread_nhl
-from utils import convert_team_name_nhl
+from utils import convert_team_event_name
+from utils import standardize_over_under
+from utils import standardize_team_name
+
 
 MONEYLINE = '|Money Line|'
 TOTAL = '|Alternative Total Goals|'
@@ -21,6 +22,7 @@ def generate_caesars():
 # NHL
 def generate_caesars_nhl_formatted_events():
     formatted_events = {}
+    sport = 'nhl'
     url = 'https://api.americanwagering.com/regions/us/locations/mi/brands/czr/sb/v3/sports/icehockey/events/schedule/?competitionIds=b7b715a9-c7e8-4c47-af0a-77385b525e09'
     try:
         res = requests.get(url).json()
@@ -34,7 +36,7 @@ def generate_caesars_nhl_formatted_events():
         return formatted_events
     for event in events:
         try:
-            event_name = convert_event_name_nhl(event['name'])
+            event_name = convert_team_event_name(event['name'].replace('|', ''), sport)
         except:
             print('error converting event name')
             continue
@@ -65,14 +67,14 @@ def generate_caesars_nhl_formatted_events():
             if label == MONEYLINE:
                 try:
                     market_name = 'Moneyline'
-                    formatted_events[event_name]['offers'][market_name] = [{'name': convert_team_name_nhl(outcome['name']), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
+                    formatted_events[event_name]['offers'][market_name] = [{'name': standardize_team_name(outcome['name'], sport), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
                 except:
                     print('something went wrong adding moneyline market')
             # Totals
             elif label == TOTAL:
                 try:
                     market_name = construct_total_market_name(market['line'])
-                    formatted_events[event_name]['offers'][market_name] = [{'name': convert_outcome_name(outcome['name']), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
+                    formatted_events[event_name]['offers'][market_name] = [{'name': standardize_over_under(outcome['name'], sport), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
                 except:
                     print('something went wrong adding total market')
             # Spreads
@@ -80,12 +82,12 @@ def generate_caesars_nhl_formatted_events():
                 try:
                     line = float(market['line'])
                     if line < 0:
-                        team = convert_team_name_nhl(market['selections'][1]['name'])
+                        team = standardize_team_name(market['selections'][1]['name'], sport)
                     else:
-                        team = convert_team_name_nhl(market['selections'][0]['name'])
+                        team = standardize_team_name(market['selections'][0]['name'], sport)
                         line = -line
-                    market_name = construct_spread_market_name(team, line)
-                    formatted_events[event_name]['offers'][market_name] = [{'name': convert_spread_nhl(outcome['name'], market_name), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
+                    market_name = construct_spread_market_name(team, line, sport)
+                    formatted_events[event_name]['offers'][market_name] = [{'name': construct_team_spread_from_market_name(outcome['name'], market_name, sport), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
                 except:
                     print('something went wrong adding spread market')
     return formatted_events

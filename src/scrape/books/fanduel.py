@@ -2,11 +2,11 @@ import re
 import requests
 from datetime import datetime
 
-from utils import build_spread_market_name
+from utils import build_team_spread_market_name
 from utils import construct_total_market_name
-from utils import convert_event_name_nhl
-from utils import convert_team_name_nhl
-from utils import convert_spread_nhl
+from utils import convert_team_event_name
+from utils import standardize_team_name
+from utils import standardize_team_spread
 
 
 MONEYLINE = 'Moneyline'
@@ -23,6 +23,7 @@ def generate_fanduel():
 def generate_fanduel_nhl_formatted_events():
     id_to_name = {}
     formatted_events = {}
+    sport = 'nhl'
     url = 'https://sbapi.nj.sportsbook.fanduel.com/api/content-managed-page?page=CUSTOM&customPageId=nhl&_ak=FhMFpcPWXMeyZxOx'
     try:
         res = requests.get(url).json()
@@ -46,7 +47,7 @@ def generate_fanduel_nhl_formatted_events():
         return formatted_events
     for event_id, event in events.items():
         if event.get('competitionId') == competition_id:
-            event_name = convert_event_name_nhl(event['name'])
+            event_name = convert_team_event_name(event['name'], sport)
             id_to_name[event_id] = event_name
             formatted_events[event_name] = {'offers': {}}
             try:
@@ -77,7 +78,7 @@ def generate_fanduel_nhl_formatted_events():
             if label == MONEYLINE:
                 try:
                     event_name = id_to_name[str(market['eventId'])]
-                    outcomes = [{'name': convert_team_name_nhl(outcome['runnerName']), 'odds': int(outcome['winRunnerOdds']['americanDisplayOdds']['americanOdds'])} for outcome in runners]
+                    outcomes = [{'name': standardize_team_name(outcome['runnerName'], sport), 'odds': int(outcome['winRunnerOdds']['americanDisplayOdds']['americanOdds'])} for outcome in runners]
                     formatted_events[event_name]['offers']['Moneyline'] = outcomes
                 except:
                     print('something went wrong adding market moneyline')
@@ -87,7 +88,7 @@ def generate_fanduel_nhl_formatted_events():
                     try:
                         event_name = id_to_name[str(market['eventId'])]
                         bet_name, line = runner['runnerName'].split(' ')
-                        market_name = construct_total_market_name(line)
+                        market_name = construct_total_market_name(line, sport)
                         outcome = {'name': bet_name, 'odds': int(runner['winRunnerOdds']['americanDisplayOdds']['americanOdds'])}
                         if market_name in formatted_events[event_name]['offers']:
                             formatted_events[event_name]['offers'][market_name].append(outcome)
@@ -105,8 +106,8 @@ def generate_fanduel_nhl_formatted_events():
                     continue
                 for runner in runners:
                     try:
-                        spread = convert_spread_nhl(runner['runnerName'])
-                        market_name = build_spread_market_name(teams, spread)
+                        spread = standardize_team_spread(runner['runnerName'], sport)
+                        market_name = build_team_spread_market_name(teams, spread, sport)
                         outcome = {'name': spread, 'odds': int(runner['winRunnerOdds']['americanDisplayOdds']['americanOdds'])}
                         if market_name in formatted_events[event_name]['offers']:
                             formatted_events[event_name]['offers'][market_name].append(outcome)

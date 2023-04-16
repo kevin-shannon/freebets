@@ -2,12 +2,12 @@ import re
 import requests
 
 from datetime import datetime
-from utils import build_spread_market_name
+from utils import build_team_spread_market_name
 from utils import construct_team_total_market_name
 from utils import construct_total_market_name
-from utils import convert_event_name_nhl
-from utils import convert_team_name_nhl
-from utils import convert_spread_nhl
+from utils import convert_team_event_name
+from utils import standardize_team_name
+from utils import standardize_team_spread
 
 
 def generate_draftkings():
@@ -64,7 +64,14 @@ def update_categories():
                             print('error getting subcategory id')
     return categories
 
-def seed_events(formatted_events, id_to_name):
+# DRAFTKINGS
+# NHL
+def generate_draftkings_nhl_formatted_events():
+    formatted_events = {}
+    id_to_name = {}
+    sport = 'nhl'
+    categories = update_categories()
+    
     url = 'https://sportsbook.draftkings.com//sites/US-VA-SB/api/v5/eventgroups/42133?format=json'
     try:
         res = requests.get(url).json()
@@ -78,7 +85,7 @@ def seed_events(formatted_events, id_to_name):
         return
     for event in events:
         try:
-            event_name = convert_event_name_nhl(event['name'])
+            event_name = convert_team_event_name(event['name'], sport)
             event_id = event['eventId']
         except:
             print('error parsing event info')
@@ -90,15 +97,6 @@ def seed_events(formatted_events, id_to_name):
         except ValueError:
             print('error parsing date time')
             formatted_events[event_name]['start'] = None
-        
-
-# DRAFTKINGS
-# NHL
-def generate_draftkings_nhl_formatted_events():
-    formatted_events = {}
-    id_to_name = {}
-    categories = update_categories()
-    seed_events(formatted_events, id_to_name)
 
     for category in categories.values():
         for subcategory in category['subcategories'].values():
@@ -134,7 +132,7 @@ def generate_draftkings_nhl_formatted_events():
                                     # Moneyline
                                     if label == MONEYLINE:
                                         try:
-                                            outcomes = [{'name': convert_team_name_nhl(outcome['label']), 'odds': int(outcome['oddsAmerican'])} for outcome in option['outcomes']]
+                                            outcomes = [{'name': standardize_team_name(outcome['label'], sport), 'odds': int(outcome['oddsAmerican'])} for outcome in option['outcomes']]
                                             event_name = id_to_name[option['eventId']]
                                             formatted_events[event_name]['offers']['Moneyline'] = outcomes
                                         except:
@@ -149,7 +147,7 @@ def generate_draftkings_nhl_formatted_events():
                                         try:
                                             for selection in option['outcomes']:
                                                 line = selection['line']
-                                                market_name = construct_total_market_name(line)
+                                                market_name = construct_total_market_name(line, sport)
                                                 outcome = {'name': selection['label'], 'odds': int(selection['oddsAmerican'])}
                                                 if market_name in formatted_events[event_name]['offers']:
                                                     formatted_events[event_name]['offers'][market_name].append(outcome)
@@ -169,8 +167,8 @@ def generate_draftkings_nhl_formatted_events():
                                                 line = selection['line']
                                                 teams = event_name.split(' vs ')
                                                 spread = f'{selection["label"]} {selection["line"]}'
-                                                market_name = build_spread_market_name(teams, spread)
-                                                outcome = {'name': convert_spread_nhl(spread), 'odds': int(selection['oddsAmerican'])}
+                                                market_name = build_team_spread_market_name(teams, spread, sport)
+                                                outcome = {'name': standardize_team_spread(spread, sport), 'odds': int(selection['oddsAmerican'])}
                                                 if market_name in formatted_events[event_name]['offers']:
                                                     formatted_events[event_name]['offers'][market_name].append(outcome)
                                                 else:
@@ -187,7 +185,7 @@ def generate_draftkings_nhl_formatted_events():
                                         try:
                                             for selection in option['outcomes']:
                                                 line = selection['line']
-                                                market_name = construct_team_total_market_name(label.split(':')[0], line)
+                                                market_name = construct_team_total_market_name(label.split(':')[0], line, sport)
                                                 outcome = {'name': selection['label'], 'odds': int(selection['oddsAmerican'])}
                                                 if market_name in formatted_events[event_name]['offers']:
                                                     formatted_events[event_name]['offers'][market_name].append(outcome)

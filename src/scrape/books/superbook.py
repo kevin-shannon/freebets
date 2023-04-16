@@ -2,8 +2,9 @@ import requests
 from datetime import datetime
 
 from utils import convert_decimal_to_american
-from utils import convert_team_name_nhl
-from utils import convert_event_name_nhl
+from utils import convert_team_event_name
+from utils import standardize_team_name
+
 
 def generate_superbook():
     return {
@@ -14,6 +15,7 @@ def generate_superbook():
 # NHL
 def generate_superbook_nhl_formatted_events():
     formatted_events = {}
+    sport = 'nhl'
     url = 'https://nj.superbook.com/cache/psmg/UK/52180.1.json'
     try:
         res = requests.get(url).json()
@@ -26,7 +28,7 @@ def generate_superbook_nhl_formatted_events():
         print('error getting events')
     for event in events:
         try:
-            event_name = convert_event_name_nhl(event['eventname'])
+            event_name = convert_team_event_name(event['eventname'], sport)
         except:
             print('error getting event name')
             continue
@@ -49,7 +51,7 @@ def generate_superbook_nhl_formatted_events():
                 continue
             if label == 'Moneyline':
                 try:
-                    formatted_events[event_name]['offers']['Moneyline'] = [{'name': convert_team_name_nhl(outcome['name']), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['selections']]
+                    formatted_events[event_name]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['name'], sport), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['selections']]
                 except:
                     print('something went wrong adding market moneyline')
     return formatted_events
