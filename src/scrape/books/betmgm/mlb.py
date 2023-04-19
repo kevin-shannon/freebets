@@ -10,23 +10,15 @@ from utils import standardize_team_name
 from utils import standardize_team_spread
 
 
-
 MONEYLINE = 'Money Line'
-TOTAL = 'Totals (including overtime and shoot-outs)'
-SPREAD = 'Spread (including overtime and shoot-outs)'
+TOTAL = 'Totals'
+SPREAD = 'Run Line Spread'
 
-def generate_betmgm():
-    return {
-        'nhl': generate_betmgm_nhl_formatted_events()
-    }
-
-# BETMGM
-# NHL
-def generate_betmgm_nhl_formatted_events():
+def generate_betmgm_mlb_formatted_events():
     formatted_events = {}
     id_to_name = {}
-    sport = 'nhl'
-    url = 'https://sports.dc.betmgm.com/en/sports/api/widget?layoutSize=Large&page=CompetitionLobby&sportId=12&regionId=9&competitionId=34'
+    sport = 'mlb'
+    url = 'https://sports.dc.betmgm.com/en/sports/api/widget?layoutSize=Large&page=CompetitionLobby&sportId=23&regionId=9&competitionId=75'
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
     xbwin_id = 'YTBiYWQ3ZjItMjBlZi00ODU2LWFmNjMtMTQzYjAzOGUxNDM2'
     try:
@@ -77,11 +69,11 @@ def generate_betmgm_nhl_formatted_events():
                 except:
                     print('something went wrong adding market moneyline')
             # Team Totals
-            if 'How many goals will' in label and '(including overtime and shoot-outs)' in label:
+            if 'How many total runs will the' in label and 'score' in label:
                 try:
-                    team = label.replace('How many goals will the ', '').replace(' score? (including overtime and shoot-outs)', '')
+                    team = label.replace('How many total runs will the ', '').replace(' score?', '')
                     line =  float(game['attr'])
-                    market_name = construct_team_total_market_name(team, line)
+                    market_name = construct_team_total_market_name(team, line, sport)
                     formatted_events[event_name]['offers'][market_name] = [{'name': standardize_over_under(outcome['totalsPrefix']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
                     print('something went wrong adding market team total')
@@ -91,19 +83,19 @@ def generate_betmgm_nhl_formatted_events():
                     line = float(game['attr'])
                     market_name = construct_total_market_name(line)
                     formatted_events[event_name]['offers'][market_name] = [{'name': standardize_over_under(outcome['totalsPrefix']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
-                except:
-                    print('something went wrong adding market total')
+                except Exception as e:
+                    print(e, 'something went wrong adding market total')
             # Spreads
             if label == SPREAD:
                 try:
-                    line = float(game['results'][0]['name']['value'].split(' ')[-1])
+                    line = float(game['results'][0]['name']['value'].strip().split(' ')[-1])
                     if line < 0:
-                        team = ' '.join(game['results'][0]['name']['value'].split(' ')[:-1])
+                        team = ' '.join(game['results'][0]['name']['value'].strip().split(' ')[:-1])
                     else:
-                        team = ' '.join(game['results'][1]['name']['value'].split(' ')[:-1])
+                        team = ' '.join(game['results'][1]['name']['value'].strip().split(' ')[:-1])
                         line = -line
                     market_name = construct_spread_market_name(team, line, sport)
-                    formatted_events[event_name]['offers'][market_name] = [{'name': standardize_team_spread(outcome['name']['value'], sport), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
+                    formatted_events[event_name]['offers'][market_name] = [{'name': standardize_team_spread(outcome['name']['value'].strip(), sport), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
                     print('something went wrong adding market spread')                    
     return formatted_events

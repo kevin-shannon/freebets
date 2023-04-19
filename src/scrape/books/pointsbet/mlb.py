@@ -6,17 +6,12 @@ from utils import convert_team_event_name
 from utils import standardize_team_name
 
 
-def generate_pointsbet():
-    return {
-        'nhl': generate_pointsbet_nhl_formatted_events()
-    }
+MONEYLINE = 'Moneyline'
 
-# POINTSBET
-# NHL
-def generate_pointsbet_nhl_formatted_events():
+def generate_pointsbet_mlb_formatted_events():
     formatted_events = {}
-    sport = 'nhl'
-    url = 'https://api.nj.pointsbet.com/api/v2/competitions/4/events/featured?includeLive=false&page=1'
+    sport = 'mlb'
+    url = 'https://api.nj.pointsbet.com/api/v2/competitions/5767/events/featured?includeLive=false&page=1'
     try:
         res = requests.get(url).json()
     except:
@@ -50,7 +45,8 @@ def generate_pointsbet_nhl_formatted_events():
             except:
                 print('error could not find label')
                 continue
-            if label == 'Moneyline':
+            # Moneyline
+            if label == MONEYLINE:
                 try:
                     if float(market['outcomes'][0]['price']) == 1 or float(market['outcomes'][1]['price']) == 1:
                         continue

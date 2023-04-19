@@ -57,6 +57,7 @@ def convert_team_event_name(name, sport):
         if separator in name:
             team_a, team_b = name.split(f' {separator} ')
             return generate_team_event_name(team_a, team_b, sport)
+    raise Exception(f'Could not parse team event name {name} for sport {sport}')
 
 def standardize_team_spread(spread, sport):
     '''
@@ -118,16 +119,16 @@ def build_team_spread_market_name(teams, spread, sport):
     str
         standardized spread market name.
     '''
-    team_a = standardize_team_name(teams[0])
-    team_b = standardize_team_name(teams[1])
+    team_a = standardize_team_name(teams[0], sport)
+    team_b = standardize_team_name(teams[1], sport)
     spread = standardize_team_spread(spread, sport)
     team = ' '.join(spread.split(' ')[:-1])
     line = float(spread.split(' ')[-1])
     if line < 0:
-        return construct_spread_market_name(team, line)
+        return construct_spread_market_name(team, line, sport)
     else:
         other_team = team_a if team == team_b else team_b
-        return construct_spread_market_name(other_team, -line)
+        return construct_spread_market_name(other_team, -line, sport)
 
 def construct_total_market_name(line):
     '''
@@ -197,8 +198,19 @@ def standardize_team_name(team, sport):
     for known_team in teams:
         if ' '.join(known_team.split(' ')[1:]).lower() in team.lower():
             return known_team
+    raise Exception(f"Could not standardize team {team}")
 
 def standardize_over_under(outcome):
+    '''
+    Parameters
+    ----------
+    outcome : str
+        site specific over/under outcome representation.
+    Returns
+    -------
+    str
+        'Over' or 'Under'
+    '''
     if 'under' in outcome.lower():
         return 'Under'
     elif 'over' in outcome.lower():

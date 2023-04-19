@@ -10,20 +10,13 @@ from utils import standardize_team_name
 
 
 MONEYLINE = '|Money Line|'
-TOTAL = '|Alternative Total Goals|'
-SPREAD = '|Alternative Puck Line Handicap|'
+TOTAL = '|Total Runs|'
+SPREAD = '|Run Line|'
 
-def generate_caesars():
-    return {
-        'nhl': generate_caesars_nhl_formatted_events()
-    }
-
-# CAESARS
-# NHL
-def generate_caesars_nhl_formatted_events():
+def generate_caesars_mlb_formatted_events():
     formatted_events = {}
-    sport = 'nhl'
-    url = 'https://api.americanwagering.com/regions/us/locations/mi/brands/czr/sb/v3/sports/icehockey/events/schedule/?competitionIds=b7b715a9-c7e8-4c47-af0a-77385b525e09'
+    sport = 'mlb'
+    url = 'https://api.americanwagering.com/regions/us/locations/mi/brands/czr/sb/v3/sports/baseball/events/schedule/?competitionIds=04f90892-3afa-4e84-acce-5b89f151063d'
     try:
         res = requests.get(url).json()
     except:

@@ -10,11 +10,6 @@ from utils import standardize_team_name
 from utils import standardize_team_spread
 
 
-def generate_draftkings():
-    return {
-        'nhl': generate_draftkings_nhl_formatted_events()
-    }
-
 MONEYLINE = 'Moneyline'
 TOTAL = 'Alternate Total Goals'
 SPREAD = 'Alternate Puck Line'

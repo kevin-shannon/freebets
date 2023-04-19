@@ -13,13 +13,6 @@ MONEYLINE = 'Moneyline'
 TOTAL = 'Alternate Total Goals'
 SPREAD = 'Alternate Puck Line'
 
-def generate_fanduel():
-    return {
-        'nhl': generate_fanduel_nhl_formatted_events()
-    }
-
-# FANDUEL
-# NHL
 def generate_fanduel_nhl_formatted_events():
     id_to_name = {}
     formatted_events = {}
@@ -47,7 +40,11 @@ def generate_fanduel_nhl_formatted_events():
         return formatted_events
     for event_id, event in events.items():
         if event.get('competitionId') == competition_id:
-            event_name = convert_team_event_name(event['name'], sport)
+            try:
+                event_name = convert_team_event_name(event['name'], sport)
+            except:
+                print('error parsing team event name')
+                continue
             id_to_name[event_id] = event_name
             formatted_events[event_name] = {'offers': {}}
             try:

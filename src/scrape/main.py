@@ -1,13 +1,13 @@
 import boto3
 import json
 from datetime import datetime
-from books.betmgm import generate_betmgm
-from books.caesars import generate_caesars
-from books.draftkings import generate_draftkings
-from books.fanduel import generate_fanduel
-from books.pointsbet import generate_pointsbet
-from books.superbook import generate_superbook
-from books.unibet import generate_unibet
+from books.betmgm.betmgm import generate_betmgm
+from books.caesars.caesars import generate_caesars
+from books.draftkings.draftkings import generate_draftkings
+from books.fanduel.fanduel import generate_fanduel
+from books.pointsbet.pointsbet import generate_pointsbet
+from books.superbook.superbook import generate_superbook
+from books.unibet.unibet import generate_unibet
 
 output = 'output/output.json'
 data = {

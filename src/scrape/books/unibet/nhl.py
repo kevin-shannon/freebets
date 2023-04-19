@@ -13,14 +13,14 @@ MONEYLINE = 'Moneyline - Inc. OT and Shootout'
 TOTAL = 'Total Goals - Including Overtime'
 SPREAD = 'Handicap - Including Overtime'
 
-def generate_unibet():
-    return {
-        'nhl': generate_unibet_nhl_formatted_events()
-    }
-
-# UNIBET
-# NHL
 def generate_unibet_nhl_formatted_events():
+    '''
+    Generates formatted events data for unibet nhl bets. First, request is to gather all events. All other requests are to gather odds data for each event.
+    Returns
+    -------
+    formatted_events : dict
+        formatted events data for unibet nhl bets.
+    '''
     formatted_events = {}
     sport = 'nhl'
     url = 'https://eu-offering-api.kambicdn.com/offering/v2018/ubusva/listView/ice_hockey/nhl/all/all/matches.json?lang=en_US&market=US-VA&useCombined=true&useCombinedLive=true'
