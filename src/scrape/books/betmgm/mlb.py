@@ -83,8 +83,8 @@ def generate_betmgm_mlb_formatted_events():
                     line = float(game['attr'])
                     market_name = construct_total_market_name(line)
                     formatted_events[event_name]['offers'][market_name] = [{'name': standardize_over_under(outcome['totalsPrefix']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
-                except Exception as e:
-                    print(e, 'something went wrong adding market total')
+                except:
+                    print('something went wrong adding market total')
             # Spreads
             if label == SPREAD:
                 try:

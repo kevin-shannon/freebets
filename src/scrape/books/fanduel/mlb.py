@@ -52,7 +52,6 @@ def generate_fanduel_mlb_formatted_events():
             except ValueError:
                 print('error parsing date time')
                 formatted_events[event_name]['start'] = None
-    print(id_to_name)
     for event_id in id_to_name:
         url = f'https://sbapi.nj.sportsbook.fanduel.com/api/event-page?_ak=FhMFpcPWXMeyZxOx&eventId={event_id}'
         try:
