@@ -10,20 +10,20 @@ from utils import standardize_team_name
 
 
 MONEYLINE = 'Moneyline'
-TOTAL = 'Total Runs'
-SPREAD = 'Run Line'
+TOTAL = 'Total Points - Including Overtime'
+SPREAD = 'Handicap - Including Overtime'
 
-def generate_unibet_mlb_formatted_events():
+def generate_unibet_nba_formatted_events():
     '''
-    Generates formatted events data for unibet mlb bets. First, request is to gather all events. All other requests are to gather odds data for each event.
+    Generates formatted events data for unibet nba bets. First, request is to gather all events. All other requests are to gather odds data for each event.
     Returns
     -------
     formatted_events : dict
-        formatted events data for unibet mlb bets.
+        formatted events data for unibet nba bets.
     '''
     formatted_events = {}
-    sport = 'mlb'
-    url = 'https://eu-offering-api.kambicdn.com/offering/v2018/ubusva/listView/baseball/mlb/all/all/matches.json?lang=en_US&market=US-VA&useCombined=true&useCombinedLive=true'
+    sport = 'nba'
+    url = 'https://eu-offering-api.kambicdn.com/offering/v2018/ubusva/listView/basketball/nba/all/all/matches.json?lang=en_US&market=US-VA&useCombined=true&useCombinedLive=true'
     try:
         res = requests.get(url).json()
     except:
@@ -67,12 +67,13 @@ def generate_unibet_mlb_formatted_events():
                 continue
             # Moneyline
             if label == MONEYLINE:
+                print('MONEYLINE')
                 try:
                     formatted_events[event_name]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['label'], sport), 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
                 except:
                     print('something went wrong adding moneyline market')
             # Totals
-            if TOTAL in label and type == 'OT_OVER':
+            if TOTAL in label:
                 try:
                     market_name = construct_total_market_name(float(offer['outcomes'][0]['line'])/1000)
                     formatted_events[event_name]['offers'][market_name] = [{'name': outcome['label'], 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
@@ -92,7 +93,7 @@ def generate_unibet_mlb_formatted_events():
                 except:
                     print('something went wrong adding spread market')
             # Team Totals
-            if 'Total Runs by' in label:
+            if 'Total Points by' in label and 'Including Overtime' in label:
                 try:
                     team = standardize_team_name(offer['criterion']['label'].replace('Total Goals by', '').replace('- Including Overtime and Penalty Shootout', ''), sport)
                     line = float(offer['outcomes'][0]['line'])/1000

@@ -10,13 +10,13 @@ from utils import standardize_team_name
 
 
 MONEYLINE = '|Money Line|'
-TOTAL = '|Total Runs|'
-SPREAD = '|Run Line|'
+TOTAL = '|Total Points|'
+SPREAD = '|Spread|'
 
-def generate_caesars_mlb_formatted_events():
+def generate_caesars_nba_formatted_events():
     formatted_events = {}
-    sport = 'mlb'
-    url = 'https://api.americanwagering.com/regions/us/locations/mi/brands/czr/sb/v3/sports/baseball/events/schedule/?competitionIds=04f90892-3afa-4e84-acce-5b89f151063d'
+    sport = 'nba'
+    url = 'https://api.americanwagering.com/regions/us/locations/mi/brands/czr/sb/v3/sports/basketball/events/schedule/?competitionIds=5806c896-4eec-4de1-874f-afed93114b8c'
     try:
         res = requests.get(url).json()
     except:

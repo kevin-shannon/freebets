@@ -88,7 +88,7 @@ def generate_unibet_nhl_formatted_events():
                         team = offer['outcomes'][1]['label']
                         line = -line
                     market_name = construct_spread_market_name(team, line, sport)
-                    formatted_events[event_name][market_name] = [{'name': construct_team_spread_from_market_name(outcome['label'], market_name, sport), 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
+                    formatted_events[event_name]['offers'][market_name] = [{'name': construct_team_spread_from_market_name(outcome['label'], market_name, sport), 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
                 except:
                     print('something went wrong adding spread market')
             # Team Totals
@@ -97,7 +97,7 @@ def generate_unibet_nhl_formatted_events():
                     team = standardize_team_name(offer['criterion']['label'].replace('Total Goals by', '').replace('- Including Overtime and Penalty Shootout', ''), sport)
                     line = float(offer['outcomes'][0]['line'])/1000
                     market_name = construct_team_total_market_name(team, line, sport)
-                    formatted_events[event_name][market_name] = [{'name': outcome['label'], 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
+                    formatted_events[event_name]['offers'][market_name] = [{'name': outcome['label'], 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
                 except:
                     print('something went wrong adding team total market')
     return formatted_events

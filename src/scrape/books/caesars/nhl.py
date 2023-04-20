@@ -67,7 +67,7 @@ def generate_caesars_nhl_formatted_events():
             elif label == TOTAL:
                 try:
                     market_name = construct_total_market_name(market['line'])
-                    formatted_events[event_name]['offers'][market_name] = [{'name': standardize_over_under(outcome['name'], sport), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
+                    formatted_events[event_name]['offers'][market_name] = [{'name': standardize_over_under(outcome['name']), 'odds': int(outcome['price']['a'])} for outcome in market['selections']]
                 except:
                     print('something went wrong adding total market')
             # Spreads
