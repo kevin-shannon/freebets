@@ -52,7 +52,13 @@ function App() {
           setShowLive={setShowLive}
           setShowPush={setShowPush}
         />
-        {!bookA.length || !bookB.length ? <h2>Select Some Books!</h2> : <BetTable betsPerPage={10} bets={bets} betType={betType} />}
+        {!bookA.length || !bookB.length ? (
+          <div class="select-books-message-container">
+            <span class="select-some-books">Select some books</span>
+          </div>
+        ) : (
+          <BetTable betsPerPage={10} bets={bets} betType={betType} />
+        )}
       </div>
       <Footer />
     </div>

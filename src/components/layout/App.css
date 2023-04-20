@@ -41,3 +41,12 @@ th {
   display: flex;
   margin: 4px 0 4px 0;
 }
+
+.select-books-message-container {
+  justify-content: center;
+  display: flex;
+}
+
+.select-some-books {
+  color: #888;
+}
