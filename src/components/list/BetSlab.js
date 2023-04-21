@@ -1,8 +1,8 @@
 import "./BetSlab.css";
 import ImageList from "@mui/material/ImageList";
 import Book from "../common/Book.js";
-import CalcLink from "../common/CalcLink";
-import { BetType } from "../../enums"
+import CalcLink from "../calc/CalcLink";
+import { BetType } from "../../enums";
 
 function readableRate(rate, betType) {
   if (betType === BetType.ARBITRAGE) {

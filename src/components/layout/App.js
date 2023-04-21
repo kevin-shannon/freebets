@@ -8,6 +8,10 @@ import { book_options_all, bet_type_options } from "../../Options";
 import axios from "axios";
 import "typeface-roboto";
 import "typeface-roboto-mono";
+import OrgChart from "react-orgchart";
+import "react-orgchart/index.css";
+import OutcomesCell from "../calc/OutcomesCell";
+import EvalCell from "../calc/EvalCell";
 
 function readyBookList(book) {
   let arr = book.map((ob) => ob.value);
@@ -17,6 +21,68 @@ function readyBookList(book) {
   }
   return arr;
 }
+
+const initechOrg = {
+  type: "OutcomesCell",
+  name: "Outcomes",
+  children: [
+    {
+      type: "OutcomeLabel",
+      name: "Over 9.5",
+      children: [
+        {
+          type: "EvalCell",
+          name: "Winnings",
+        },
+      ],
+    },
+    {
+      type: "OutcomeLabel",
+      name: "Under 9.5",
+      children: [
+        {
+          type: "EvalCell",
+          name: "Winnings",
+          children: [
+            {
+              type: "OutcomesCell",
+              name: "Outcomes",
+              children: [
+                {
+                  type: "OutcomeLabel",
+                  name: "Outcome A",
+                  children: [
+                    {
+                      type: "EvalCell",
+                      name: "Winnings",
+                    },
+                  ],
+                },
+                {
+                  type: "OutcomeLabel",
+                  name: "Outcome B",
+                  children: [
+                    {
+                      type: "EvalCell",
+                      name: "Winnings",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+const MyNodeComponent = ({ node }) => {
+  if (node.type === "OutcomesCell") return <OutcomesCell betA={"Over 9.5"} betB={"Under 9.5"} amountA={"$1,000"} amountB={"$4,990"} />;
+  else if (node.type === "EvalCell") return <EvalCell won={"$5,200"} sunk={"$5,990"} net={"-$262"} bonus={"$1,000 FB"} />;
+  else if (node.type === "OutcomeLabel") return <span>{node.name}</span>;
+  return null;
+};
 
 function App() {
   const [betType, setBetType] = useState(bet_type_options[1]);
@@ -60,6 +126,7 @@ function App() {
           <BetTable betsPerPage={10} bets={bets} betType={betType} />
         )}
       </div>
+      <OrgChart tree={initechOrg} NodeComponent={MyNodeComponent} />
       <Footer />
     </div>
   );

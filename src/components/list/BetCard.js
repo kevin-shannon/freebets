@@ -2,7 +2,7 @@ import "./BetCard.css";
 import Book from "../common/Book";
 import ImageList from "@mui/material/ImageList";
 import Stack from "@mui/material/Stack";
-import CalcLink from "../common/CalcLink";
+import CalcLink from "../calc/CalcLink";
 import { BetType } from "../../enums";
 
 export function readableRate(rate, betType) {
