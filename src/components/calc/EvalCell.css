@@ -1,7 +1,6 @@
 .row-label {
   font-family: 'Saira Condensed', sans-serif;
   font-weight: 600;
-  padding: 3px;
 }
 
 .won-label {
@@ -40,18 +39,38 @@
   border: 2px solid black;
 }
   
-.eval-cell-table td:first-child,
-.eval-cell-table tr:first-child {
-  border-left: none;
+.grid-container > :first-child .grid-cell {
   border-top: none;
 }
 
-.eval-cell-table td:last-child,
-.eval-cell-table tr:last-child {
-  border-right: none;
-  border-top: none;
+.grid-container > :last-child .grid-cell {
+    border-bottom: none;
+ }
+
+.grid-container > .grid-row > :first-child {
+    border-left: none;
 }
 
-.eval-cell-table tr:last-child td {
-  border-bottom: none;
+.grid-container > .grid-row > :last-child {
+    border-right: none;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    border-radius: 10px;
+    overflow: hidden;
+}
+  
+.grid-row {
+    display: flex;
+}
+
+.grid-cell {
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex: 1;
 }

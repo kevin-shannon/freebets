@@ -62,3 +62,7 @@ th {
 .select-some-books {
   color: #888;
 }
+
+.nodeGroupCellLines {
+  vertical-align: top;
+}
