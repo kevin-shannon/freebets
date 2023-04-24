@@ -1,6 +1,15 @@
 .row-label {
   font-family: 'Saira Condensed', sans-serif;
   font-weight: 600;
+  flex: 1;
+  padding: 0 5px;
+  min-width: 36px;
+}
+
+.eval-val {
+    flex: 2;
+    background-color: #fafafa;
+    padding: 0 5px;
 }
 
 .won-label {
@@ -22,22 +31,6 @@
     background-color: #f7f794;
     color: #6d540d;
 }
-
-.eval-cell-table {
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.eval-cell-table td {
-  padding: 0 4px;
-  border: 2px solid black;
-}
-
-.eval-cell-container {
-  display: inline-flex;
-  border-radius: 10px;
-  border: 2px solid black;
-}
   
 .grid-container > :first-child .grid-cell {
   border-top: none;
@@ -55,12 +48,17 @@
     border-right: none;
 }
 
+.eval-container {
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);
+    border-radius: 10px;
+    overflow: hidden;
+    width: fit-content;
+}
+
 .grid-container {
     display: flex;
     flex-direction: column;
-    border: 2px solid black;
-    border-radius: 10px;
-    overflow: hidden;
+    margin: auto;
 }
   
 .grid-row {
@@ -68,9 +66,8 @@
 }
 
 .grid-cell {
-    border: 1px solid black;
+    border: 1px solid #00000039;
     justify-content: center;
     align-items: center;
     display: flex;
-    flex: 1;
 }

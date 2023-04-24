@@ -55,23 +55,29 @@ export function calcPerc(betType, odds_a, odds_b, conversion = 0.7) {
   }
 }
 
-export function calcProfitNum(betType, amount_a, amount_b, odds_a, odds_b, conversion = 0.7) {
+export function calcWonSunkNet(betType, amount_a, amount_b, odds_a, odds_b, conversion = 0.7) {
   const decimal_a = convertAmericanToDecimal(odds_a);
   const decimal_b = convertAmericanToDecimal(odds_b);
-  let payout_a = amount_a * decimal_a;
-  let payout_b = amount_b * decimal_b;
+  let won_a = amount_a * decimal_a;
+  let won_b = amount_b * decimal_b;
   let sunk = amount_b;
   if (betType.value === BetType.ARBITRAGE) {
     sunk += amount_a;
   } else if (betType.value === BetType.FREEBET) {
-    payout_a -= amount_a;
+    won_a -= amount_a;
   } else if (betType.value === BetType.RISKFREE) {
     sunk += amount_a;
-    payout_b += conversion * amount_a;
+    won_b += conversion * amount_a;
   }
-  const profit_a = (payout_a - sunk).toFixed(2);
-  const profit_b = (payout_b - sunk).toFixed(2);
-  return [profit_a, profit_b];
+  const net_a = (won_a - sunk).toFixed(2);
+  const net_b = (won_b - sunk).toFixed(2);
+  return {
+    won_a: won_a,
+    won_b: won_b,
+    sunk: sunk,
+    net_a: net_a,
+    net_b: net_b,
+  };
 }
 
 export function formatMoneyNumber(number) {

@@ -3,11 +3,15 @@ import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import { calcHedge, calcPerc, computeEv, computeConversion, formatMoneyNumber, formatOddsNumber } from "../../Utils";
+import { calcHedge, calcPerc, computeEv, computeConversion, formatMoneyNumber, formatOddsNumber, calcWonSunkNet } from "../../Utils";
 import { BetType } from "../../enums";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
 import CurrencyInput from "react-currency-input-field";
+import OrgChart from "react-orgchart";
+import "react-orgchart/index.css";
+import OutcomesCell from "./OutcomesCell";
+import EvalCell from "./EvalCell";
 
 const style = {
   position: "absolute",
@@ -77,6 +81,54 @@ export default function ModalLink({ bet, betType, mode }) {
       setAmount_b(value);
     }
   };
+
+  let org = {
+    type: "OutcomesCell",
+    bet_a: bet_a,
+    bet_b: bet_b,
+    amount_a: amount_a,
+    amount_b: amount_b,
+    children: [
+      {
+        type: "OutcomeLabel",
+        name: bet_a,
+        children: [{}],
+      },
+      {
+        type: "OutcomeLabel",
+        name: bet_b,
+        children: [{}],
+      },
+    ],
+  };
+
+  const won_sunk_net = calcWonSunkNet(betType, amount_a, amount_b, odds_a, odds_b, conversion);
+
+  const MyNodeComponent = ({ node }) => {
+    if (node.type === "OutcomesCell") return <OutcomesCell betA={node.bet_a} betB={node.bet_b} amountA={node.amount_a} amountB={node.amount_b} />;
+    else if (node.type === "EvalCell") return <EvalCell won={node.won} sunk={node.sunk} net={node.net} bonus={node.bonus} />;
+    else if (node.type === "OutcomeLabel") return <span>{node.name}</span>;
+    return null;
+  };
+
+  if (betType.value === BetType.ARBITRAGE) {
+    org.children[0].children[0] = {
+      type: "EvalCell",
+      won: won_sunk_net.won_a,
+      sunk: won_sunk_net.sunk,
+      net: won_sunk_net.net_a,
+    };
+    org.children[1].children[0] = {
+      type: "EvalCell",
+      won: won_sunk_net.won_b,
+      sunk: won_sunk_net.sunk,
+      net: won_sunk_net.net_b,
+    };
+  } else if (betType.value === BetType.FREEBET) {
+  } else if (betType.value === BetType.RISKFREE) {
+  }
+
+  console.log(org);
 
   return (
     <div className="calc-button-container">
@@ -178,6 +230,7 @@ export default function ModalLink({ bet, betType, mode }) {
               <span>% Profit ~ {perc}%</span>
             </Typography>
           </Box>
+          <OrgChart tree={org} NodeComponent={MyNodeComponent} />
         </Box>
       </Modal>
     </div>

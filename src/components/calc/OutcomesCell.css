@@ -1,0 +1,17 @@
+.outcome-cell {
+    flex: 2;
+    padding: 3px 5px;
+}
+
+.amount-cell {
+    flex: 1;
+    padding: 3px 5px;
+}
+
+.outcomes-container {
+    border-radius: 7px;
+    border: 2px solid black;
+    overflow: hidden;
+    width: fit-content;
+    padding: 3px;
+}
