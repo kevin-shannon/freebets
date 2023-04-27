@@ -1,7 +1,7 @@
 import React from "react";
 import "./BetSlab.css";
 import ImageList from "@mui/material/ImageList";
-import Book from "../common/Book.js";
+import Book from "../common/Book";
 import CalcLink from "../calc/CalcLink";
 import { Bet, BetType, BetOption, BookOption, ScreenType } from "../../enums";
 

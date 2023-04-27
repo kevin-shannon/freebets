@@ -24,22 +24,9 @@ const BlueSwitch = styled(Switch)(({ theme }) => ({
 interface BetTypeStyle {
   control: (base: any) => any;
   menuList: (base: any) => any;
-  formControl: {
-    borderRadius: string;
-    minWidth: number;
-    "& .MuiSelect-select:focus": {
-      backgroundColor: string;
-    };
-  };
-  select: {
-    "&:focus": {
-      backgroundColor: string;
-    };
-  };
-  selectedOption: {
-    backgroundColor: string;
-    borderRadius: string;
-  };
+  formControl: any;
+  select: any;
+  selectedOption: any;
 }
 
 const betTypeStyle: BetTypeStyle = {

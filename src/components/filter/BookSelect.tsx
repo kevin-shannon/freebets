@@ -1,6 +1,6 @@
-import React, {ReactNode} from "react";
+import React from "react";
 import "./BookSelect.css";
-import Select, { components, MultiValue, ActionMeta, ValueContainerProps, OptionProps, GroupBase } from "react-select";
+import Select, { components, MultiValue, ActionMeta, ValueContainerProps, OptionProps } from "react-select";
 import { book_options_all, book_options } from "../../Options";
 import { BookOption } from "../../enums";
 
@@ -64,6 +64,8 @@ const ValueContainer = ({ children, ...props }: ValueContainerProps<BookOption>)
   } else {
     newChildren.push(`${count} books`);
   }
+  if (children !== null && children !== undefined)
+    newChildren.push(children[1 as keyof typeof children]);
 
   if (!hasValue) {
     return <components.ValueContainer {...props}>{children}</components.ValueContainer>;

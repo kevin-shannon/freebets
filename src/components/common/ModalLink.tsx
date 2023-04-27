@@ -34,7 +34,9 @@ export default function ModalLink({ linkName, content }: ModalLinkProps) {
       <Modal open={open} onClose={handleClose} disableAutoFocus={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
           <h2>{linkName}</h2>
-          {content}
+          <p>
+            {content}
+          </p>
         </Box>
       </Modal>
     </div>

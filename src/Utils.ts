@@ -92,11 +92,14 @@ export function calcWonSunkNet(
     switch(betOption.value) {
         case BetType.ARBITRAGE:
             sunk += amount_a;
+            break;
         case BetType.FREEBET:
             won_a -= amount_a;
+            break;
         case BetType.RISKFREE:
             sunk += amount_a;
             won_b += conversion * amount_a;
+            break;
     }
     const net_a = (won_a - sunk).toFixed(2);
     const net_b = (won_b - sunk).toFixed(2);
