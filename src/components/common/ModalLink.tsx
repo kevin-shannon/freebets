@@ -16,7 +16,12 @@ const style = {
   p: 4,
 };
 
-export default function ModalLink({ linkName, content }) {
+interface ModalLinkProps {
+  linkName: string;
+  content: string;
+}
+
+export default function ModalLink({ linkName, content }: ModalLinkProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

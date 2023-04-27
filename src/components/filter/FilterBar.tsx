@@ -1,13 +1,48 @@
+import React, { CSSProperties } from "react";
 import "./FilterBar.css";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
+import { ActionMeta } from 'react-select';
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { alpha, styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import BookSelect from "./BookSelect";
 import { bet_type_options } from "../../Options";
-import { BetType } from "../../enums"
+import { BetType, BookType, BetOption, BookOption } from "../../enums";
 
-const betTypeStyle = {
+const BlueSwitch = styled(Switch)(({ theme }) => ({
+  "& .MuiSwitch-switchBase.Mui-checked": {
+    color: "#2684ff",
+    "&:hover": {
+      backgroundColor: alpha("#2684ff", theme.palette.action.hoverOpacity),
+    },
+  },
+  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+    backgroundColor: "#2684ff",
+  },
+}));
+
+interface BetTypeStyle {
+  control: (base: any) => any;
+  menuList: (base: any) => any;
+  formControl: {
+    borderRadius: string;
+    minWidth: number;
+    "& .MuiSelect-select:focus": {
+      backgroundColor: string;
+    };
+  };
+  select: {
+    "&:focus": {
+      backgroundColor: string;
+    };
+  };
+  selectedOption: {
+    backgroundColor: string;
+    borderRadius: string;
+  };
+}
+
+const betTypeStyle: BetTypeStyle = {
   control: (base) => ({
     ...base,
     backgroundColor: "#fafafa",
@@ -34,19 +69,32 @@ const betTypeStyle = {
   },
 };
 
-const BlueSwitch = styled(Switch)(({ theme }) => ({
-  "& .MuiSwitch-switchBase.Mui-checked": {
-    color: "#2684ff",
-    "&:hover": {
-      backgroundColor: alpha("#2684ff", theme.palette.action.hoverOpacity),
-    },
-  },
-  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-    backgroundColor: "#2684ff",
-  },
-}));
+interface FilterBarProps {
+  betOption: BetOption;
+  setBetOption: React.Dispatch<React.SetStateAction<BetOption>>;
+  bookA: BookOption[];
+  setBookA: React.Dispatch<React.SetStateAction<BookOption[]>>;
+  bookB: BookOption[];
+  setBookB: React.Dispatch<React.SetStateAction<BookOption[]>>;
+  setShowLive: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowPush: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChange, bookB, onBookBChange, setShowLive, setShowPush }) {
+export default function FilterBar({
+  betOption,
+  setBetOption,
+  bookA,
+  setBookA,
+  bookB,
+  setBookB,
+  setShowLive,
+  setShowPush,
+}: FilterBarProps) {
+  const onChange = (option: BetOption | null, _actionMeta: ActionMeta<BetOption>) => {
+    if (option !== null) {
+      setBetOption(option);
+    }
+  }
   return (
     <table id="filter-bar">
       <tbody>
@@ -59,28 +107,38 @@ export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChan
               <Select
                 id="bet-type"
                 className="dropdown"
+                value={betOption}
                 styles={betTypeStyle}
-                value={betType}
                 options={bet_type_options}
                 isSearchable={false}
-                onChange={onBetTypeChange}
+                onChange={onChange}
               />
             </div>
           </td>
           <td>
-            {betType.value === BetType.ARBITRAGE ? (
+            {betOption.value === BetType.ARBITRAGE ? (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="books-select">
                   Books
                 </label>
-                <BookSelect id="books-select" allowSelectAll={true} book={bookA} onBookChange={[onBookAChange, onBookBChange]} />
+                <BookSelect
+                  id="books-select"
+                  allowSelectAll={true}
+                  book={bookA}
+                  onBookChange={[setBookA, setBookB]}
+                />
               </div>
             ) : (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="free-bet-select">
                   Free Bet Book
                 </label>
-                <BookSelect id="free-bet-select" allowSelectAll={true} book={bookA} onBookChange={[onBookAChange]} />
+                <BookSelect
+                  id="free-bet-select"
+                  allowSelectAll={true}
+                  book={bookA}
+                  onBookChange={[setBookA]}
+                />
               </div>
             )}
           </td>
@@ -115,12 +173,17 @@ export default function FilterBar({ betType, onBetTypeChange, bookA, onBookAChan
             </div>
           </td>
           <td>
-            {betType.value === BetType.ARBITRAGE ? null : (
+            {betOption.value === BetType.ARBITRAGE ? null : (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="hedge-book-select">
                   Hedge Book
                 </label>
-                <BookSelect id="hedge-book-select" allowSelectAll={true} book={bookB} onBookChange={[onBookBChange]} />
+                <BookSelect
+                  id="hedge-book-select"
+                  allowSelectAll={true}
+                  book={bookB}
+                  onBookChange={[setBookB]}
+                />
               </div>
             )}
           </td>

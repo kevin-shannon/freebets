@@ -1,20 +1,25 @@
+import React from "react";
 import "./BetCard.css";
 import Book from "../common/Book";
 import ImageList from "@mui/material/ImageList";
 import Stack from "@mui/material/Stack";
 import CalcLink from "../calc/CalcLink";
-import { BetType } from "../../enums";
+import { Bet, BetType, BetOption, ScreenType } from "../../enums";
 
-export function readableRate(rate, betType) {
-  if (betType === BetType.ARBITRAGE) {
+export function readableRate(rate: number, betOption: BetOption) {
+  if (betOption.value === BetType.ARBITRAGE) {
     return rate > 1 ? "+" + ((rate - 1) * 100).toFixed(1) : ((rate - 1) * 100).toFixed(1);
   } else {
     return (rate * 100).toFixed(1);
   }
 }
 
-function OutcomeBlock({ outcome }) {
-  const books = [];
+interface OutcomeBlockProps {
+  outcome: { name: string, odds: number, books: string[] };
+}
+
+function OutcomeBlock({ outcome }: OutcomeBlockProps) {
+  const books: React.ReactNode[] = [];
   outcome.books.forEach((book, index) => {
     books.push(<Book book={book} key={index} />);
   });
@@ -32,8 +37,14 @@ function OutcomeBlock({ outcome }) {
   );
 }
 
-export default function BetCard({ bet, betType, mode }) {
-  let outcomes = [];
+interface BetCardProps {
+  bet: Bet;
+  betOption: BetOption;
+  screenType: ScreenType;
+}
+
+export default function BetCard({ bet, betOption, screenType }: BetCardProps) {
+  let outcomes: React.ReactNode[] = [];
   bet.outcomes.forEach((outcome, index) => {
     outcomes.push(
       <td className="card-outcome" key={index}>
@@ -45,8 +56,8 @@ export default function BetCard({ bet, betType, mode }) {
     <div className="betcard">
       <Stack className="betcard-info">
         <div className="rate-container">
-          <span className="card-rate">{readableRate(bet.rate, betType.value)}%</span>
-          <CalcLink bet={bet} betType={betType} mode={mode} />
+          <span className="card-rate">{readableRate(bet.rate, betOption)}%</span>
+          <CalcLink bet={bet} betOption={betOption} screenType={screenType} />
         </div>
         <span className="card-event">{bet.event}</span>
         <span className="card-market">{bet.market}</span>
