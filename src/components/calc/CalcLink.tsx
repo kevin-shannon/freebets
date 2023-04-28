@@ -4,7 +4,7 @@ import { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import { calcHedge, calcPerc, computeEv, computeConversion, formatMoneyNumber, formatOddsNumber, calcWonSunkNet } from "../../Utils";
+import { calcHedge, computeEv, computeConversion, formatMoneyNumber, formatOddsNumber, calcBetStats } from "../../Utils";
 import { Bet, BetOption, BetType, ScreenType, Node } from "../../enums";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalculator } from "@fortawesome/free-solid-svg-icons";
@@ -55,9 +55,7 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
   const bet_a = ab > ba ? bet.outcomes[0].name : bet.outcomes[1].name;
   const bet_b = ab > ba ? bet.outcomes[1].name : bet.outcomes[0].name;
   if (amount_a === undefined) setAmount_a("");
-  const perc = calcPerc(betOption, odds_a, odds_b, conversion / 100);
-  const profit = (Number(perc) / 100) * Number(amount_a);
-  const won_sunk_net = calcWonSunkNet(betOption, Number(amount_a), Number(amount_b), odds_a, odds_b, conversion);
+  const stats = calcBetStats(betOption, Number(amount_a), Number(amount_b), odds_a, odds_b, conversion);
   let label_a, label_b;
   if (betOption.value === BetType.ARBITRAGE) {
     label_a = "Bet Amount";
@@ -75,43 +73,46 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
     input = input.replace(/^0+(?!$)|^00/, "");
     if (/^$|^(0|[1-9][0-9]?)$/.test(input) || input === "100") {
       setConversion(parseInt(input));
-      setAmount_b(calcHedge(betOption, Number(amount_a), odds_a, odds_b, conversion / 100));
+      setAmount_b(calcHedge(betOption, Number(amount_a), odds_a, odds_b, conversion));
     }
   };
 
   const handleAmountAChange = (value: string | undefined) => {
     if (value !== undefined) {
       setAmount_a(value);
-      setAmount_b(calcHedge(betOption, Number(value), odds_a, odds_b, conversion / 100));
+      setAmount_b(calcHedge(betOption, Number(value), odds_a, odds_b, conversion));
     }
   };
 
   const handleAmountBChange = (value: string | undefined) => {
     if (betOption.value === BetType.ARBITRAGE && value !== undefined) {
-      setAmount_a(calcHedge(betOption, Number(value), odds_b, odds_a, conversion / 100));
+      setAmount_a(calcHedge(betOption, Number(value), odds_b, odds_a, conversion));
       setAmount_b(value);
     }
   };
 
   let org = {
+    type: "OutcomesNode",
     bet_a: bet_a,
     bet_b: bet_b,
     amount_a: amount_a,
     amount_b: amount_b,
     children: [
       {
+        type: "OutcomeNode",
         name: bet_a,
         children: [{}],
       },
       {
+        type: "OutcomeNode",
         name: bet_b,
         children: [{}],
       },
     ],
   };
 
-  const ScenarioNode = ({ node }: {node: Node}) => {
-    switch(node.type) {
+  const ScenarioNode = ({ node }: { node: Node }) => {
+    switch (node.type) {
       case "OutcomesNode":
         return <OutcomesCell bet_a={node.bet_a} amount_a={node.amount_a} bet_b={node.bet_b} amount_b={node.amount_b} />;
       case "OutcomeNode":
@@ -121,23 +122,83 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
       default:
         return null;
     }
-  }
+  };
 
   if (betOption.value === BetType.ARBITRAGE) {
     org.children[0].children[0] = {
-      type: "EvalCell",
-      won: won_sunk_net.won_a,
-      sunk: won_sunk_net.sunk,
-      net: won_sunk_net.net_a,
+      type: "EvalNode",
+      won: stats.won_a,
+      sunk: stats.sunk,
+      net: stats.net_a,
     };
     org.children[1].children[0] = {
-      type: "EvalCell",
-      won: won_sunk_net.won_b,
-      sunk: won_sunk_net.sunk,
-      net: won_sunk_net.net_b,
+      type: "EvalNode",
+      won: stats.won_b,
+      sunk: stats.sunk,
+      net: stats.net_b,
     };
   } else if (betOption.value === BetType.FREEBET) {
+    org.children[0].children[0] = {
+      type: "EvalNode",
+      won: stats.won_a,
+      sunk: stats.sunk,
+      net: stats.net_a,
+    };
+    org.children[1].children[0] = {
+      type: "EvalNode",
+      won: stats.won_b,
+      sunk: stats.sunk,
+      net: stats.net_b,
+    };
   } else if (betOption.value === BetType.RISKFREE) {
+    org.children[0].children[0] = {
+      type: "EvalNode",
+      won: stats.won_a,
+      sunk: stats.sunk,
+      net: stats.net_a,
+    };
+    org.children[1].children[0] = {
+      type: "EvalNode",
+      won: stats.won_b,
+      sunk: stats.sunk,
+      net: stats.net_b,
+      bonus: formatMoneyNumber(Number(amount_a), false),
+      children: [
+        {
+          type: "OutcomesNode",
+          bet_a: "Outcome A",
+          bet_b: "Outcome B",
+          amount_a: amount_a,
+          amount_b: "$X",
+          children: [
+            {
+              type: "OutcomeNode",
+              name: "Outcome A",
+              children: [
+                {
+                  type: "EvalNode",
+                  won: stats.won_b_2,
+                  sunk: stats.sunk_2,
+                  net: stats.net_b_2,
+                },
+              ],
+            },
+            {
+              type: "OutcomeNode",
+              name: "Outcome B",
+              children: [
+                {
+                  type: "EvalNode",
+                  won: stats.won_b_2,
+                  sunk: stats.sunk_2,
+                  net: stats.net_b_2,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
   }
 
   return (
@@ -149,7 +210,14 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
           <FontAwesomeIcon className="slab-calc-link" size="2x" icon={faCalculator} />
         )}
       </button>
-      <Modal open={open} onClose={handleClose} disableAutoFocus={true} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <Modal
+        className="calc-modal-container"
+        open={open}
+        onClose={handleClose}
+        disableAutoFocus={true}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <table className="calc-table">
             <tbody>
@@ -234,10 +302,10 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
             height="100%"
           >
             <Typography style={{ fontSize: "x-large" }}>
-              <span>$ Profit ~ {formatMoneyNumber(profit)}</span>
+              <span>$ Profit ~ {formatMoneyNumber(stats.profit)}</span>
             </Typography>
             <Typography style={{ fontSize: "large" }}>
-              <span>% Profit ~ {perc}%</span>
+              <span>% Profit ~ {stats.perc}%</span>
             </Typography>
           </Box>
           <OrgChart tree={org} NodeComponent={ScenarioNode} />

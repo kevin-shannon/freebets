@@ -45,7 +45,7 @@
 }
 
 .hedge-input {
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .calc-input:disabled {
@@ -54,7 +54,7 @@
 }
 
 .input-container {
-    width: fit-content;
+  width: fit-content;
 }
 
 .dynamic-cell {
@@ -62,26 +62,26 @@
   width: 10vw;
   max-width: 145px;
 }
-  
+
 .input-label {
-    font-size: 14px;
-    margin-bottom: 3px;
+  font-size: 14px;
+  margin-bottom: 3px;
 }
-  
+
 .input-cell {
-    display: flex;
-    flex-direction: column;
-    margin: auto;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
 }
 
 .calc-table {
-    margin: auto;
-    border-spacing: clamp(10px, 4vw, 50px) 10px;
-    border-collapse: separate;
+  margin: auto;
+  border-spacing: clamp(10px, 4vw, 50px) 10px;
+  border-collapse: separate;
 }
 
 .profit-box {
-    padding-top: 25px;
+  padding-top: 25px;
 }
 
 .hidden {
@@ -89,10 +89,15 @@
 }
 
 .calc-bet-name {
-    text-align: center;
-    font-weight: 500;
+  text-align: center;
+  font-weight: 500;
 }
 
 .calc-button-container {
   display: flex;
+}
+
+.calc-modal-container {
+  overflow-y: scroll;
+  max-height: 90vh;
 }

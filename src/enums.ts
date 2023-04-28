@@ -9,7 +9,7 @@ export enum BookType {
   BETMGM = "betmgm",
   CAESARS = "caesars",
   DRAFTKINGS = "draftkings",
-  FANDUEL ="fanduel",
+  FANDUEL = "fanduel",
   POINTSBET = "pointsbet",
   SUPERBOOK = "superbook",
   UNIBET = "unibet",
@@ -35,12 +35,12 @@ export type BetOption = {
 export type BookOption = {
   value: BookType;
   label: string;
-}
+};
 
 export type SportOption = {
   value: SportType;
   label: string;
-}
+};
 
 export type Option = {
   value: string;
@@ -51,7 +51,7 @@ export interface Bet {
   sport: string;
   event: string;
   market: string;
-  outcomes: [{ name: string, odds: number, books: string[] }, { name: string, odds: number, books: any }];
+  outcomes: [{ name: string; odds: number; books: string[] }, { name: string; odds: number; books: any }];
   rate: number;
   date: string;
 }
@@ -81,3 +81,7 @@ export interface EvalNode {
 }
 
 export type Node = OutcomesNode | OutcomeNode | EvalNode;
+
+export type Money = number;
+
+export type Odds = number;
