@@ -101,6 +101,7 @@
 .calc-tabs {
   width: 100px;
   margin: auto;
+  margin-top: 20px;
 }
 
 .tab-icon {
@@ -111,4 +112,20 @@
   width: fit-content;
   margin: auto;
   padding: 5px;
+}
+
+.calc-title-container {
+  text-align: center;
+}
+
+.calc-title-event {
+  max-width: 85%;
+  width: fit-content;
+  margin: 2px auto;
+  font-weight: 400;
+}
+
+.calc-title-market {
+  margin: 10px auto;
+  font-weight: 500;
 }

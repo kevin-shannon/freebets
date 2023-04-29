@@ -7,7 +7,7 @@ import { ReactComponent as Calculator } from "../../icons/calculator.svg";
 import { computeEv, computeConversion, calcBetStats } from "../../Utils";
 import CalcTab from "./CalcTab";
 import ScenarioTab from "./ScenarioTab";
-import { Tab, TabList, Tabs, Modal, ModalClose } from "@mui/joy";
+import { Tab, TabList, Tabs, Modal, ModalClose, Typography } from "@mui/joy";
 import Sheet from "@mui/joy/Sheet";
 
 const style = {
@@ -23,7 +23,6 @@ const sheetStyle = {
   boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
   borderRadius: "20px",
   p: "12px",
-  width: "clamp(300px, 90vw-24px, 500px)",
 };
 
 interface ModalLinkProps {
@@ -74,6 +73,10 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
       <Modal open={open} onClose={handleClose} disableAutoFocus={true} sx={style}>
         <Sheet sx={sheetStyle}>
           <ModalClose />
+          <div className="calc-title-container">
+            <h3 className="calc-title-event">{bet.event}</h3>
+            <h2 className="calc-title-market">{bet.market}</h2>
+          </div>
           {activeTab === 0 && (
             <CalcTab
               betOption={betOption}
