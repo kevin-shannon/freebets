@@ -96,9 +96,15 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
               <Tab>
                 <Calculator className="tab-icon" />
               </Tab>
-              <Tab>
-                <Sitemap className="tab-icon" />
-              </Tab>
+              {amount_a !== "" && amount_b !== "" ? (
+                <Tab>
+                  <Sitemap className="tab-icon" />
+                </Tab>
+              ) : (
+                <Tab disabled sx={{ opacity: "50%" }}>
+                  <Sitemap className="tab-icon" />
+                </Tab>
+              )}
             </TabList>
           </Tabs>
         </Sheet>
