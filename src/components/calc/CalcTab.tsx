@@ -74,6 +74,7 @@ export default function CalcTab({
   const handleAmountAChange = (value: string | undefined) => {
     if (value === undefined) {
       setAmount_a("");
+      setAmount_b("");
     } else {
       setAmount_a(value);
       if (conversion !== "") setAmount_b(calcHedge(betOption, Number(value), odds_a, odds_b, Number(conversion)));
@@ -81,7 +82,10 @@ export default function CalcTab({
   };
 
   const handleAmountBChange = (value: string | undefined) => {
-    if (betOption.value === BetType.ARBITRAGE && value !== undefined) {
+    if (value === undefined) {
+      setAmount_a("");
+      setAmount_b("");
+    } else if (betOption.value === BetType.ARBITRAGE && value !== undefined) {
       setAmount_a(calcHedge(betOption, Number(value), odds_b, odds_a, Number(conversion)));
       setAmount_b(value);
     }
