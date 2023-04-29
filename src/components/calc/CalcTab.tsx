@@ -124,8 +124,8 @@ export default function CalcTab({
                   <label className="input-label">{label_a}</label>
                   <CurrencyInput
                     className={amount_a === "" || amount_a === "0" ? "calc-input dynamic-cell empty" : "calc-input dynamic-cell"}
-                    decimalsLimit={0}
                     prefix="$"
+                    allowDecimals={false}
                     allowNegativeValue={false}
                     disableAbbreviations={true}
                     value={amount_a}
@@ -141,8 +141,8 @@ export default function CalcTab({
                   <label className="input-label">{label_b}</label>
                   <CurrencyInput
                     className={betOption.value === BetType.ARBITRAGE ? "calc-input dynamic-cell" : "calc-input dynamic-cell hedge-input"}
-                    decimalsLimit={0}
                     prefix="$"
+                    allowDecimals={false}
                     allowNegativeValue={false}
                     disableAbbreviations={true}
                     value={amount_b}
