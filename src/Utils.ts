@@ -104,8 +104,8 @@ export function calcBetStats(
   );
 }
 
-export function calcHedge(betOption: BetOption, amount_a: number, odds_a: number, odds_b: number, conversion = 70): string {
-  if (amount_a === 0 || isNaN(amount_a)) return "";
+export function calcHedge(betOption: BetOption, amount_a: number, odds_a: number, odds_b: number, conversion: number | typeof NaN = 70): string {
+  if (amount_a === 0 || isNaN(amount_a) || isNaN(conversion)) return "";
   const dec_conversion = conversion / 100;
   const decimal_a = convertAmericanToDecimal(odds_a);
   const decimal_b = convertAmericanToDecimal(odds_b);
@@ -115,7 +115,6 @@ export function calcHedge(betOption: BetOption, amount_a: number, odds_a: number
   } else if (betOption.value === BetType.RISKFREE) {
     payout -= dec_conversion * amount_a;
   }
-  console.log(String(amount_a) + String(decimal_a) + String(decimal_b) + String(dec_conversion));
   const perfect_hedge = payout / decimal_b;
   return String(roundHedge(perfect_hedge));
 }

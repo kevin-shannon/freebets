@@ -1,13 +1,13 @@
-import React, { CSSProperties } from "react";
+import React from "react";
 import "./FilterBar.css";
-import Select, { StylesConfig } from "react-select";
-import { ActionMeta } from 'react-select';
+import Select from "react-select";
+import { ActionMeta } from "react-select";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { alpha, styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import BookSelect from "./BookSelect";
 import { bet_type_options } from "../../Options";
-import { BetType, BookType, BetOption, BookOption } from "../../enums";
+import { BetType, BetOption, BookOption } from "../../enums";
 
 const BlueSwitch = styled(Switch)(({ theme }) => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
@@ -67,21 +67,12 @@ interface FilterBarProps {
   setShowPush: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function FilterBar({
-  betOption,
-  setBetOption,
-  bookA,
-  setBookA,
-  bookB,
-  setBookB,
-  setShowLive,
-  setShowPush,
-}: FilterBarProps) {
+export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bookB, setBookB, setShowLive, setShowPush }: FilterBarProps) {
   const onChange = (option: BetOption | null, _actionMeta: ActionMeta<BetOption>) => {
     if (option !== null) {
       setBetOption(option);
     }
-  }
+  };
   return (
     <table id="filter-bar">
       <tbody>
@@ -108,24 +99,14 @@ export default function FilterBar({
                 <label className="select-helper" htmlFor="books-select">
                   Books
                 </label>
-                <BookSelect
-                  id="books-select"
-                  allowSelectAll={true}
-                  book={bookA}
-                  onBookChange={[setBookA, setBookB]}
-                />
+                <BookSelect id="books-select" allowSelectAll={true} book={bookA} onBookChange={[setBookA, setBookB]} />
               </div>
             ) : (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="free-bet-select">
                   Free Bet Book
                 </label>
-                <BookSelect
-                  id="free-bet-select"
-                  allowSelectAll={true}
-                  book={bookA}
-                  onBookChange={[setBookA]}
-                />
+                <BookSelect id="free-bet-select" allowSelectAll={true} book={bookA} onBookChange={[setBookA]} />
               </div>
             )}
           </td>
@@ -165,12 +146,7 @@ export default function FilterBar({
                 <label className="select-helper" htmlFor="hedge-book-select">
                   Hedge Book
                 </label>
-                <BookSelect
-                  id="hedge-book-select"
-                  allowSelectAll={true}
-                  book={bookB}
-                  onBookChange={[setBookB]}
-                />
+                <BookSelect id="hedge-book-select" allowSelectAll={true} book={bookB} onBookChange={[setBookB]} />
               </div>
             )}
           </td>

@@ -3,7 +3,7 @@ import "./BetSlab.css";
 import ImageList from "@mui/material/ImageList";
 import Book from "../common/Book";
 import CalcLink from "../calc/CalcLink";
-import { Bet, BetType, BetOption, BookOption, ScreenType } from "../../enums";
+import { Bet, BetType, BetOption, ScreenType } from "../../enums";
 
 function readableRate(rate: number, betOption: BetOption) {
   if (betOption.value === BetType.ARBITRAGE) {
@@ -28,7 +28,7 @@ function BooksBlock({ bet }: BooksBlockProps) {
   });
 
   return (
-    <table>
+    <table className="books-block">
       <tbody>
         <tr>
           <td className="odds-value">{bet.outcomes[0].odds > 0 ? "+" + bet.outcomes[0].odds : bet.outcomes[0].odds}</td>
@@ -69,7 +69,7 @@ export default function BetSlab({ bet, betOption, screenType }: BetSlabProps) {
       <td>{bet.event}</td>
       <td>{bet.market}</td>
       <td>
-        <table>
+        <table className="bets-block">
           <tbody>
             <tr>
               <td>{bet.outcomes[0].name}</td>

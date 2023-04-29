@@ -13,6 +13,7 @@
 .conversion-input {
   outline: none;
   border: none;
+  padding-left: 8px;
   background-color: #f2f2f2;
   height: 30px;
   width: 60px;
@@ -97,7 +98,17 @@
   display: flex;
 }
 
-.calc-modal-container {
-  overflow-y: scroll;
-  max-height: 90vh;
+.calc-tabs {
+  width: 100px;
+  margin: auto;
+}
+
+.tab-icon {
+  height: fit-content;
+}
+
+.calc-container {
+  width: fit-content;
+  margin: auto;
+  padding: 5px;
 }
