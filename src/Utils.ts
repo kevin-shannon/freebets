@@ -53,6 +53,7 @@ export function calcBetStats(
   net_a_2?: string;
   net_b_2?: string;
 } {
+  const cents = amount_a < 100 ? true : false;
   const dec_conversion = conversion / 100;
   const decimal_a = convertAmericanToDecimal(odds_a);
   const decimal_b = convertAmericanToDecimal(odds_b);
@@ -76,11 +77,11 @@ export function calcBetStats(
       sunk += amount_a;
       profit = (perc / 100) * amount_a;
       bet_2 = {
-        won_a_2: formatMoneyNumber(dec_conversion * amount_a, false),
-        won_b_2: formatMoneyNumber(dec_conversion * amount_a, false),
-        sunk_2: formatMoneyNumber(sunk - won_b, false),
-        net_a_2: formatMoneyNumber(dec_conversion * amount_a + won_b - sunk, false),
-        net_b_2: formatMoneyNumber(dec_conversion * amount_a + won_b - sunk, false),
+        won_a_2: formatMoneyNumber(dec_conversion * amount_a, cents),
+        won_b_2: formatMoneyNumber(dec_conversion * amount_a, cents),
+        sunk_2: formatMoneyNumber(sunk - won_b, cents),
+        net_a_2: formatMoneyNumber(dec_conversion * amount_a + won_b - sunk, cents),
+        net_b_2: formatMoneyNumber(dec_conversion * amount_a + won_b - sunk, cents),
       };
       break;
     default:
@@ -94,11 +95,11 @@ export function calcBetStats(
     {
       perc: perc,
       profit: profit,
-      won_a: formatMoneyNumber(won_a, false),
-      won_b: formatMoneyNumber(won_b, false),
-      sunk: formatMoneyNumber(sunk, false),
-      net_a: formatMoneyNumber(net_a, false),
-      net_b: formatMoneyNumber(net_b, false),
+      won_a: formatMoneyNumber(won_a, cents),
+      won_b: formatMoneyNumber(won_b, cents),
+      sunk: formatMoneyNumber(sunk, cents),
+      net_a: formatMoneyNumber(net_a, cents),
+      net_b: formatMoneyNumber(net_b, cents),
     },
     bet_2
   );

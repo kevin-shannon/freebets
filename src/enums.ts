@@ -58,6 +58,7 @@ export interface Bet {
 
 export interface OutcomesNode {
   type: "OutcomesNode";
+  betLabel: string;
   bet_a: string;
   bet_b: string;
   amount_a: string;

@@ -1,3 +1,4 @@
+import "./ScenarioTab.css";
 import { Node, BetOption, BetType } from "../../enums";
 import { formatMoneyNumber } from "../../Utils";
 import OrgChart from "react-orgchart";
@@ -30,6 +31,7 @@ interface ScenarioTabProps {
 export default function ScenarioTab({ betOption, amount_a, amount_b, bet_a, bet_b, stats }: ScenarioTabProps) {
   let org = {
     type: "OutcomesNode",
+    betLabel: betOption.label,
     bet_a: bet_a,
     bet_b: bet_b,
     amount_a: amount_a,
@@ -51,7 +53,7 @@ export default function ScenarioTab({ betOption, amount_a, amount_b, bet_a, bet_
   const ScenarioNode = ({ node }: { node: Node }) => {
     switch (node.type) {
       case "OutcomesNode":
-        return <OutcomesCell bet_a={node.bet_a} amount_a={node.amount_a} bet_b={node.bet_b} amount_b={node.amount_b} />;
+        return <OutcomesCell betLabel={node.betLabel} bet_a={node.bet_a} amount_a={node.amount_a} bet_b={node.bet_b} amount_b={node.amount_b} />;
       case "OutcomeNode":
         return <OutcomeCell name={node.name} />;
       case "EvalNode":
@@ -99,14 +101,15 @@ export default function ScenarioTab({ betOption, amount_a, amount_b, bet_a, bet_
       won: stats.won_b,
       sunk: stats.sunk,
       net: stats.net_b,
-      bonus: formatMoneyNumber(Number(amount_a), false),
+      bonus: formatMoneyNumber(Number(amount_a), Number(amount_a) < 100),
       children: [
         {
           type: "OutcomesNode",
+          betLabel: "Free Bet",
           bet_a: "Outcome A",
           bet_b: "Outcome B",
           amount_a: amount_a,
-          amount_b: "$X",
+          amount_b: "X",
           children: [
             {
               type: "OutcomeNode",
