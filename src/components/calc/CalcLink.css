@@ -76,7 +76,7 @@
 }
 
 .calc-table {
-  margin: auto;
+  margin: 8px auto 0 auto;
   border-spacing: clamp(10px, 4vw, 50px) 10px;
   border-collapse: separate;
 }
@@ -129,4 +129,19 @@
   margin: 10px auto;
   font-weight: 500;
   font-size: 20px;
+}
+
+.calc-content {
+  overflow: auto;
+}
+
+.calc-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #f5f5f5;
+}
+
+.calc-content::-webkit-scrollbar-thumb {
+  background-color: #a9a9a9;
+  border-radius: 10px;
 }

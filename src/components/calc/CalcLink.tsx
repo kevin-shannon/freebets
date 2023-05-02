@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./CalcLink.css";
 import "react-orgchart/index.css";
 import { Bet, BetOption, ScreenType, BetType } from "../../enums";
@@ -65,6 +65,9 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
     setActiveTab(index);
   };
 
+  const contentRef = useRef<HTMLDivElement>(null);
+  if (contentRef.current) contentRef.current.style.height = `${contentRef.current.offsetHeight}px`;
+
   return (
     <div className="calc-button-container">
       <button className="foot-link" onClick={handleOpen}>
@@ -77,23 +80,25 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
             <h3 className="calc-title-event">{bet.event}</h3>
             <h2 className="calc-title-market">{bet.market}</h2>
           </div>
-          {activeTab === 0 && (
-            <CalcTab
-              betOption={betOption}
-              amount_a={amount_a}
-              setAmount_a={setAmount_a}
-              amount_b={amount_b}
-              setAmount_b={setAmount_b}
-              conversion={conversion}
-              setConversion={setConversion}
-              bet_a={bet_a}
-              bet_b={bet_b}
-              odds_a={odds_a}
-              odds_b={odds_b}
-              stats={stats}
-            />
-          )}
-          {activeTab === 1 && <ScenarioTab betOption={betOption} amount_a={amount_a} amount_b={amount_b} bet_a={bet_a} bet_b={bet_b} stats={stats} />}
+          <div ref={contentRef} className="calc-content">
+            {activeTab === 0 && (
+              <CalcTab
+                betOption={betOption}
+                amount_a={amount_a}
+                setAmount_a={setAmount_a}
+                amount_b={amount_b}
+                setAmount_b={setAmount_b}
+                conversion={conversion}
+                setConversion={setConversion}
+                bet_a={bet_a}
+                bet_b={bet_b}
+                odds_a={odds_a}
+                odds_b={odds_b}
+                stats={stats}
+              />
+            )}
+            {activeTab === 1 && <ScenarioTab betOption={betOption} amount_a={amount_a} amount_b={amount_b} bet_a={bet_a} bet_b={bet_b} stats={stats} />}
+          </div>
           <Tabs className="calc-tabs" aria-label="Icon tabs" defaultValue={0} onChange={handleTabSelect} size="md">
             <TabList>
               <Tab>
