@@ -9,6 +9,7 @@ import CalcTab from "./CalcTab";
 import ScenarioTab from "./ScenarioTab";
 import { Tab, TabList, Tabs, Modal, ModalClose, Typography } from "@mui/joy";
 import Sheet from "@mui/joy/Sheet";
+import SwipeableViews from "react-swipeable-views";
 
 const style = {
   width: "clamp(300px, 90vw, 500px)",
@@ -37,7 +38,9 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
   const [amount_b, setAmount_b] = useState("");
   const [conversion, setConversion] = useState("70");
   const [activeTab, setActiveTab] = useState(0);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleClose = () => {
     setOpen(false);
     setAmount_a("");
@@ -45,6 +48,15 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
     setConversion("70");
     setActiveTab(0);
   };
+  const fixCalcHeights = () => {
+    if (div1Ref.current && div2Ref.current) div2Ref.current.style.height = `${div1Ref.current.clientHeight}px`;
+  };
+
+  const div1Ref = useRef<HTMLDivElement>(null);
+  const div2Ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    fixCalcHeights();
+  }, [div1Ref.current, div2Ref.current]);
 
   let odds_a, odds_b, bet_a, bet_b;
   const func = betOption.value === BetType.ARBITRAGE ? computeEv : computeConversion;
@@ -63,25 +75,29 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
 
   const handleTabSelect = (_event: any, index: any) => {
     setActiveTab(index);
+    fixCalcHeights();
   };
-
-  const contentRef = useRef<HTMLDivElement>(null);
-  if (contentRef.current) contentRef.current.style.height = `${contentRef.current.offsetHeight}px`;
 
   return (
     <div className="calc-button-container">
       <button className="foot-link" onClick={handleOpen}>
         {screenType === "small" ? <Calculator className="card-calc-link" /> : <Calculator className="slab-calc-link" />}
       </button>
-      <Modal open={open} onClose={handleClose} disableAutoFocus={true} sx={style}>
+      <Modal open={open} onClose={handleClose} disableAutoFocus={true} sx={style} keepMounted={true}>
         <Sheet sx={sheetStyle}>
           <ModalClose />
           <div className="calc-title-container">
             <h3 className="calc-title-event">{bet.event}</h3>
             <h2 className="calc-title-market">{bet.market}</h2>
           </div>
-          <div ref={contentRef} className="calc-content">
-            {activeTab === 0 && (
+          <SwipeableViews
+            index={activeTab}
+            onChangeIndex={handleTabSelect}
+            containerStyle={{
+              transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
+            }}
+          >
+            <div className="calc-content" ref={div1Ref}>
               <CalcTab
                 betOption={betOption}
                 amount_a={amount_a}
@@ -96,9 +112,11 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
                 odds_b={odds_b}
                 stats={stats}
               />
-            )}
-            {activeTab === 1 && <ScenarioTab betOption={betOption} amount_a={amount_a} amount_b={amount_b} bet_a={bet_a} bet_b={bet_b} stats={stats} />}
-          </div>
+            </div>
+            <div className="calc-content" ref={div2Ref}>
+              <ScenarioTab betOption={betOption} amount_a={amount_a} amount_b={amount_b} bet_a={bet_a} bet_b={bet_b} stats={stats} />
+            </div>
+          </SwipeableViews>
           <Tabs className="calc-tabs" aria-label="Icon tabs" defaultValue={0} onChange={handleTabSelect} size="md">
             <TabList>
               <Tab>
