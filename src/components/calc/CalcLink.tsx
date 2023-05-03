@@ -86,6 +86,7 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
           </div>
           <SwipeableViews
             index={activeTab}
+            disabled={amount_a !== "" && amount_b !== "" ? false : true}
             onChangeIndex={handleChangeIndex}
             containerStyle={{
               transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
@@ -116,15 +117,15 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
           </SwipeableViews>
           <Tabs className="calc-tabs" aria-label="Icon tabs" defaultValue={0} value={activeTab} onChange={handleTabSelect} size="md">
             <TabList>
-              <Tab value={0}>
+              <Tab className="calc-tabs-tab" value={0}>
                 <Calculator className="tab-icon" />
               </Tab>
               {amount_a !== "" && amount_b !== "" ? (
-                <Tab value={1}>
+                <Tab className="calc-tabs-tab" value={1}>
                   <Sitemap className="tab-icon" />
                 </Tab>
               ) : (
-                <Tab value={1} disabled sx={{ opacity: "50%" }}>
+                <Tab className="calc-tabs-tab" value={1} disabled sx={{ opacity: "50%" }}>
                   <Sitemap className="tab-icon" />
                 </Tab>
               )}
