@@ -4,9 +4,15 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import BetCard from "./BetCard";
 import BetSlab from "./BetSlab";
-import { BetType } from "../../enums"
+import { BetType, ScreenType, BetOption, Bet } from "../../enums"
 
-export default function PaginatedBets({ betsPerPage, bets, betType }) {
+interface PaginatedBetsProps {
+  betsPerPage: number;
+  bets: Bet[];
+  betOption: BetOption;
+}
+
+export default function PaginatedBets({ betsPerPage, bets, betOption }: PaginatedBetsProps) {
   const [page, setPage] = useState(1);
   const start = (page - 1) * betsPerPage;
   const end = page * betsPerPage;
@@ -15,7 +21,7 @@ export default function PaginatedBets({ betsPerPage, bets, betType }) {
 
   return (
     <Stack alignItems="center" spacing={4}>
-      <BetTable bets={currentBets} betType={betType} />
+      <BetTable bets={currentBets} betOption={betOption} />
       <Pagination count={totalPages} onChange={(_, value) => setPage(value)} shape="rounded" />
     </Stack>
   );
@@ -33,27 +39,32 @@ const useViewport = () => {
   return { width };
 };
 
-function BetTable({ bets, betType }) {
-  const rows = [];
-  const rate = betType.value === BetType.ARBITRAGE ? "EV" : "Conversion";
+interface BetTableProps {
+  bets: Bet[];
+  betOption: BetOption;
+}
+
+function BetTable({ bets, betOption }: BetTableProps) {
+  const rows: React.ReactNode[] = [];
+  const rate = betOption.value === BetType.ARBITRAGE ? "EV" : "Conversion";
   const { width } = useViewport();
   const breakpoint1 = 1100;
   const breakpoint2 = 850;
-  const mode = width < breakpoint2 ? 2 : width < breakpoint1 ? 1 : 0;
+  const screenType:ScreenType = width < breakpoint2 ? "small" : width < breakpoint1 ? "medium" : "large";
 
   bets.forEach((bet) => {
     const key = bet.event + bet.market + bet.outcomes[0].name;
-    rows.push(mode === 2 ? <BetCard bet={bet} betType={betType} mode={mode} key={key} /> : <BetSlab bet={bet} betType={betType} mode={mode} key={key} />);
+    rows.push(screenType === "small" ? <BetCard bet={bet} betOption={betOption} screenType={screenType} key={key} /> : <BetSlab bet={bet} betOption={betOption} screenType={screenType} key={key} />);
   });
 
-  return mode === 2 ? (
+  return screenType === "small" ? (
     <Stack>{rows}</Stack>
   ) : (
     <table className="bet-table">
       <thead>
         <tr>
           <th>{rate}</th>
-          {mode === 1 ? null : <th>Date</th>}
+          {screenType === "medium" ? null : <th>Date</th>}
           <th>Event</th>
           <th>Market</th>
           <th>Bets</th>

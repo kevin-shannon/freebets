@@ -1,7 +1,19 @@
+@font-face {
+  font-family: "Saira Condensed";
+  src: url("../../fonts/SairaCondensed-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Saira Condensed";
+  src: url("../../fonts/SairaCondensed-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+
 .site {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;  
+  min-height: 100vh;
 }
 
 .content {
@@ -18,7 +30,7 @@ body {
   padding: 0;
 }
 
-table {
+.bet-table {
   height: 100%;
   border-collapse: collapse;
 }
@@ -27,10 +39,10 @@ th {
   text-align: left;
 }
 
-.bet-row { 
+.bet-row {
   border: solid;
   border-width: 1px 0;
-  border-color: #cccccc
+  border-color: #cccccc;
 }
 
 .book {
@@ -49,4 +61,12 @@ th {
 
 .select-some-books {
   color: #888;
+}
+
+.nodeGroupCellLines {
+  vertical-align: top;
+}
+
+svg {
+  height: 1em;
 }

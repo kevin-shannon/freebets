@@ -1,0 +1,3 @@
+.orgNodeChildGroup tbody :nth-child(3) td:only-child {
+  visibility: collapse;
+}

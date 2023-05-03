@@ -1,0 +1,80 @@
+.row-label {
+  font-family: "Saira Condensed", sans-serif;
+  font-weight: 600;
+  flex: 1;
+  padding: 0 5px;
+  min-width: 36px;
+  box-shadow: inset -2px -2px 6px -5px #000000aa;
+}
+
+.eval-val {
+  flex: 2;
+  background-color: #fafafa;
+  padding: 0 3px;
+  box-shadow: inset -1px -2px 6px -5px #000000aa;
+}
+
+.won-label {
+  background-color: #9ee29e;
+  color: #076907;
+}
+
+.sunk-label {
+  background-color: #ff9a9a;
+  color: #7d1111;
+}
+
+.net-label {
+  background-color: #a7c0ff;
+  color: #0a4697;
+}
+
+.bonus-label {
+  background-color: #f7f794;
+  color: #6d540d;
+}
+
+.grid-container > :first-child .grid-cell {
+  border-top: none;
+}
+
+.grid-container > :last-child .grid-cell {
+  border-bottom: none;
+}
+
+.grid-container > .grid-row > :first-child {
+  border-left: none;
+}
+
+.grid-container > .grid-row > :last-child {
+  border-right: none;
+}
+
+.eval-container {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 80%;
+  max-width: 150px;
+  min-width: fit-content;
+}
+
+.grid-row {
+  display: flex;
+}
+
+.grid-cell {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.final-net {
+  font-weight: 700;
+}

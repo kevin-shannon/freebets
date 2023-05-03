@@ -3,13 +3,14 @@ import React, { useState, useEffect } from "react";
 import FilterBar from "../filter/FilterBar";
 import BetTable from "../list/BetTable";
 import Footer from "./Footer";
-import { filterBets } from "../../Utils.js";
+import { filterBets } from "../../Utils";
 import { book_options_all, bet_type_options } from "../../Options";
 import axios from "axios";
 import "typeface-roboto";
 import "typeface-roboto-mono";
+import { Option } from "../../enums"
 
-function readyBookList(book) {
+function readyBookList(book: Option[]) {
   let arr = book.map((ob) => ob.value);
   const indexToRemove = arr.indexOf("all");
   if (indexToRemove !== -1) {
@@ -19,7 +20,7 @@ function readyBookList(book) {
 }
 
 function App() {
-  const [betType, setBetType] = useState(bet_type_options[1]);
+  const [betOption, setBetOption] = useState(bet_type_options[1]);
   const [bookA, setBookA] = useState(book_options_all);
   const [bookB, setBookB] = useState(book_options_all);
   const [showLive, setShowLive] = useState(false);
@@ -37,27 +38,27 @@ function App() {
       });
   }, []);
 
-  const bets = filterBets(data, betType, readyBookList(bookA), readyBookList(bookB), showLive, showPush);
+  const bets = filterBets(data, betOption, readyBookList(bookA), readyBookList(bookB), showLive, showPush);
 
   return (
     <div className="site">
       <div className="content">
         <FilterBar
-          betType={betType}
-          onBetTypeChange={setBetType}
+          betOption={betOption}
+          setBetOption={setBetOption}
           bookA={bookA}
-          onBookAChange={setBookA}
+          setBookA={setBookA}
           bookB={bookB}
-          onBookBChange={setBookB}
+          setBookB={setBookB}
           setShowLive={setShowLive}
           setShowPush={setShowPush}
         />
         {!bookA.length || !bookB.length ? (
-          <div class="select-books-message-container">
-            <span class="select-some-books">Select some books</span>
+          <div className="select-books-message-container">
+            <span className="select-some-books">Select some books</span>
           </div>
         ) : (
-          <BetTable betsPerPage={10} bets={bets} betType={betType} />
+          <BetTable betsPerPage={10} bets={bets} betOption={betOption} />
         )}
       </div>
       <Footer />

@@ -1,9 +1,10 @@
+import React from "react";
 import "./BookSelect.css";
-import Select from "react-select";
-import { components } from "react-select";
+import Select, { components, MultiValue, ActionMeta, ValueContainerProps, OptionProps } from "react-select";
 import { book_options_all, book_options } from "../../Options";
+import { BookOption } from "../../enums";
 
-const Option = (props) => {
+const Option = (props: OptionProps<BookOption>) => {
   return (
     <div>
       <components.Option {...props}>
@@ -14,7 +15,13 @@ const Option = (props) => {
   );
 };
 
-const bookSelectStyle = {
+interface BetTypeStyle {
+  control: (base: any) => any;
+  menuList: (base: any) => any;
+  option: (base: any, _: any) => any;
+}
+
+const bookSelectStyle: BetTypeStyle = {
   control: (base) => ({
     ...base,
     backgroundColor: "#fafafa",
@@ -46,7 +53,7 @@ const bookSelectStyle = {
   }),
 };
 
-const ValueContainer = ({ children, ...props }) => {
+const ValueContainer = ({ children, ...props }: ValueContainerProps<BookOption>) => {
   const { getValue, hasValue } = props;
   const newChildren = [];
   const count = getValue().length;
@@ -57,7 +64,8 @@ const ValueContainer = ({ children, ...props }) => {
   } else {
     newChildren.push(`${count} books`);
   }
-  newChildren.push(children[1]);
+  if (children !== null && children !== undefined)
+    newChildren.push(children[1 as keyof typeof children]);
 
   if (!hasValue) {
     return <components.ValueContainer {...props}>{children}</components.ValueContainer>;
@@ -65,27 +73,36 @@ const ValueContainer = ({ children, ...props }) => {
   return <components.ValueContainer {...props}>{newChildren}</components.ValueContainer>;
 };
 
-function onBooksChange(input, onBookChange) {
+function onBooksChange(input: BookOption[], onBookChange: React.Dispatch<React.SetStateAction<BookOption[]>>[]) {
   onBookChange.forEach((func) => {
     func(input);
   });
 }
 
-export default function BookSelect({ allowSelectAll, book, onBookChange, helperText }) {
-  const handleSelectAll = (selectAll) => {
+interface BookSelectProps {
+  id: string;
+  allowSelectAll: boolean;
+  book: BookOption[];
+  onBookChange: React.Dispatch<React.SetStateAction<BookOption[]>>[];
+}
+
+export default function BookSelect({ id, allowSelectAll, book, onBookChange }: BookSelectProps) {
+  const handleSelectAll = (selectAll: boolean) => {
     selectAll ? (allowSelectAll ? onBooksChange(book_options_all, onBookChange) : onBooksChange(book_options, onBookChange)) : onBooksChange([], onBookChange);
   };
 
-  const handleChange = (selected, action) => {
-    if (action.action === "select-option" && action.option.value === "all") {
+  const handleChange = (selected: MultiValue<BookOption>, action: ActionMeta<BookOption>) => {
+    if (action.action === "select-option" && action.option && action.option.value === "all") {
       handleSelectAll(true);
-    } else if (action.action === "deselect-option" && action.option.value === "all") {
+    } else if (action.action === "deselect-option" && action.option &&  action.option.value === "all") {
       handleSelectAll(false);
     } else if (action.action === "select-option" && selected.length === book_options.length) {
       handleSelectAll(true);
     } else {
-      if (action.action === "deselect-option" && selected.length === book_options.length) selected = selected.filter((obj) => obj.value !== "all");
-      onBooksChange(selected, onBookChange);
+      if (action.action === "deselect-option" && selected.length === book_options.length) 
+      selected = selected.filter((obj) => obj.value !== "all");
+      const multiValueSelected = selected.map(option => ({ value: option.value, label: option.label }));
+      onBooksChange(multiValueSelected, onBookChange);
     }
   };
 
@@ -93,7 +110,7 @@ export default function BookSelect({ allowSelectAll, book, onBookChange, helperT
     <div>
       <Select
         styles={bookSelectStyle}
-        id={helperText}
+        id={id}
         className="dropdown"
         isMulti={true}
         components={{

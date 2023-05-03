@@ -13,6 +13,7 @@
 .conversion-input {
   outline: none;
   border: none;
+  padding-left: 8px;
   background-color: #f2f2f2;
   height: 30px;
   width: 60px;
@@ -45,7 +46,7 @@
 }
 
 .hedge-input {
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .calc-input:disabled {
@@ -54,7 +55,7 @@
 }
 
 .input-container {
-    width: fit-content;
+  width: fit-content;
 }
 
 .dynamic-cell {
@@ -62,26 +63,26 @@
   width: 10vw;
   max-width: 145px;
 }
-  
+
 .input-label {
-    font-size: 14px;
-    margin-bottom: 3px;
+  font-size: 14px;
+  margin-bottom: 3px;
 }
-  
+
 .input-cell {
-    display: flex;
-    flex-direction: column;
-    margin: auto;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
 }
 
 .calc-table {
-    margin: auto;
-    border-spacing: clamp(10px, 4vw, 50px) 10px;
-    border-collapse: separate;
+  margin: 8px auto 0 auto;
+  border-spacing: clamp(10px, 4vw, 50px) 10px;
+  border-collapse: separate;
 }
 
 .profit-box {
-    padding-top: 25px;
+  padding-top: 25px;
 }
 
 .hidden {
@@ -89,10 +90,62 @@
 }
 
 .calc-bet-name {
-    text-align: center;
-    font-weight: 500;
+  text-align: center;
+  font-weight: 500;
 }
 
 .calc-button-container {
   display: flex;
+}
+
+.calc-tabs {
+  width: 100px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.tab-icon {
+  height: fit-content;
+}
+
+.calc-container {
+  width: fit-content;
+  margin: auto;
+  padding: 5px;
+}
+
+.calc-title-container {
+  text-align: center;
+}
+
+.calc-title-event {
+  max-width: 85%;
+  width: fit-content;
+  margin: 2px auto;
+  font-weight: 400;
+}
+
+.calc-title-market {
+  margin: 10px auto;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.calc-content {
+  overflow: auto;
+}
+
+.calc-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #f5f5f5;
+}
+
+.calc-content::-webkit-scrollbar-thumb {
+  background-color: #a9a9a9;
+  border-radius: 10px;
+}
+
+.tab-content {
+  height: 100%;
 }

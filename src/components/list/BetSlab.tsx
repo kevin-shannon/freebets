@@ -1,29 +1,34 @@
+import React from "react";
 import "./BetSlab.css";
 import ImageList from "@mui/material/ImageList";
-import Book from "../common/Book.js";
-import CalcLink from "../common/CalcLink";
-import { BetType } from "../../enums"
+import Book from "../common/Book";
+import CalcLink from "../calc/CalcLink";
+import { Bet, BetType, BetOption, ScreenType } from "../../enums";
 
-function readableRate(rate, betType) {
-  if (betType === BetType.ARBITRAGE) {
+function readableRate(rate: number, betOption: BetOption) {
+  if (betOption.value === BetType.ARBITRAGE) {
     return rate > 1 ? "+" + ((rate - 1) * 100).toFixed(1) : ((rate - 1) * 100).toFixed(1);
   } else {
     return (rate * 100).toFixed(1);
   }
 }
 
-function BooksBlock({ bet }) {
-  const books_a = [];
-  const books_b = [];
-  bet.outcomes[0].books.forEach((book) => {
+interface BooksBlockProps {
+  bet: Bet;
+}
+
+function BooksBlock({ bet }: BooksBlockProps) {
+  const books_a: React.ReactNode[] = [];
+  const books_b: React.ReactNode[] = [];
+  bet.outcomes[0].books.forEach((book: string) => {
     books_a.push(<Book book={book} key={book} />);
   });
-  bet.outcomes[1].books.forEach((book) => {
+  bet.outcomes[1].books.forEach((book: string) => {
     books_b.push(<Book book={book} key={book} />);
   });
 
   return (
-    <table>
+    <table className="books-block">
       <tbody>
         <tr>
           <td className="odds-value">{bet.outcomes[0].odds > 0 ? "+" + bet.outcomes[0].odds : bet.outcomes[0].odds}</td>
@@ -50,15 +55,21 @@ function BooksBlock({ bet }) {
   );
 }
 
-export default function BetSlab({ bet, betType, mode }) {
+interface BetSlabProps {
+  bet: Bet;
+  betOption: BetOption;
+  screenType: ScreenType;
+}
+
+export default function BetSlab({ bet, betOption, screenType }: BetSlabProps) {
   return (
     <tr className="bet-row">
-      <td>{readableRate(bet.rate, betType.value)}%</td>
-      {mode === 1 ? null : <td>{bet.date}</td>}
+      <td>{readableRate(bet.rate, betOption)}%</td>
+      {screenType === "medium" ? null : <td>{bet.date}</td>}
       <td>{bet.event}</td>
       <td>{bet.market}</td>
       <td>
-        <table>
+        <table className="bets-block">
           <tbody>
             <tr>
               <td>{bet.outcomes[0].name}</td>
@@ -73,7 +84,7 @@ export default function BetSlab({ bet, betType, mode }) {
         <BooksBlock bet={bet} />
       </td>
       <td>
-        <CalcLink bet={bet} betType={betType} mode={mode} />
+        <CalcLink bet={bet} betOption={betOption} screenType={screenType} />
       </td>
     </tr>
   );
