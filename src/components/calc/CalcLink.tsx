@@ -7,7 +7,7 @@ import { ReactComponent as Calculator } from "../../icons/calculator.svg";
 import { computeEv, computeConversion, calcBetStats } from "../../Utils";
 import CalcTab from "./CalcTab";
 import ScenarioTab from "./ScenarioTab";
-import { Tab, TabList, Tabs, Modal, ModalClose, Typography } from "@mui/joy";
+import { Tab, TabList, Tabs, Modal, ModalClose } from "@mui/joy";
 import Sheet from "@mui/joy/Sheet";
 import SwipeableViews from "react-swipeable-views";
 
@@ -56,7 +56,7 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
   const div2Ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     fixCalcHeights();
-  }, [div1Ref.current, div2Ref.current]);
+  }, []);
 
   let odds_a, odds_b, bet_a, bet_b;
   const func = betOption.value === BetType.ARBITRAGE ? computeEv : computeConversion;
