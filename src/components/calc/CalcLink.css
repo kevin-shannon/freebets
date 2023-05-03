@@ -76,7 +76,7 @@
 }
 
 .calc-table {
-  margin: 8px auto 0 auto;
+  margin: auto;
   border-spacing: clamp(10px, 4vw, 50px) 10px;
   border-collapse: separate;
 }
@@ -133,6 +133,14 @@
 
 .calc-content {
   overflow: auto;
+}
+
+.calc-content-tree-1 {
+  height: 170px;
+}
+
+.calc-content-tree-2 {
+  height: 330px;
 }
 
 .calc-content::-webkit-scrollbar {

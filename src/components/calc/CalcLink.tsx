@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import "./CalcLink.css";
 import "react-orgchart/index.css";
 import { Bet, BetOption, ScreenType, BetType } from "../../enums";
@@ -48,15 +48,6 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
     setConversion("70");
     setActiveTab(0);
   };
-  const fixCalcHeights = () => {
-    if (div1Ref.current && div2Ref.current) div2Ref.current.style.height = `${div1Ref.current.clientHeight}px`;
-  };
-
-  const div1Ref = useRef<HTMLDivElement>(null);
-  const div2Ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    fixCalcHeights();
-  }, []);
 
   let odds_a, odds_b, bet_a, bet_b;
   const func = betOption.value === BetType.ARBITRAGE ? computeEv : computeConversion;
@@ -75,7 +66,10 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
 
   const handleTabSelect = (_event: any, index: any) => {
     setActiveTab(index);
-    fixCalcHeights();
+  };
+
+  const handleChangeIndex = (index: number) => {
+    setActiveTab(index);
   };
 
   return (
@@ -83,7 +77,7 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
       <button className="foot-link" onClick={handleOpen}>
         {screenType === "small" ? <Calculator className="card-calc-link" /> : <Calculator className="slab-calc-link" />}
       </button>
-      <Modal open={open} onClose={handleClose} disableAutoFocus={true} sx={style} keepMounted={true}>
+      <Modal open={open} onClose={handleClose} disableAutoFocus={true} sx={style}>
         <Sheet sx={sheetStyle}>
           <ModalClose />
           <div className="calc-title-container">
@@ -92,12 +86,15 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
           </div>
           <SwipeableViews
             index={activeTab}
-            onChangeIndex={handleTabSelect}
+            onChangeIndex={handleChangeIndex}
             containerStyle={{
               transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
             }}
           >
-            <div className="calc-content" ref={div1Ref}>
+            <div
+              className="calc-content"
+              style={{ height: betOption.value === BetType.RISKFREE ? "330px" : "265px", display: "flex", alignItems: "center", justifyContent: "center" }}
+            >
               <CalcTab
                 betOption={betOption}
                 amount_a={amount_a}
@@ -113,21 +110,21 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
                 stats={stats}
               />
             </div>
-            <div className="calc-content" ref={div2Ref}>
+            <div className="calc-content" style={{ height: betOption.value === BetType.RISKFREE ? "330px" : "265px" }}>
               <ScenarioTab betOption={betOption} amount_a={amount_a} amount_b={amount_b} bet_a={bet_a} bet_b={bet_b} stats={stats} />
             </div>
           </SwipeableViews>
-          <Tabs className="calc-tabs" aria-label="Icon tabs" defaultValue={0} onChange={handleTabSelect} size="md">
+          <Tabs className="calc-tabs" aria-label="Icon tabs" defaultValue={0} value={activeTab} onChange={handleTabSelect} size="md">
             <TabList>
-              <Tab>
+              <Tab value={0}>
                 <Calculator className="tab-icon" />
               </Tab>
               {amount_a !== "" && amount_b !== "" ? (
-                <Tab>
+                <Tab value={1}>
                   <Sitemap className="tab-icon" />
                 </Tab>
               ) : (
-                <Tab disabled sx={{ opacity: "50%" }}>
+                <Tab value={1} disabled sx={{ opacity: "50%" }}>
                   <Sitemap className="tab-icon" />
                 </Tab>
               )}
