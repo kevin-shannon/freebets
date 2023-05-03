@@ -5,6 +5,8 @@ import { Box, Typography } from "@mui/material";
 import CurrencyInput from "react-currency-input-field";
 import { calcHedge, formatMoneyNumber, formatOddsNumber } from "../../Utils";
 import { BetOption, BetType } from "../../enums";
+import Tooltip from "@mui/material/Tooltip";
+import { ReactComponent as Info } from "../../icons/info.svg";
 
 interface CalcTabProps {
   betOption: BetOption;
@@ -158,7 +160,16 @@ export default function CalcTab({
       </table>
       {betOption.value === BetType.RISKFREE ? (
         <div className="conversion-container">
-          <label className="input-label">Conversion</label>
+          <label className="input-label">
+            Conversion&nbsp;
+            <Tooltip
+              placement="right"
+              title="If your Risk-Free bet loses, you will be payed out in a Free bet. This value is your best guess at the conversion rate of that Free bet. The better your guess is, the more money you'll keep. 70%-75% is realistic"
+              arrow
+            >
+              <Info className="info-circle" />
+            </Tooltip>
+          </label>
           <div className="conversion-full-input">
             <input className="conversion-input" value={conversion} type="number" onChange={handleCoversionChange} />
             <div className="conversion-adornment">

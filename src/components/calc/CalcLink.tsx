@@ -11,7 +11,7 @@ import { Tab, TabList, Tabs, Modal, ModalClose } from "@mui/joy";
 import Sheet from "@mui/joy/Sheet";
 import SwipeableViews from "react-swipeable-views";
 
-const style = {
+const modalStyle = {
   width: "clamp(300px, 90vw, 500px)",
   margin: "auto",
   height: "fit-content",
@@ -77,7 +77,7 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
       <button className="foot-link" onClick={handleOpen}>
         {screenType === "small" ? <Calculator className="card-calc-link" /> : <Calculator className="slab-calc-link" />}
       </button>
-      <Modal open={open} onClose={handleClose} disableAutoFocus={true} sx={style}>
+      <Modal open={open} onClose={handleClose} disableAutoFocus={true} sx={modalStyle}>
         <Sheet sx={sheetStyle}>
           <ModalClose />
           <div className="calc-title-container">

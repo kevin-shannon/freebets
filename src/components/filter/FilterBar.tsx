@@ -8,6 +8,8 @@ import Switch from "@mui/material/Switch";
 import BookSelect from "./BookSelect";
 import { bet_type_options } from "../../Options";
 import { BetType, BetOption, BookOption } from "../../enums";
+import Tooltip from "@mui/material/Tooltip";
+import { ReactComponent as Info } from "../../icons/info.svg";
 
 const BlueSwitch = styled(Switch)(({ theme }) => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
@@ -73,6 +75,7 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
       setBetOption(option);
     }
   };
+
   return (
     <table id="filter-bar">
       <tbody>
@@ -124,7 +127,14 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
                     }}
                   />
                 }
-                label="Show Live Bets"
+                label={
+                  <span>
+                    Show Live Bets&nbsp;&nbsp;
+                    <Tooltip placement="right" title="Live bets have fast moving odds and are inheritly more risky. Recommend: Off" arrow>
+                      <Info className="info-circle" />
+                    </Tooltip>
+                  </span>
+                }
               />
               <FormControlLabel
                 id="show-push"
@@ -136,7 +146,18 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
                     }}
                   />
                 }
-                label="Show Push Bets"
+                label={
+                  <span>
+                    Show Push Bets&nbsp;&nbsp;
+                    <Tooltip
+                      placement="right"
+                      title="Push bets are bets have a chance of neither bet hitting,  Risk-Free/Free bets will not be refunded. Recommend: Off"
+                      arrow
+                    >
+                      <Info className="info-circle" />
+                    </Tooltip>
+                  </span>
+                }
               />
             </div>
           </td>
