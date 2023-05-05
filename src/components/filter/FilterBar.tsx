@@ -8,8 +8,8 @@ import Switch from "@mui/material/Switch";
 import BookSelect from "./BookSelect";
 import { bet_type_options } from "../../Options";
 import { BetType, BetOption, BookOption } from "../../enums";
-import Tooltip from "@mui/material/Tooltip";
 import { ReactComponent as Info } from "../../icons/info.svg";
+import { Tooltip } from "react-tooltip";
 
 const BlueSwitch = styled(Switch)(({ theme }) => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
@@ -117,48 +117,50 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
         <tr>
           <td>
             <div className="filter-cell" id="switch-panel">
-              <FormControlLabel
-                id="show-live"
-                className="switch-element"
-                control={
-                  <BlueSwitch
-                    onChange={(event) => {
-                      setShowLive(event.target.checked);
-                    }}
-                  />
-                }
-                label={
-                  <span>
-                    Show Live Bets&nbsp;&nbsp;
-                    <Tooltip placement="right" title="Live bets have fast moving odds and are inheritly more risky. Recommend: Off" arrow>
-                      <Info className="info-circle" />
-                    </Tooltip>
-                  </span>
-                }
-              />
-              <FormControlLabel
-                id="show-push"
-                className="switch-element-"
-                control={
-                  <BlueSwitch
-                    onChange={(event) => {
-                      setShowPush(event.target.checked);
-                    }}
-                  />
-                }
-                label={
-                  <span>
-                    Show Push Bets&nbsp;&nbsp;
-                    <Tooltip
-                      placement="right"
-                      title="Push bets are bets have a chance of neither bet hitting,  Risk-Free/Free bets will not be refunded. Recommend: Off"
-                      arrow
-                    >
-                      <Info className="info-circle" />
-                    </Tooltip>
-                  </span>
-                }
-              />
+              <div className="switch-container">
+                <FormControlLabel
+                  id="show-live"
+                  className="switch-element"
+                  control={
+                    <BlueSwitch
+                      onChange={(event) => {
+                        setShowLive(event.target.checked);
+                      }}
+                    />
+                  }
+                  label="Live Bets"
+                />
+                <a
+                  className="info-anchor"
+                  data-tooltip-id="live-tooltip"
+                  data-tooltip-html="Live bets have fast moving<br /> odds and are inheritly more <br />risky. Recommend: Off"
+                >
+                  <Info className="info-circle" />
+                </a>
+                <Tooltip id="live-tooltip" style={{ backgroundColor: "rgb(65 62 73)", color: "#fff", opacity: 1, borderRadius: "8px" }} place="top" />
+              </div>
+              <div className="switch-container">
+                <FormControlLabel
+                  id="show-push"
+                  className="switch-element-"
+                  control={
+                    <BlueSwitch
+                      onChange={(event) => {
+                        setShowPush(event.target.checked);
+                      }}
+                    />
+                  }
+                  label="Push Bets"
+                />
+                <a
+                  className="info-anchor"
+                  data-tooltip-id="push-tooltip"
+                  data-tooltip-html="Push bets are bets have a <br /> chance of neither bet hitting,<br /> Risk-Free/Free bets will not <br />be refunded. Recommend: Off"
+                >
+                  <Info className="info-circle" />
+                </a>
+                <Tooltip id="push-tooltip" style={{ backgroundColor: "rgb(65 62 73)", color: "#fff", opacity: 1, borderRadius: "8px" }} place="bottom" />
+              </div>
             </div>
           </td>
           <td>
