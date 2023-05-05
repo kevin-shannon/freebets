@@ -130,13 +130,13 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
                   }
                   label="Live Bets"
                 />
-                <a
-                  className="info-anchor"
+                <span
+                  className="info-span"
                   data-tooltip-id="live-tooltip"
                   data-tooltip-html="Live bets have fast moving<br /> odds and are inheritly more <br />risky. Recommend: Off"
                 >
                   <Info className="info-circle" />
-                </a>
+                </span>
                 <Tooltip id="live-tooltip" style={{ backgroundColor: "rgb(65 62 73)", color: "#fff", opacity: 1, borderRadius: "8px" }} place="top" />
               </div>
               <div className="switch-container">
@@ -152,13 +152,13 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
                   }
                   label="Push Bets"
                 />
-                <a
-                  className="info-anchor"
+                <span
+                  className="info-span"
                   data-tooltip-id="push-tooltip"
                   data-tooltip-html="Push bets are bets have a <br /> chance of neither bet hitting,<br /> Risk-Free/Free bets will not <br />be refunded. Recommend: Off"
                 >
                   <Info className="info-circle" />
-                </a>
+                </span>
                 <Tooltip id="push-tooltip" style={{ backgroundColor: "rgb(65 62 73)", color: "#fff", opacity: 1, borderRadius: "8px" }} place="bottom" />
               </div>
             </div>
