@@ -41,7 +41,7 @@ def aggregate(data):
                 start = data[book][sport][event]['start']
                 start_string = datetime.strftime(start, '%Y-%m-%dT%H:%M:%SZ') if start is not None else ''
                 for market in data[book][sport][event]['offers']:
-                    key = frozenset([sport, event, market])
+                    key = frozenset([sport, event, market, start])
                     outcomes = data[book][sport][event]['offers'][market]
                     if key not in bets:
                         bets[key] = {'sport': sport, 'event': event, 'market': make_market_simple(market), 'start': start_string}
