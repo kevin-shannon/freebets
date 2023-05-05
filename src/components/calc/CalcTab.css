@@ -1,0 +1,10 @@
+.conversion-container {
+  position: relative;
+}
+
+#conversion-span {
+  position: absolute;
+  left: 100%;
+  top: 33%;
+  padding: 8px;
+}

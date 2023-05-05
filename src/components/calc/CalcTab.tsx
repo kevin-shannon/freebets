@@ -160,22 +160,23 @@ export default function CalcTab({
       </table>
       {betOption.value === BetType.RISKFREE ? (
         <div className="conversion-container">
-          <label className="input-label">
-            Conversion&nbsp;&nbsp;
-            <span
-              data-tooltip-id="conversion-tooltip"
-              data-tooltip-html="If your Risk-Free bet loses, it <br />will be refunded as a Free bet. <br />The conversion rate of the Free <br />bet is uncertain, but a realistic <br />estimate is 70%-75%."
-            >
-              <Info style={{ height: "11px" }} className="info-circle" />
-            </span>
-            <Tooltip id="conversion-tooltip" style={{ backgroundColor: "rgb(65 62 73)", color: "#fff", opacity: 1, borderRadius: "8px" }} place="top" />
-          </label>
-          <div className="conversion-full-input">
-            <input className="conversion-input" value={conversion} type="number" onChange={handleCoversionChange} />
-            <div className="conversion-adornment">
-              <span>%</span>
+          <div className="conversion-input-container">
+            <label className="input-label">Conversion</label>
+            <div className="conversion-full-input">
+              <input className="conversion-input" value={conversion} type="number" onChange={handleCoversionChange} />
+              <div className="conversion-adornment">
+                <span>%</span>
+              </div>
             </div>
           </div>
+          <span
+            id="conversion-span"
+            data-tooltip-id="conversion-tooltip"
+            data-tooltip-html="If your Risk-Free bet loses, it <br />will be refunded as a Free bet. <br />The conversion rate of the Free <br />bet is uncertain, but a realistic <br />estimate is 70%-75%."
+          >
+            <Info style={{ height: "18px" }} className="info-circle" />
+          </span>
+          <Tooltip id="conversion-tooltip" style={{ backgroundColor: "rgb(65 62 73)", color: "#fff", opacity: 1, borderRadius: "8px" }} place="top" />
         </div>
       ) : null}
       <Box
