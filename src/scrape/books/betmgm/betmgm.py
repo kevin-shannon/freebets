@@ -38,7 +38,7 @@ def generate_betmgm():
 
 def generate_betmgm_formatted_events(url, sport, market_labels):
     formatted_events = {}
-    id_to_name = {}
+    id_to_name_time = {}
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
     xbwin_id = 'YTBiYWQ3ZjItMjBlZi00ODU2LWFmNjMtMTQzYjAzOGUxNDM2'
     try:
@@ -54,18 +54,23 @@ def generate_betmgm_formatted_events(url, sport, market_labels):
     for event in events:
         try:
             event_name = generate_team_event_name(event['participants'][0]['name']['value'], event['participants'][1]['name']['value'], sport)
-            id_to_name[event['id']] = event_name
         except:
             print('error parsing event name')
         else:
-            formatted_events[event_name] = {'offers': {}}
             try:
-                formatted_events[event_name]['start'] = datetime.strptime(event['startDate'], '%Y-%m-%dT%H:%M:%SZ')
+                start = datetime.strptime(event['startDate'], '%Y-%m-%dT%H:%M:%SZ')
             except ValueError:
                 print('error parsing date time')
-                formatted_events[event_name]['start'] = None
+                start = None
+            try:
+                id_to_name_time[event['id']] = (event_name, start)
+            except:
+                print('error parsing event id')
+            if event_name not in formatted_events:
+                formatted_events[event_name] = {}
+            formatted_events[event_name][start] = {'offers': {}}
 
-    for fixtureId, event_name in id_to_name.items():
+    for fixtureId, (event_name, start) in id_to_name_time.items():
         url = f'https://sports.dc.betmgm.com/cds-api/bettingoffer/fixture-view?x-bwin-accessid={xbwin_id}&lang=en-us&country=US&offerMapping=All&scoreboardMode=Full&fixtureIds={fixtureId}'
         try:
             res = requests.get(url, headers=headers).json()
@@ -85,7 +90,7 @@ def generate_betmgm_formatted_events(url, sport, market_labels):
             # Moneyline
             if re.match(market_labels["MONEYLINE"], label):
                 try:
-                    formatted_events[event_name]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['name']['value'], sport), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
+                    formatted_events[event_name][start]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['name']['value'], sport), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
                     print('something went wrong adding market moneyline')
             # Totals
@@ -93,7 +98,7 @@ def generate_betmgm_formatted_events(url, sport, market_labels):
                 try:
                     line = float(game['attr'])
                     market_name = construct_total_market_name(line)
-                    formatted_events[event_name]['offers'][market_name] = [{'name': standardize_over_under(outcome['totalsPrefix']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
+                    formatted_events[event_name][start]['offers'][market_name] = [{'name': standardize_over_under(outcome['totalsPrefix']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
                     print('something went wrong adding market total')
             # Spreads
@@ -106,7 +111,7 @@ def generate_betmgm_formatted_events(url, sport, market_labels):
                         team = ' '.join(game['results'][1]['name']['value'].strip().split(' ')[:-1])
                         line = -line
                     market_name = construct_spread_market_name(team, line, sport)
-                    formatted_events[event_name]['offers'][market_name] = [{'name': standardize_team_spread(outcome['name']['value'].strip(), sport), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
+                    formatted_events[event_name][start]['offers'][market_name] = [{'name': standardize_team_spread(outcome['name']['value'].strip(), sport), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
                     print('something went wrong adding market spread')
             # Team Totals
@@ -115,7 +120,7 @@ def generate_betmgm_formatted_events(url, sport, market_labels):
                     team = standardize_team_name(label, sport)
                     line =  float(game['attr'])
                     market_name = construct_team_total_market_name(team, line, sport)
-                    formatted_events[event_name]['offers'][market_name] = [{'name': standardize_over_under(outcome['name']['value']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
+                    formatted_events[event_name][start]['offers'][market_name] = [{'name': standardize_over_under(outcome['name']['value']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
                 except:
                     print('something went wrong adding market team total')    
     return formatted_events

@@ -25,7 +25,6 @@ nba = {
     'market_labels': {"MONEYLINE": r'^Moneyline$'}
 }
 
-
 def generate_superbook():
     return {
         'nhl': generate_superbook_formatted_events(**nhl),
@@ -50,12 +49,14 @@ def generate_superbook_formatted_events(url, sport, market_labels):
         except:
             print('error getting event name')
             continue
-        formatted_events[event_name] = {'offers': {}}
         try:
-            formatted_events[event_name]['start'] = datetime.strptime(event['tsstart'], '%Y-%m-%dT%H:%M:%S')
+            start = datetime.strptime(event['tsstart'], '%Y-%m-%dT%H:%M:%S')
         except ValueError:
             print('error parsing date time')
-            formatted_events[event_name]['start'] = None
+            start = None
+        if event_name not in formatted_events:
+            formatted_events[event_name] = {}
+        formatted_events[event_name][start] = {'offers': {}}
         try:
             markets = event['markets']
         except:
@@ -69,7 +70,7 @@ def generate_superbook_formatted_events(url, sport, market_labels):
                 continue
             if re.match(market_labels["MONEYLINE"], label):
                 try:
-                    formatted_events[event_name]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['name'], sport), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['selections']]
+                    formatted_events[event_name][start]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['name'], sport), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['selections']]
                 except:
                     print('something went wrong adding market moneyline')
     return formatted_events

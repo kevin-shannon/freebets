@@ -38,7 +38,7 @@ def generate_fanduel():
     }
 
 def generate_fanduel_formatted_events(url, sport, market_labels, compititon_name):
-    id_to_name = {}
+    id_to_name_time = {}
     formatted_events = {}
     try:
         res = requests.get(url).json()
@@ -69,14 +69,16 @@ def generate_fanduel_formatted_events(url, sport, market_labels, compititon_name
             except:
                 print('error parsing team event name')
                 continue
-            id_to_name[event_id] = event_name
-            formatted_events[event_name] = {'offers': {}}
             try:
-                formatted_events[event_name]['start'] = datetime.strptime(re.sub('\.\d*', '', event['openDate']), '%Y-%m-%dT%H:%M:%SZ')
+                start = datetime.strptime(re.sub('\.\d*', '', event['openDate']), '%Y-%m-%dT%H:%M:%SZ')
             except ValueError:
                 print('error parsing date time')
-                formatted_events[event_name]['start'] = None
-    for event_id in id_to_name:
+                start = None
+            id_to_name_time[event_id] = (event_name, start)
+            if event_name not in formatted_events:
+                formatted_events[event_name] = {}
+            formatted_events[event_name][start] = {'offers': {}}
+    for event_id in id_to_name_time:
         url = f'https://sbapi.nj.sportsbook.fanduel.com/api/event-page?_ak=FhMFpcPWXMeyZxOx&eventId={event_id}'
         try:
             res = requests.get(url).json()
@@ -98,29 +100,29 @@ def generate_fanduel_formatted_events(url, sport, market_labels, compititon_name
             # Moneyline
             if re.match(market_labels["MONEYLINE"], label):
                 try:
-                    event_name = id_to_name[str(market['eventId'])]
+                    event_name, start = id_to_name_time[str(market['eventId'])]
                     outcomes = [{'name': standardize_team_name(outcome['runnerName'], sport), 'odds': int(outcome['winRunnerOdds']['americanDisplayOdds']['americanOdds'])} for outcome in runners]
-                    formatted_events[event_name]['offers']['Moneyline'] = outcomes
+                    formatted_events[event_name][start]['offers']['Moneyline'] = outcomes
                 except:
                     print('something went wrong adding market moneyline')
             # Totals
             elif re.match(market_labels["TOTAL"], label):
                 for runner in runners:
                     try:
-                        event_name = id_to_name[str(market['eventId'])]
+                        event_name, start = id_to_name_time[str(market['eventId'])]
                         bet_name, line = runner['runnerName'].split(' ')
                         market_name = construct_total_market_name(line)
                         outcome = {'name': bet_name, 'odds': int(runner['winRunnerOdds']['americanDisplayOdds']['americanOdds'])}
-                        if market_name in formatted_events[event_name]['offers']:
-                            formatted_events[event_name]['offers'][market_name].append(outcome)
+                        if market_name in formatted_events[event_name][start]['offers']:
+                            formatted_events[event_name][start]['offers'][market_name].append(outcome)
                         else:
-                            formatted_events[event_name]['offers'][market_name] = [outcome]
+                            formatted_events[event_name][start]['offers'][market_name] = [outcome]
                     except:
                         print('something went wrong adding market total')
             # Spread
             elif re.match(market_labels["SPREAD"], label):
                 try:
-                    event_name = id_to_name[str(market['eventId'])]
+                    event_name, start = id_to_name_time[str(market['eventId'])]
                     teams = event_name.split(' vs ')
                 except:
                     print('error getting event info')
@@ -130,10 +132,10 @@ def generate_fanduel_formatted_events(url, sport, market_labels, compititon_name
                         spread = standardize_team_spread(runner['runnerName'], sport)
                         market_name = build_team_spread_market_name(teams, spread, sport)
                         outcome = {'name': spread, 'odds': int(runner['winRunnerOdds']['americanDisplayOdds']['americanOdds'])}
-                        if market_name in formatted_events[event_name]['offers']:
-                            formatted_events[event_name]['offers'][market_name].append(outcome)
+                        if market_name in formatted_events[event_name][start]['offers']:
+                            formatted_events[event_name][start]['offers'][market_name].append(outcome)
                         else:
-                            formatted_events[event_name]['offers'][market_name] = [outcome]
+                            formatted_events[event_name][start]['offers'][market_name] = [outcome]
                     except:
                         print('something went wrong adding market spread')
     return formatted_events

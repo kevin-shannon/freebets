@@ -51,12 +51,14 @@ def generate_pointsbet_formatted_events(url, sport, market_labels):
         except:
             print('error could not find event')
             continue
-        formatted_events[event_name] = {'offers': {}}
         try:
-            formatted_events[event_name]['start'] = datetime.strptime(event['startsAt'], '%Y-%m-%dT%H:%M:%SZ')
+            start = datetime.strptime(event['startsAt'], '%Y-%m-%dT%H:%M:%SZ')
         except ValueError:
             print('error parsing date time')
-            formatted_events[event_name]['start'] = None
+            start = None
+        if event_name not in formatted_events:
+            formatted_events[event_name] = {}
+        formatted_events[event_name][start] = {'offers': {}}
         try:
             markets = event['specialFixedOddsMarkets']
         except:
@@ -73,7 +75,7 @@ def generate_pointsbet_formatted_events(url, sport, market_labels):
                 try:
                     if float(market['outcomes'][0]['price']) == 1 or float(market['outcomes'][1]['price']) == 1:
                         continue
-                    formatted_events[event_name]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['name'], sport), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['outcomes']]
+                    formatted_events[event_name][start]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['name'], sport), 'odds': convert_decimal_to_american(float(outcome['price']))} for outcome in market['outcomes']]
                 except:
                     print('something went wrong adding market moneyline')
     return formatted_events

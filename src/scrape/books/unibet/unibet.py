@@ -69,12 +69,14 @@ def generate_unibet_formatted_events(url, sport, market_labels):
         except:
             print('error parsing event info')
             continue
-        formatted_events[event_name] = {'offers': {}}
         try:
-            formatted_events[event_name]['start'] = datetime.strptime(event['event']['start'], '%Y-%m-%dT%H:%M:%SZ')
+            start = datetime.strptime(event['event']['start'], '%Y-%m-%dT%H:%M:%SZ')
         except ValueError:
             print('error parsing date time')
-            formatted_events[event_name]['start'] = None
+            start = None
+        if event_name not in formatted_events:
+            formatted_events[event_name] = {}
+        formatted_events[event_name][start] = {'offers': {}}
 
         url = f'https://eu-offering-api.kambicdn.com/offering/v2018/ubusva/betoffer/event/{event_id}.json'
         try:
@@ -96,14 +98,14 @@ def generate_unibet_formatted_events(url, sport, market_labels):
             # Moneyline
             if re.match(market_labels["MONEYLINE"], label):
                 try:
-                    formatted_events[event_name]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['label'], sport), 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
+                    formatted_events[event_name][start]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['label'], sport), 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
                 except:
                     print('something went wrong adding moneyline market')
             # Totals
             if re.match(market_labels["TOTAL"], label):
                 try:
                     market_name = construct_total_market_name(float(offer['outcomes'][0]['line'])/1000)
-                    formatted_events[event_name]['offers'][market_name] = [{'name': outcome['label'], 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
+                    formatted_events[event_name][start]['offers'][market_name] = [{'name': outcome['label'], 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
                 except:
                     print('something went wrong adding total market')
             # Spreads
@@ -116,7 +118,7 @@ def generate_unibet_formatted_events(url, sport, market_labels):
                         team = offer['outcomes'][1]['label']
                         line = -line
                     market_name = construct_spread_market_name(team, line, sport)
-                    formatted_events[event_name]['offers'][market_name] = [{'name': construct_team_spread_from_market_name(outcome['label'], market_name, sport), 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
+                    formatted_events[event_name][start]['offers'][market_name] = [{'name': construct_team_spread_from_market_name(outcome['label'], market_name, sport), 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
                 except:
                     print('something went wrong adding spread market')
             # Team Totals
@@ -125,7 +127,7 @@ def generate_unibet_formatted_events(url, sport, market_labels):
                     team = standardize_team_name(offer['criterion']['label'], sport)
                     line = float(offer['outcomes'][0]['line'])/1000
                     market_name = construct_team_total_market_name(team, line, sport)
-                    formatted_events[event_name]['offers'][market_name] = [{'name': outcome['label'], 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
+                    formatted_events[event_name][start]['offers'][market_name] = [{'name': outcome['label'], 'odds': int(outcome['oddsAmerican'])} for outcome in offer['outcomes']]
                 except:
                     print('something went wrong adding team total market')
     return formatted_events

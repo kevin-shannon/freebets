@@ -48,7 +48,6 @@ def update_categories(sport_id, categories):
     try:
         offer_categories = res['eventGroup']['offerCategories']
     except:
-        print(url)
         print('error getting offer category')
         return categories
     for offer_category in offer_categories:
@@ -87,7 +86,7 @@ def update_categories(sport_id, categories):
 
 def generate_draftkings_formatted_events(sport_id, sport, market_labels, categories):
     formatted_events = {}
-    id_to_name = {}
+    id_to_name_time = {}
     categories = update_categories(sport_id, categories)
     
     url = f'https://sportsbook.draftkings.com//sites/US-VA-SB/api/v5/eventgroups/{sport_id}?format=json'
@@ -108,13 +107,15 @@ def generate_draftkings_formatted_events(sport_id, sport, market_labels, categor
         except:
             print('error parsing event info')
             continue
-        id_to_name[event_id] = event_name
-        formatted_events[event_name] = {'offers': {}}
         try:
-            formatted_events[event_name]['start'] = datetime.strptime(re.sub('\.\d*', '', event['startDate']), '%Y-%m-%dT%H:%M:%SZ')
+            start = datetime.strptime(re.sub('\.\d*', '', event['startDate']), '%Y-%m-%dT%H:%M:%SZ')
         except ValueError:
             print('error parsing date time')
-            formatted_events[event_name]['start'] = None
+            start = None
+        id_to_name_time[event_id] = (event_name, start)
+        if event_name not in formatted_events:
+            formatted_events[event_name] = {}
+        formatted_events[event_name][start] = {'offers': {}}
 
     for category in categories.values():
         for subcategory in category['subcategories'].values():
@@ -151,14 +152,14 @@ def generate_draftkings_formatted_events(sport_id, sport, market_labels, categor
                                     if re.match(market_labels["MONEYLINE"], label):
                                         try:
                                             outcomes = [{'name': standardize_team_name(outcome['label'], sport), 'odds': int(outcome['oddsAmerican'])} for outcome in option['outcomes']]
-                                            event_name = id_to_name[option['eventId']]
-                                            formatted_events[event_name]['offers']['Moneyline'] = outcomes
+                                            event_name, start = id_to_name_time[option['eventId']]
+                                            formatted_events[event_name][start]['offers']['Moneyline'] = outcomes
                                         except:
                                             print('something went wrong adding market moneyline')
                                     # Totals
                                     if re.match(market_labels["TOTAL"], label):
                                         try:
-                                            event_name = id_to_name[option['eventId']]
+                                            event_name, start = id_to_name_time[option['eventId']]
                                         except:
                                             print('could not find event')
                                             continue
@@ -167,16 +168,16 @@ def generate_draftkings_formatted_events(sport_id, sport, market_labels, categor
                                                 line = selection['line']
                                                 market_name = construct_total_market_name(line)
                                                 outcome = {'name': selection['label'], 'odds': int(selection['oddsAmerican'])}
-                                                if market_name in formatted_events[event_name]['offers']:
-                                                    formatted_events[event_name]['offers'][market_name].append(outcome)
+                                                if market_name in formatted_events[event_name][start]['offers']:
+                                                    formatted_events[event_name][start]['offers'][market_name].append(outcome)
                                                 else:
-                                                    formatted_events[event_name]['offers'][market_name] = [outcome]
+                                                    formatted_events[event_name][start]['offers'][market_name] = [outcome]
                                         except:
                                             print('something went wrong adding market total')
                                     # Speads
                                     if re.match(market_labels["SPREAD"], label):
                                         try:
-                                            event_name = id_to_name[option['eventId']]
+                                            event_name, start = id_to_name_time[option['eventId']]
                                         except:
                                             print('could not find event')
                                             continue
@@ -187,16 +188,16 @@ def generate_draftkings_formatted_events(sport_id, sport, market_labels, categor
                                                 spread = f'{selection["label"]} {selection["line"]}'
                                                 market_name = build_team_spread_market_name(teams, spread, sport)
                                                 outcome = {'name': standardize_team_spread(spread, sport), 'odds': int(selection['oddsAmerican'])}
-                                                if market_name in formatted_events[event_name]['offers']:
-                                                    formatted_events[event_name]['offers'][market_name].append(outcome)
+                                                if market_name in formatted_events[event_name][start]['offers']:
+                                                    formatted_events[event_name][start]['offers'][market_name].append(outcome)
                                                 else:
-                                                    formatted_events[event_name]['offers'][market_name] = [outcome]
+                                                    formatted_events[event_name][start]['offers'][market_name] = [outcome]
                                         except:
                                             print('something went wrong adding market spread')
                                     # Team Totals
                                     if "TEAM_TOTAL" in market_labels and re.match(market_labels["TEAM_TOTAL"], label):
                                         try:
-                                            event_name = id_to_name[option['eventId']]
+                                            event_name, start = id_to_name_time[option['eventId']]
                                         except:
                                             print('could not find event')
                                             continue
@@ -205,10 +206,10 @@ def generate_draftkings_formatted_events(sport_id, sport, market_labels, categor
                                                 line = selection['line']
                                                 market_name = construct_team_total_market_name(label.split(':')[0], line, sport)
                                                 outcome = {'name': selection['label'], 'odds': int(selection['oddsAmerican'])}
-                                                if market_name in formatted_events[event_name]['offers']:
-                                                    formatted_events[event_name]['offers'][market_name].append(outcome)
+                                                if market_name in formatted_events[event_name][start]['offers']:
+                                                    formatted_events[event_name][start]['offers'][market_name].append(outcome)
                                                 else:
-                                                    formatted_events[event_name]['offers'][market_name] = [outcome]
+                                                    formatted_events[event_name][start]['offers'][market_name] = [outcome]
                                         except:
                                             print('something went wrong adding market team total')
     return formatted_events
