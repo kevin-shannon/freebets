@@ -4,7 +4,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import BetCard from "./BetCard";
 import BetSlab from "./BetSlab";
-import { BetType, ScreenType, BetOption, Bet } from "../../enums"
+import { BetType, ScreenType, BetOption, Bet } from "../../enums";
 
 interface PaginatedBetsProps {
   betsPerPage: number;
@@ -50,11 +50,17 @@ function BetTable({ bets, betOption }: BetTableProps) {
   const { width } = useViewport();
   const breakpoint1 = 1100;
   const breakpoint2 = 850;
-  const screenType:ScreenType = width < breakpoint2 ? "small" : width < breakpoint1 ? "medium" : "large";
+  const screenType: ScreenType = width < breakpoint2 ? "small" : width < breakpoint1 ? "medium" : "large";
 
   bets.forEach((bet) => {
-    const key = bet.event + bet.market + bet.outcomes[0].name;
-    rows.push(screenType === "small" ? <BetCard bet={bet} betOption={betOption} screenType={screenType} key={key} /> : <BetSlab bet={bet} betOption={betOption} screenType={screenType} key={key} />);
+    const key = bet.event + bet.market + bet.outcomes[0].name + bet.date;
+    rows.push(
+      screenType === "small" ? (
+        <BetCard bet={bet} betOption={betOption} screenType={screenType} key={key} />
+      ) : (
+        <BetSlab bet={bet} betOption={betOption} screenType={screenType} key={key} />
+      )
+    );
   });
 
   return screenType === "small" ? (

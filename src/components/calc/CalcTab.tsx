@@ -172,7 +172,7 @@ export default function CalcTab({
           <span
             id="conversion-span"
             data-tooltip-id="conversion-tooltip"
-            data-tooltip-html="If your Risk-Free bet loses, it <br />will be refunded as a Free bet. <br />The conversion rate of the Free <br />bet is uncertain, but a realistic <br />estimate is 70%-75%."
+            data-tooltip-html="If your Risk-Free bet loses, it <br />will be refunded as a Free bet. <br />The conversion rate of the Free <br />bet is uncertain, but a realistic <br />estimate is 65%-75%."
           >
             <Info style={{ height: "18px" }} className="info-circle" />
           </span>
