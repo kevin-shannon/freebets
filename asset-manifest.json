@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/freebets/static/css/main.c3e71b84.css",
-    "main.js": "/freebets/static/js/main.3706700a.js",
+    "main.js": "/freebets/static/js/main.d44039b0.js",
     "static/media/SairaCondensed-Bold.ttf": "/freebets/static/media/SairaCondensed-Bold.4926ab8dd277adb71b68.ttf",
     "static/media/SairaCondensed-SemiBold.ttf": "/freebets/static/media/SairaCondensed-SemiBold.1fad7fabf4cdbcebc3af.ttf",
     "static/media/roboto-latin-900italic.woff": "/freebets/static/media/roboto-latin-900italic.c20d916c1a1b094c1cec.woff",
@@ -61,10 +61,10 @@
     "static/media/sitemap.svg": "/freebets/static/media/sitemap.19245986e39012d461c7822f1edde5c0.svg",
     "static/media/info.svg": "/freebets/static/media/info.9696d85c210b450e6ae8ab8631c126c5.svg",
     "main.c3e71b84.css.map": "/freebets/static/css/main.c3e71b84.css.map",
-    "main.3706700a.js.map": "/freebets/static/js/main.3706700a.js.map"
+    "main.d44039b0.js.map": "/freebets/static/js/main.d44039b0.js.map"
   },
   "entrypoints": [
     "static/css/main.c3e71b84.css",
-    "static/js/main.3706700a.js"
+    "static/js/main.d44039b0.js"
   ]
 }
