@@ -1,6 +1,6 @@
 import re
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from utils import convert_decimal_to_american
 from utils import convert_team_event_name
@@ -50,7 +50,7 @@ def generate_superbook_formatted_events(url, sport, market_labels):
             print('error getting event name')
             continue
         try:
-            start = datetime.strptime(event['tsstart'], '%Y-%m-%dT%H:%M:%S')
+            start = datetime.strptime(event['tsstart'], '%Y-%m-%dT%H:%M:%S') + timedelta(hours=4)
         except ValueError:
             print('error parsing date time')
             start = None
