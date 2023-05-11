@@ -54,8 +54,9 @@ def generate_unibet_formatted_events(url, sport, market_labels):
     formatted_events = {}
     try:
         res = requests.get(url).json()
-    except:
+    except Exception as e:
         print('error getting url')
+        print(e)
         return formatted_events
     try:
         events = res['events']
