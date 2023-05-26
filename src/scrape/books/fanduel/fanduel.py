@@ -40,8 +40,9 @@ def generate_fanduel():
 def generate_fanduel_formatted_events(url, sport, market_labels, compititon_name):
     id_to_name_time = {}
     formatted_events = {}
+    headers = {'Cache-Control': 'no-cache'}
     try:
-        res = requests.get(url).json()
+        res = requests.get(url, headers=headers).json()
     except:
         print('error getting url')
         return formatted_events
@@ -81,7 +82,7 @@ def generate_fanduel_formatted_events(url, sport, market_labels, compititon_name
     for event_id in id_to_name_time:
         url = f'https://sbapi.nj.sportsbook.fanduel.com/api/event-page?_ak=FhMFpcPWXMeyZxOx&eventId={event_id}'
         try:
-            res = requests.get(url).json()
+            res = requests.get(url, headers=headers).json()
         except:
             print('error getting url')
             continue

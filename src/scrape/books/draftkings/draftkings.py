@@ -88,10 +88,10 @@ def generate_draftkings_formatted_events(sport_id, sport, market_labels, categor
     formatted_events = {}
     id_to_name_time = {}
     categories = update_categories(sport_id, categories)
-    
+    headers = {'Cache-Control': 'no-cache'}
     url = f'https://sportsbook.draftkings.com//sites/US-VA-SB/api/v5/eventgroups/{sport_id}?format=json'
     try:
-        res = requests.get(url).json()
+        res = requests.get(url, headers=headers).json()
     except:
         print('error getting url')
         return
@@ -121,7 +121,7 @@ def generate_draftkings_formatted_events(sport_id, sport, market_labels, categor
         for subcategory in category['subcategories'].values():
             try:
                 url = f'https://sportsbook-us-va.draftkings.com//sites/US-VA-SB/api/v5/eventgroups/{sport_id}/categories/{category["id"]}/subcategories/{subcategory["id"]}?format=json'
-                res = requests.get(url).json()
+                res = requests.get(url, headers=headers).json()
             except:
                 print('error getting url')
                 continue

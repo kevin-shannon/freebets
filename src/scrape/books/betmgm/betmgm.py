@@ -39,7 +39,8 @@ def generate_betmgm():
 def generate_betmgm_formatted_events(url, sport, market_labels):
     formatted_events = {}
     id_to_name_time = {}
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
+               'Cache-Control': 'no-cache'}
     xbwin_id = 'YTBiYWQ3ZjItMjBlZi00ODU2LWFmNjMtMTQzYjAzOGUxNDM2'
     try:
         res = requests.get(url, headers=headers).json()

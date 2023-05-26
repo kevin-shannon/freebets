@@ -34,8 +34,9 @@ def generate_superbook():
 
 def generate_superbook_formatted_events(url, sport, market_labels):
     formatted_events = {}
+    headers = {'Cache-Control': 'no-cache'}
     try:
-        res = requests.get(url).json()
+        res = requests.get(url, headers=headers).json()
     except:
         print('error getting url')
         return formatted_events

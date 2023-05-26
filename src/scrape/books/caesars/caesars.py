@@ -37,8 +37,9 @@ def generate_caesars():
 
 def generate_caesars_formatted_events(url, sport, market_labels):
     formatted_events = {}
+    headers = {'Cache-Control': 'no-cache'}
     try:
-        res = requests.get(url).json()
+        res = requests.get(url, headers=headers).json()
     except:
         print('error getting url')
         return formatted_events
@@ -63,7 +64,7 @@ def generate_caesars_formatted_events(url, sport, market_labels):
         formatted_events[event_name][start] = {'offers': {}}
         url = f'https://www.williamhill.com/us/mi/bet/api/v3/events/{event["id"]}'
         try:
-            res = requests.get(url).json()
+            res = requests.get(url, headers=headers).json()
         except:
             print('error getting url')
             continue

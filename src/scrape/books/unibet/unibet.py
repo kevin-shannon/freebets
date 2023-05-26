@@ -52,8 +52,9 @@ def generate_unibet_formatted_events(url, sport, market_labels):
         formatted events data for unibet nba bets
     '''
     formatted_events = {}
+    headers = {'Cache-Control': 'no-cache'}
     try:
-        res = requests.get(url).json()
+        res = requests.get(url, headers=headers).json()
     except Exception as e:
         print('error getting url', e)
         return formatted_events
@@ -80,7 +81,7 @@ def generate_unibet_formatted_events(url, sport, market_labels):
 
         url = f'https://eu-offering-api.kambicdn.com/offering/v2018/ubusva/betoffer/event/{event_id}.json'
         try:
-            res = requests.get(url).json()
+            res = requests.get(url, headers=headers).json()
         except:
             print('error getting url')
             continue
