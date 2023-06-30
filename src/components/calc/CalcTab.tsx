@@ -7,6 +7,7 @@ import { calcHedge, formatMoneyNumber, formatOddsNumber } from "../../Utils";
 import { BetOption, BetType } from "../../enums";
 import { Tooltip } from "react-tooltip";
 import { ReactComponent as Info } from "../../icons/info.svg";
+import ImageList from "@mui/material/ImageList";
 
 interface CalcTabProps {
   betOption: BetOption;
@@ -20,6 +21,8 @@ interface CalcTabProps {
   bet_b: string;
   odds_a: number;
   odds_b: number;
+  books_a: React.ReactNode[];
+  books_b: React.ReactNode[];
   stats: {
     perc: number;
     profit: number;
@@ -48,6 +51,8 @@ export default function CalcTab({
   bet_b,
   odds_a,
   odds_b,
+  books_a,
+  books_b,
   stats,
 }: CalcTabProps) {
   if (amount_a === undefined) setAmount_a("");
@@ -97,6 +102,22 @@ export default function CalcTab({
     <Box>
       <table className="calc-table">
         <tbody>
+          <tr>
+            <td>
+              <div className="books-container">
+                <ImageList style={{ margin: "auto", gap: 2 }} cols={Math.min(4, books_a.length)}>
+                  {books_a}
+                </ImageList>
+              </div>
+            </td>
+            <td>
+              <div className="books-container">
+                <ImageList style={{ margin: "auto", gap: 2 }} cols={Math.min(4, books_b.length)}>
+                  {books_b}
+                </ImageList>
+              </div>
+            </td>
+          </tr>
           <tr>
             <td className="calc-bet-name">{bet_a}</td>
             <td className="calc-bet-name">{bet_b}</td>

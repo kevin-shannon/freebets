@@ -129,6 +129,7 @@ def generate_draftkings_formatted_events(sport_id, sport, market_labels, categor
                 offer_categories = res['eventGroup']['offerCategories']
             except:
                 print('error getting offer category')
+                continue
             for offer_category in offer_categories:
                 if offer_category['offerCategoryId'] == category['id']:
                     try:

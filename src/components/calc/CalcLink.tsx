@@ -10,6 +10,7 @@ import ScenarioTab from "./ScenarioTab";
 import { Tab, TabList, Tabs, Modal, ModalClose } from "@mui/joy";
 import Sheet from "@mui/joy/Sheet";
 import SwipeableViews from "react-swipeable-views";
+import Book from "../common/Book";
 
 const modalStyle = {
   width: "clamp(300px, 90vw, 500px)",
@@ -72,6 +73,15 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
     setActiveTab(index);
   };
 
+  const books_a: React.ReactNode[] = [];
+  const books_b: React.ReactNode[] = [];
+  bet.outcomes[0].books.forEach((book: string) => {
+    books_a.push(<Book book={book} key={book} />);
+  });
+  bet.outcomes[1].books.forEach((book: string) => {
+    books_b.push(<Book book={book} key={book} />);
+  });
+
   return (
     <div className="calc-button-container">
       <button className="foot-link" onClick={handleOpen}>
@@ -92,10 +102,7 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
               transition: "transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s",
             }}
           >
-            <div
-              className="calc-content"
-              style={{ height: betOption.value === BetType.RISKFREE ? "330px" : "265px", display: "flex", alignItems: "center", justifyContent: "center" }}
-            >
+            <div className="calc-content" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
               <CalcTab
                 betOption={betOption}
                 amount_a={amount_a}
@@ -108,10 +115,12 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
                 bet_b={bet_b}
                 odds_a={odds_a}
                 odds_b={odds_b}
+                books_a={books_a}
+                books_b={books_b}
                 stats={stats}
               />
             </div>
-            <div className="calc-content" style={{ height: betOption.value === BetType.RISKFREE ? "330px" : "265px" }}>
+            <div className="calc-content" style={{ height: betOption.value === BetType.RISKFREE ? "365px" : "300px" }}>
               <ScenarioTab betOption={betOption} amount_a={amount_a} amount_b={amount_b} bet_a={bet_a} bet_b={bet_b} stats={stats} />
             </div>
           </SwipeableViews>
