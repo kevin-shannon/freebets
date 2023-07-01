@@ -111,7 +111,7 @@ def generate_fanduel_formatted_events(url, sport, market_labels, compititon_name
                 for runner in runners:
                     try:
                         event_name, start = id_to_name_time[str(market['eventId'])]
-                        bet_name, line = runner['runnerName'].split(' ')
+                        bet_name, line = runner['runnerName'].replace('(', '').replace(')', '').split(' ')
                         market_name = construct_total_market_name(line)
                         outcome = {'name': bet_name, 'odds': int(runner['winRunnerOdds']['americanDisplayOdds']['americanOdds'])}
                         if market_name in formatted_events[event_name][start]['offers']:

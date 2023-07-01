@@ -1,6 +1,6 @@
 import boto3
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from books.betmgm.betmgm import generate_betmgm
 from books.caesars.caesars import generate_caesars
 from books.draftkings.draftkings import generate_draftkings
@@ -32,6 +32,11 @@ def make_outcome_simple(market, outcome):
         return f'{outcome["name"]} {market.split(":")[1].strip()}'
     elif market.startswith('Spread:'):
         return outcome['name']
+    
+def is_within_5_minutes(datetime1, datetime2):
+    time_difference = abs(datetime1 - datetime2)
+    five_minutes = timedelta(minutes=5)
+    return time_difference <= five_minutes
 
 def aggregate(data):
     bets = {}
@@ -39,9 +44,16 @@ def aggregate(data):
         for sport in data[book]:
             for event in data[book][sport]:
                 for start in data[book][sport][event]:
-                    start_string = datetime.strftime(start, '%Y-%m-%dT%H:%M:%SZ') if start is not None else ''
+                    seen_starts = [list(data.get(b, {}).get(sport, {}).get(event, {}).keys()) for b in data]
+                    for book_starts in seen_starts:
+                        for s in book_starts:
+                            if is_within_5_minutes(start, s):
+                                start_string = datetime.strftime(s, '%Y-%m-%dT%H:%M:%SZ') if start is not None else ''
+                                break
+                    else:
+                        start_string = datetime.strftime(start, '%Y-%m-%dT%H:%M:%SZ') if start is not None else ''
                     for market in data[book][sport][event][start]['offers']:
-                        key = frozenset([sport, event, start, market])
+                        key = frozenset([sport, event, start_string, market])
                         outcomes = data[book][sport][event][start]['offers'][market]
                         if key not in bets:
                             bets[key] = {'sport': sport, 'event': event, 'market': make_market_simple(market), 'start': start_string}
