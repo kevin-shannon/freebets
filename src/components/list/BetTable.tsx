@@ -46,7 +46,7 @@ interface BetTableProps {
 
 function BetTable({ bets, betOption }: BetTableProps) {
   const rows: React.ReactNode[] = [];
-  const rate = betOption.value === BetType.ARBITRAGE ? "EV" : "Conversion";
+  const rate = betOption.value === BetType.ARBITRAGE ? "EV" : betOption.value === BetType.PLAYTHROUGH ? "Weighted EV" : "Conversion";
   const { width } = useViewport();
   const breakpoint1 = 1100;
   const breakpoint2 = 850;

@@ -2,6 +2,7 @@ export enum BetType {
   ARBITRAGE = "arbitrage",
   FREEBET = "freebet",
   RISKFREE = "riskfree",
+  PLAYTHROUGH = "playthrough",
 }
 
 export enum BookType {

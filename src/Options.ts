@@ -2,8 +2,9 @@ import { BetOption, BookOption, SportOption, BetType, BookType, SportType } from
 
 export const bet_type_options: BetOption[] = [
   { value: BetType.ARBITRAGE, label: "Arbitrage" },
+  { value: BetType.PLAYTHROUGH, label: "Playthrough" },
   { value: BetType.FREEBET, label: "Free Bet" },
-  { value: BetType.RISKFREE, label: "Risk Free"},
+  { value: BetType.RISKFREE, label: "Risk Free" },
 ];
 
 export const book_options: BookOption[] = [
@@ -24,6 +25,6 @@ export const sport_options: SportOption[] = [
   { value: SportType.NHL, label: "NHL" },
   { value: SportType.NFL, label: "NFL" },
   { value: SportType.COLLEGE_BASKETBALL, label: "College Basketball" },
-  { value: SportType.COLLEGE_FOOTBALL, label: "College Football"},
+  { value: SportType.COLLEGE_FOOTBALL, label: "College Football" },
   { value: SportType.TENNIS, label: "Tennis" },
 ];

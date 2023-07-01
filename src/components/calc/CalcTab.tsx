@@ -61,6 +61,9 @@ export default function CalcTab({
   if (betOption.value === BetType.ARBITRAGE) {
     label_a = "Bet Amount";
     label_b = "Bet Amount";
+  } else if (betOption.value === BetType.PLAYTHROUGH) {
+    label_a = "Bet Amount";
+    label_b = "Bet Amount";
   } else if (betOption.value === BetType.FREEBET) {
     label_a = "Free Bet";
     label_b = "Hedge Bet";
@@ -92,7 +95,7 @@ export default function CalcTab({
     if (value === undefined) {
       setAmount_a("");
       setAmount_b("");
-    } else if (betOption.value === BetType.ARBITRAGE && value !== undefined) {
+    } else if ((betOption.value === BetType.ARBITRAGE || BetType.PLAYTHROUGH) && value !== undefined) {
       setAmount_a(calcHedge(betOption, Number(value), odds_b, odds_a, Number(conversion)));
       setAmount_b(value);
     }
@@ -163,7 +166,7 @@ export default function CalcTab({
                 <div className="input-cell dynamic-cell">
                   <label className="input-label">{label_b}</label>
                   <CurrencyInput
-                    className={betOption.value === BetType.ARBITRAGE ? "calc-input dynamic-cell" : "calc-input dynamic-cell hedge-input"}
+                    className={betOption.value === BetType.ARBITRAGE || BetType.PLAYTHROUGH ? "calc-input dynamic-cell" : "calc-input dynamic-cell hedge-input"}
                     prefix="$"
                     allowDecimals={false}
                     allowNegativeValue={false}
@@ -171,7 +174,7 @@ export default function CalcTab({
                     value={amount_b}
                     onValueChange={handleAmountBChange}
                     maxLength={4}
-                    readOnly={betOption.value === BetType.ARBITRAGE ? false : true}
+                    readOnly={betOption.value === BetType.ARBITRAGE || BetType.PLAYTHROUGH ? false : true}
                   />
                 </div>
               </div>

@@ -51,7 +51,7 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
   };
 
   let odds_a, odds_b, bet_a, bet_b;
-  const func = betOption.value === BetType.ARBITRAGE ? computeEv : computeConversion;
+  const func = betOption.value === BetType.ARBITRAGE || BetType.PLAYTHROUGH ? computeEv : computeConversion;
   if (Math.abs(func(bet.outcomes[0].odds, bet.outcomes[1].odds) - bet.rate) > Math.abs(func(bet.outcomes[1].odds, bet.outcomes[0].odds) - bet.rate)) {
     odds_a = bet.outcomes[1].odds;
     odds_b = bet.outcomes[0].odds;

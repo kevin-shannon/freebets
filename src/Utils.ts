@@ -2,7 +2,7 @@ import { BetType, BetOption, Bet } from "./enums";
 
 export function filterBets(data: any[], betType: { value: BetType }, books_a: string[], books_b: string[], show_live: boolean, show_push: boolean): Bet[] {
   let bets: Bet[] = [];
-  const func = betType.value === BetType.ARBITRAGE ? computeEv : computeConversion;
+  const func = betType.value === BetType.ARBITRAGE ? computeEv : betType.value === BetType.PLAYTHROUGH ? computePlaythrough : computeConversion;
   for (let i = 0; i < data.length; i++) {
     if (data[i]["outcomes"].length !== 2) continue;
     const best = findBestPair(new Set(books_a), new Set(books_b), data[i]["outcomes"][0]["books"], data[i]["outcomes"][1]["books"], func);
@@ -83,6 +83,11 @@ export function calcBetStats(
         net_a_2: formatMoneyNumber(dec_conversion * amount_a + won_b - sunk, cents),
         net_b_2: formatMoneyNumber(dec_conversion * amount_a + won_b - sunk, cents),
       };
+      break;
+    case BetType.PLAYTHROUGH:
+      perc = Number(((computeEv(odds_a, odds_b) - 1) * 100).toFixed(2));
+      sunk += amount_a;
+      profit = (perc / 100) * sunk;
       break;
     default:
       throw new Error("Unknown BetType: " + betOption.value);
@@ -183,6 +188,12 @@ export function computeConversion(oddsA: number, oddsB: number): number {
   const a: number = convertAmericanToDecimal(oddsA);
   const b: number = convertAmericanToDecimal(oddsB);
   return a - 1 - (a - 1) / b;
+}
+
+export function computePlaythrough(oddsA: number, oddsB: number): number {
+  const a: number = convertAmericanToDecimal(oddsA);
+  const b: number = convertAmericanToDecimal(oddsB);
+  return a - 1 - a / b;
 }
 
 function findBestPair(

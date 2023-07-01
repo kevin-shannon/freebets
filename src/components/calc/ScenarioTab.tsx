@@ -76,6 +76,19 @@ export default function ScenarioTab({ betOption, amount_a, amount_b, bet_a, bet_
       sunk: stats.sunk,
       net: stats.net_b,
     };
+  } else if (betOption.value === BetType.PLAYTHROUGH) {
+    org.children[0].children[0] = {
+      type: "EvalNode",
+      won: stats.won_a,
+      sunk: stats.sunk,
+      net: stats.net_a,
+    };
+    org.children[1].children[0] = {
+      type: "EvalNode",
+      won: stats.won_b,
+      sunk: stats.sunk,
+      net: stats.net_b,
+    };
   } else if (betOption.value === BetType.FREEBET) {
     org.children[0].children[0] = {
       type: "EvalNode",

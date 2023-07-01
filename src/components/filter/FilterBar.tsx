@@ -104,12 +104,19 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
                 </label>
                 <BookSelect id="books-select" allowSelectAll={true} book={bookA} onBookChange={[setBookA, setBookB]} />
               </div>
+            ) : betOption.value === BetType.PLAYTHROUGH ? (
+              <div className="filter-cell">
+                <label className="select-helper" htmlFor="playthrough-select">
+                  Playthrough Book
+                </label>
+                <BookSelect id="playthrough-select" allowSelectAll={true} book={bookA} onBookChange={[setBookA]} />
+              </div>
             ) : (
               <div className="filter-cell">
-                <label className="select-helper" htmlFor="free-bet-select">
+                <label className="select-helper" htmlFor="freebet-select">
                   Free Bet Book
                 </label>
-                <BookSelect id="free-bet-select" allowSelectAll={true} book={bookA} onBookChange={[setBookA]} />
+                <BookSelect id="freebet-select" allowSelectAll={true} book={bookA} onBookChange={[setBookA]} />
               </div>
             )}
           </td>
@@ -164,14 +171,14 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
             </div>
           </td>
           <td>
-            {betOption.value === BetType.ARBITRAGE ? null : (
+            {betOption.value === BetType.FREEBET || betOption.value === BetType.RISKFREE || betOption.value === BetType.PLAYTHROUGH ? (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="hedge-book-select">
                   Hedge Book
                 </label>
                 <BookSelect id="hedge-book-select" allowSelectAll={true} book={bookB} onBookChange={[setBookB]} />
               </div>
-            )}
+            ) : null}
           </td>
         </tr>
       </tbody>
