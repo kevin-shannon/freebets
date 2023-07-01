@@ -44,12 +44,11 @@ def aggregate(data):
         for sport in data[book]:
             for event in data[book][sport]:
                 for start in data[book][sport][event]:
-                    seen_starts = [list(data.get(b, {}).get(sport, {}).get(event, {}).keys()) for b in data]
-                    for book_starts in seen_starts:
-                        for s in book_starts:
-                            if is_within_5_minutes(start, s):
-                                start_string = datetime.strftime(s, '%Y-%m-%dT%H:%M:%SZ') if start is not None else ''
-                                break
+                    seen_starts = [bet for bet in bets.values() if bet['sport'] == sport and bet['event'] == event]
+                    for s in seen_starts:
+                        if is_within_5_minutes(start, datetime.strptime(s['start'], '%Y-%m-%dT%H:%M:%SZ')):
+                            start_string = s['start']
+                            break
                     else:
                         start_string = datetime.strftime(start, '%Y-%m-%dT%H:%M:%SZ') if start is not None else ''
                     for market in data[book][sport][event][start]['offers']:
