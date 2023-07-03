@@ -9,6 +9,7 @@ import axios from "axios";
 import "typeface-roboto";
 import "typeface-roboto-mono";
 import { Option } from "../../enums"
+import useLocalStorageState from "../common/useLocalStorageState";
 
 function readyBookList(book: Option[]) {
   let arr = book.map((ob) => ob.value);
@@ -20,11 +21,11 @@ function readyBookList(book: Option[]) {
 }
 
 function App() {
-  const [betOption, setBetOption] = useState(bet_type_options[1]);
-  const [bookA, setBookA] = useState(book_options_all);
-  const [bookB, setBookB] = useState(book_options_all);
-  const [showLive, setShowLive] = useState(false);
-  const [showPush, setShowPush] = useState(false);
+  const [betOption, setBetOption] = useLocalStorageState('betOption', bet_type_options[1]);
+  const [bookA, setBookA] = useLocalStorageState('bookA', book_options_all);
+  const [bookB, setBookB] = useLocalStorageState('bookB', book_options_all);
+  const [showLive, setShowLive] = useLocalStorageState('showLive', false);
+  const [showPush, setShowPush] = useLocalStorageState('showPush', false);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -50,7 +51,9 @@ function App() {
           setBookA={setBookA}
           bookB={bookB}
           setBookB={setBookB}
+          showLive={showLive}
           setShowLive={setShowLive}
+          showPush={showPush}
           setShowPush={setShowPush}
         />
         {!bookA.length || !bookB.length ? (
