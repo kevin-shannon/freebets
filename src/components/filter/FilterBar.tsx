@@ -65,11 +65,13 @@ interface FilterBarProps {
   setBookA: React.Dispatch<React.SetStateAction<BookOption[]>>;
   bookB: BookOption[];
   setBookB: React.Dispatch<React.SetStateAction<BookOption[]>>;
+  showLive: boolean,
   setShowLive: React.Dispatch<React.SetStateAction<boolean>>;
+  showPush: boolean,
   setShowPush: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bookB, setBookB, setShowLive, setShowPush }: FilterBarProps) {
+export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bookB, setBookB, showLive, setShowLive, showPush, setShowPush }: FilterBarProps) {
   const onChange = (option: BetOption | null, _actionMeta: ActionMeta<BetOption>) => {
     if (option !== null) {
       setBetOption(option);
@@ -130,6 +132,7 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
                   className="switch-element"
                   control={
                     <BlueSwitch
+                      checked={showLive}
                       onChange={(event) => {
                         setShowLive(event.target.checked);
                       }}
@@ -152,6 +155,7 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
                   className="switch-element-"
                   control={
                     <BlueSwitch
+                      checked={showPush}
                       onChange={(event) => {
                         setShowPush(event.target.checked);
                       }}
