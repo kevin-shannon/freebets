@@ -37,6 +37,14 @@
   font-weight: 600;
   padding: 0 10px;
   box-sizing: border-box;
+  border-bottom: solid 5px #00000000;
+}
+
+.hamburger-container:hover,
+.nav-link:hover {
+  color: #b8bcbf;
+  fill: #b8bcbf;
+  transition: color 0.25s ease;
 }
 
 .links-container {
@@ -46,5 +54,5 @@
 }
 
 .link-active {
-  border-bottom: solid 3px #fa5b67;
+  border-bottom: solid 5px #fa5b67;
 }
