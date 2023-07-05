@@ -8,7 +8,8 @@ import { book_options_all, bet_type_options } from "../../Options";
 import axios from "axios";
 import "typeface-roboto";
 import "typeface-roboto-mono";
-import { Option } from "../../enums"
+import { Option } from "../../enums";
+import Navbar from "./Navbar";
 import useLocalStorageState from "../common/useLocalStorageState";
 
 function readyBookList(book: Option[]) {
@@ -21,12 +22,13 @@ function readyBookList(book: Option[]) {
 }
 
 function App() {
-  const [betOption, setBetOption] = useLocalStorageState('betOption', bet_type_options[1]);
-  const [bookA, setBookA] = useLocalStorageState('bookA', book_options_all);
-  const [bookB, setBookB] = useLocalStorageState('bookB', book_options_all);
-  const [showLive, setShowLive] = useLocalStorageState('showLive', false);
-  const [showPush, setShowPush] = useLocalStorageState('showPush', false);
+  const [betOption, setBetOption] = useLocalStorageState("betOption", bet_type_options[1]);
+  const [bookA, setBookA] = useLocalStorageState("bookA", book_options_all);
+  const [bookB, setBookB] = useLocalStorageState("bookB", book_options_all);
+  const [showLive, setShowLive] = useLocalStorageState("showLive", false);
+  const [showPush, setShowPush] = useLocalStorageState("showPush", false);
   const [data, setData] = useState([]);
+  const [hamburgerActive, setHamburgerActive] = useState(false);
 
   useEffect(() => {
     axios
@@ -43,7 +45,9 @@ function App() {
 
   return (
     <div className="site">
+      <Navbar hamburgerActive={hamburgerActive} setHamburgerActive={setHamburgerActive} />
       <div className="content">
+        <div className={`content-backdrop ${hamburgerActive ? "active" : ""}`}></div>
         <FilterBar
           betOption={betOption}
           setBetOption={setBetOption}

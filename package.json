@@ -13,6 +13,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/joy": "^5.0.0-alpha.77",
     "@mui/material": "^5.11.15",
+    "@nextui-org/react": "^1.0.0-beta.13",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
