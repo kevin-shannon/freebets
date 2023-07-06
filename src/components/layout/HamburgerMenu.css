@@ -31,3 +31,68 @@
 .bars-icon {
   height: 1.5em;
 }
+
+.burger-wrapper {
+  cursor: pointer;
+  margin: auto;
+  width: 24px;
+  height: 23px;
+}
+
+.burger-wrapper .hamburger {
+  background: #e5e6e7;
+  width: 24px;
+  height: 3px;
+  position: relative;
+  transition: background 10ms 300ms ease;
+  transform: translateY(10px);
+  border-radius: 10px;
+}
+
+.burger-wrapper .hamburger:before,
+.burger-wrapper .hamburger:after {
+  transition: top 300ms 350ms ease, transform 300ms 50ms ease, background 300ms 0ms ease;
+  position: absolute;
+  background: #e5e6e7;
+  width: 24px;
+  height: 3px;
+  content: "";
+  border-radius: 10px;
+}
+
+.burger-wrapper .hamburger:before {
+  top: -8px;
+}
+
+.burger-wrapper .hamburger:after {
+  top: 8px;
+}
+
+.burger-wrapper:hover .hamburger:before,
+.burger-wrapper:hover .hamburger:after,
+.burger-wrapper:hover .hamburger {
+  background: #b8bcbf;
+}
+
+.menu-trigger:checked ~ .burger-wrapper .hamburger:before,
+.menu-trigger:checked ~ .burger-wrapper .hamburger:after {
+  transition: top 300ms 50ms ease, transform 300ms 350ms ease;
+  top: 0;
+}
+
+.menu-trigger:checked ~ .burger-wrapper .hamburger {
+  transition: background 10ms 300ms ease;
+  background: transparent;
+}
+
+.menu-trigger:checked ~ .burger-wrapper .hamburger:before {
+  transform: rotate(45deg);
+}
+
+.menu-trigger:checked ~ .burger-wrapper .hamburger:after {
+  transform: rotate(-45deg);
+}
+
+.hidden {
+  display: none;
+}

@@ -17,10 +17,13 @@ export default function HamburgerMenu({ hamburgerActive, setHamburgerActive }: H
 
   return (
     <div className="hamburger-content">
-      <Bars onClick={toggleSlide} className="bars-icon" />
+      <input id="togglenav" className="menu-trigger hidden" type="checkbox" />
+      <label htmlFor="togglenav" onClick={toggleSlide} className="burger-wrapper">
+        <div className="hamburger"></div>
+      </label>
       <div className="sliding-drawer">
         <div className="sliding-shelf">
-          <div className={`sliding-div ${isSlideVisible ? "visible" : ""}`}>{}</div>
+          <div className={`sliding-div ${isSlideVisible ? "visible" : ""}`}></div>
         </div>
       </div>
     </div>

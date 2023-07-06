@@ -40,10 +40,8 @@
   border-bottom: solid 5px #00000000;
 }
 
-.hamburger-container:hover,
 .nav-link:hover {
   color: #b8bcbf;
-  fill: #b8bcbf;
   transition: color 0.25s ease;
 }
 
