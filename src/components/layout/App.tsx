@@ -47,7 +47,12 @@ function App() {
     <div className="site">
       <Navbar hamburgerActive={hamburgerActive} setHamburgerActive={setHamburgerActive} />
       <div className="content">
-        <div className={`content-backdrop ${hamburgerActive ? "active" : ""}`}></div>
+        <div
+          className={`content-backdrop ${hamburgerActive ? "active" : ""}`}
+          onClick={() => {
+            setHamburgerActive(false);
+          }}
+        ></div>
         <FilterBar
           betOption={betOption}
           setBetOption={setBetOption}

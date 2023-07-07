@@ -5,14 +5,13 @@
   transition: transform 0.3s ease;
   transform: translateY(-100%);
   border-radius: 0 0 10px 10px;
-  pointer-events: none;
 }
 
 .sliding-div.visible {
   transform: translateY(0);
 }
 
-.hamburger-content {
+.hamburger-container {
   display: flex;
 }
 
@@ -26,6 +25,10 @@
   position: absolute;
   overflow: hidden;
   pointer-events: none;
+}
+
+.hamburger-container.active .sliding-shelf {
+  pointer-events: all;
 }
 
 .burger-wrapper {
@@ -70,25 +73,17 @@
   background: #b8bcbf;
 }
 
-.burger-wrapper.active .hamburger:after,
-.burger-wrapper.active .hamburger {
-  transition: transform 300ms 350ms ease;
-}
-
-.burger-wrapper.active .hamburger:before,
-.burger-wrapper.active .hamburger:after {
+.hamburger-container.active .hamburger,
+.hamburger-container.active .hamburger:before,
+.hamburger-container.active .hamburger:after {
   transition: top 300ms 50ms ease, transform 300ms 350ms ease;
   top: 0;
 }
 
-.burger-wrapper.active .hamburger {
+.hamburger-container.active .hamburger {
   transform: rotate(45deg);
 }
 
-.burger-wrapper.active .hamburger:after {
+.hamburger-container.active .hamburger:after {
   transform: rotate(-90deg);
-}
-
-.hidden {
-  display: none;
 }

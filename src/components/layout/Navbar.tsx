@@ -33,9 +33,7 @@ export default function Navbar({ hamburgerActive, setHamburgerActive }: NavbarPr
           <div className="nav-link">Tools</div>
           <div className="nav-link">Guides</div>
         </div>
-        <div className="hamburger-container">
-          <HamburgerMenu hamburgerActive={hamburgerActive} setHamburgerActive={setHamburgerActive} />
-        </div>
+        <HamburgerMenu hamburgerActive={hamburgerActive} setHamburgerActive={setHamburgerActive} />
       </div>
     </nav>
   );
