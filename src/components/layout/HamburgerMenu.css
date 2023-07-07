@@ -28,10 +28,6 @@
   pointer-events: none;
 }
 
-.bars-icon {
-  height: 1.5em;
-}
-
 .burger-wrapper {
   cursor: pointer;
   margin: auto;
@@ -74,22 +70,22 @@
   background: #b8bcbf;
 }
 
-.menu-trigger:checked ~ .burger-wrapper .hamburger:after,
-.menu-trigger:checked ~ .burger-wrapper .hamburger {
+.burger-wrapper.active .hamburger:after,
+.burger-wrapper.active .hamburger {
   transition: transform 300ms 350ms ease;
 }
 
-.menu-trigger:checked ~ .burger-wrapper .hamburger:before,
-.menu-trigger:checked ~ .burger-wrapper .hamburger:after {
+.burger-wrapper.active .hamburger:before,
+.burger-wrapper.active .hamburger:after {
   transition: top 300ms 50ms ease, transform 300ms 350ms ease;
   top: 0;
 }
 
-.menu-trigger:checked ~ .burger-wrapper .hamburger {
+.burger-wrapper.active .hamburger {
   transform: rotate(45deg);
 }
 
-.menu-trigger:checked ~ .burger-wrapper .hamburger:after {
+.burger-wrapper.active .hamburger:after {
   transform: rotate(-90deg);
 }
 
