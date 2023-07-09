@@ -1,4 +1,5 @@
 import "./HamburgerMenu.css";
+import StyleTabs from "./StyleTabs";
 
 interface HamburgerMenuProps {
   hamburgerActive: boolean;
@@ -17,7 +18,11 @@ export default function HamburgerMenu({ hamburgerActive, setHamburgerActive }: H
       </div>
       <div className="sliding-drawer">
         <div className="sliding-shelf">
-          <div className={`sliding-div ${hamburgerActive ? "visible" : ""}`}></div>
+          <div className={`sliding-div ${hamburgerActive ? "visible" : ""}`}>
+            <div className="menu-container">
+              <StyleTabs />
+            </div>
+          </div>
         </div>
       </div>
     </div>

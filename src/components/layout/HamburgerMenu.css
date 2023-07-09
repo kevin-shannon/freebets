@@ -5,6 +5,8 @@
   transition: transform 0.3s ease;
   transform: translateY(-100%);
   border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .sliding-div.visible {
@@ -25,6 +27,10 @@
   position: absolute;
   overflow: hidden;
   pointer-events: none;
+}
+
+.menu-container {
+  padding: 20px 10px;
 }
 
 .hamburger-container.active .sliding-shelf {
