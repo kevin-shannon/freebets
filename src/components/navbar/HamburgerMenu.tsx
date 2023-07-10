@@ -1,5 +1,6 @@
 import "./HamburgerMenu.css";
 import StyleToggle from "./StyleToggle";
+import OddsFormatToggle from "./OddsFormatToggle";
 
 interface HamburgerMenuProps {
   hamburgerActive: boolean;
@@ -21,6 +22,7 @@ export default function HamburgerMenu({ hamburgerActive, setHamburgerActive }: H
           <div className={`sliding-div ${hamburgerActive ? "visible" : ""}`}>
             <div className="menu-container">
               <StyleToggle />
+              <OddsFormatToggle />
             </div>
           </div>
         </div>

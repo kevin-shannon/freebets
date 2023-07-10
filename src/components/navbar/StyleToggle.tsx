@@ -7,13 +7,19 @@ import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 const children = [
   <ToggleButton className="toggle-button style" disableRipple={true} value="light" key="left">
-    <Sun className="style-icon" /> Light
+    <div className="style-option col1-content">
+      <Sun className="style-icon" /> Light
+    </div>
   </ToggleButton>,
   <ToggleButton className="toggle-button style" disableRipple={true} value="system" key="center">
-    <SystemBrightness className="style-icon" /> System
+    <div className="style-option col2-content">
+      <SystemBrightness className="style-icon" /> System
+    </div>
   </ToggleButton>,
   <ToggleButton className="toggle-button style" disableRipple={true} value="dark" key="right">
-    <MoonStars className="style-icon" /> Dark
+    <div className="style-option col3-content">
+      <MoonStars className="style-icon" /> Dark
+    </div>
   </ToggleButton>,
 ];
 
