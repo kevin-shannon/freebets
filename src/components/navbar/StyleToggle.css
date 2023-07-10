@@ -1,0 +1,25 @@
+.toggle-button.style {
+  text-transform: none;
+}
+
+.styles-block {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: auto;
+}
+
+.menu-setting-label {
+  font-family: "IBM Plex Sans";
+  font-weight: 700;
+  margin-left: 2px;
+  color: rgb(84 85 92);
+  margin-bottom: 8px;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.style-icon {
+  margin-right: 8px;
+  height: 20px;
+}

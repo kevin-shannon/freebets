@@ -9,7 +9,7 @@ import axios from "axios";
 import "typeface-roboto";
 import "typeface-roboto-mono";
 import { Option } from "../../enums";
-import Navbar from "./Navbar";
+import Navbar from "../navbar/Navbar";
 import useLocalStorageState from "../common/useLocalStorageState";
 
 function readyBookList(book: Option[]) {

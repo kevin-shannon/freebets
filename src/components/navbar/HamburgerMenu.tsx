@@ -1,5 +1,5 @@
 import "./HamburgerMenu.css";
-import StyleTabs from "./StyleTabs";
+import StyleToggle from "./StyleToggle";
 
 interface HamburgerMenuProps {
   hamburgerActive: boolean;
@@ -20,7 +20,7 @@ export default function HamburgerMenu({ hamburgerActive, setHamburgerActive }: H
         <div className="sliding-shelf">
           <div className={`sliding-div ${hamburgerActive ? "visible" : ""}`}>
             <div className="menu-container">
-              <StyleTabs />
+              <StyleToggle />
             </div>
           </div>
         </div>
