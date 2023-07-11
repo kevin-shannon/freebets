@@ -3,28 +3,36 @@ import "./BookSelect.css";
 import Select, { components, MultiValue, ActionMeta, ValueContainerProps, OptionProps } from "react-select";
 import { book_options_all, book_options } from "../../Options";
 import { BookOption } from "../../enums";
+import Check from "../common/Check";
 
 const Option = (props: OptionProps<BookOption>) => {
   return (
     <div>
       <components.Option {...props}>
-        <input type="checkbox" checked={props.isSelected} onChange={() => null} />
-        <label>{props.label}</label>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <label>{props.label}</label>
+          <Check checkActive={props.isSelected} />
+        </div>
       </components.Option>
     </div>
   );
 };
 
 interface BetTypeStyle {
-  control: (base: any) => any;
+  control: (base: any, state: any) => any;
   menuList: (base: any) => any;
   option: (base: any, _: any) => any;
 }
 
 const bookSelectStyle: BetTypeStyle = {
-  control: (base) => ({
+  control: (base, state) => ({
     ...base,
     backgroundColor: "#fafafa",
+    "&:hover": {
+      border: state.isFocused ? base.border : "1px solid hsl(0, 0%, 70%)",
+    },
+    border: state.isFocused ? "1px solid #fa5b67" : base.border,
+    boxShadow: state.isFocused ? "0 0 0 1px #fa5b67" : base.boxShadow,
   }),
   menuList: (base) => ({
     ...base,
@@ -64,8 +72,7 @@ const ValueContainer = ({ children, ...props }: ValueContainerProps<BookOption>)
   } else {
     newChildren.push(`${count} books`);
   }
-  if (children !== null && children !== undefined)
-    newChildren.push(children[1 as keyof typeof children]);
+  if (children !== null && children !== undefined) newChildren.push(children[1 as keyof typeof children]);
 
   if (!hasValue) {
     return <components.ValueContainer {...props}>{children}</components.ValueContainer>;
@@ -94,14 +101,13 @@ export default function BookSelect({ id, allowSelectAll, book, onBookChange }: B
   const handleChange = (selected: MultiValue<BookOption>, action: ActionMeta<BookOption>) => {
     if (action.action === "select-option" && action.option && action.option.value === "all") {
       handleSelectAll(true);
-    } else if (action.action === "deselect-option" && action.option &&  action.option.value === "all") {
+    } else if (action.action === "deselect-option" && action.option && action.option.value === "all") {
       handleSelectAll(false);
     } else if (action.action === "select-option" && selected.length === book_options.length) {
       handleSelectAll(true);
     } else {
-      if (action.action === "deselect-option" && selected.length === book_options.length) 
-      selected = selected.filter((obj) => obj.value !== "all");
-      const multiValueSelected = selected.map(option => ({ value: option.value, label: option.label }));
+      if (action.action === "deselect-option" && selected.length === book_options.length) selected = selected.filter((obj) => obj.value !== "all");
+      const multiValueSelected = selected.map((option) => ({ value: option.value, label: option.label }));
       onBooksChange(multiValueSelected, onBookChange);
     }
   };

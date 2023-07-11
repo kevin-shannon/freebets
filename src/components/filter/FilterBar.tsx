@@ -24,38 +24,35 @@ const BlueSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 interface BetTypeStyle {
-  control: (base: any) => any;
+  control: (base: any, state: any) => any;
   menuList: (base: any) => any;
-  formControl: any;
-  select: any;
-  selectedOption: any;
+  option: (base: any, state: any) => any;
 }
 
 const betTypeStyle: BetTypeStyle = {
-  control: (base) => ({
+  control: (base, state) => ({
     ...base,
     backgroundColor: "#fafafa",
+    "&:hover": {
+      border: state.isFocused ? base.border : "1px solid hsl(0, 0%, 70%)",
+    },
+    border: state.isFocused ? "1px solid #fa5b67" : base.border,
+    boxShadow: state.isFocused ? "0 0 0 1px #fa5b67" : base.boxShadow,
   }),
   menuList: (base) => ({
     ...base,
     backgroundColor: "#fafafa",
   }),
-  formControl: {
-    borderRadius: "10px",
-    minWidth: 120,
-    "& .MuiSelect-select:focus": {
-      backgroundColor: "transparent",
+  option: (base, state) => ({
+    ...base,
+    backgroundColor: state.isSelected ? "#fa5b67" : null,
+    "&:active": {
+      backgroundColor: state.isSelected ? "#fa5b67" : "#fa5b6755",
     },
-  },
-  select: {
-    "&:focus": {
-      backgroundColor: "transparent",
+    "&:hover:not(:active)": {
+      backgroundColor: state.isSelected ? "#fa5b67" : "#fa5b6725",
     },
-  },
-  selectedOption: {
-    backgroundColor: "#F5F5F5",
-    borderRadius: "10px",
-  },
+  }),
 };
 
 interface FilterBarProps {
@@ -65,9 +62,9 @@ interface FilterBarProps {
   setBookA: React.Dispatch<React.SetStateAction<BookOption[]>>;
   bookB: BookOption[];
   setBookB: React.Dispatch<React.SetStateAction<BookOption[]>>;
-  showLive: boolean,
+  showLive: boolean;
   setShowLive: React.Dispatch<React.SetStateAction<boolean>>;
-  showPush: boolean,
+  showPush: boolean;
   setShowPush: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

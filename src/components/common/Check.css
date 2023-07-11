@@ -1,0 +1,27 @@
+.first-stroke {
+  stroke-dasharray: 52px;
+  stroke-dashoffset: 52px;
+  transition: stroke-dashoffset 50ms 50ms linear;
+  stroke: #fa5b67;
+  stroke-width: 23px;
+  fill: none;
+}
+
+.second-stroke {
+  stroke-dasharray: 76px;
+  stroke-dashoffset: 76px;
+  transition: stroke-dashoffset 50ms linear;
+  stroke: #fa5b67;
+  stroke-width: 23px;
+  fill: none;
+}
+
+.first-stroke.active {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 50ms linear;
+}
+
+.second-stroke.active {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 50ms 50ms linear;
+}
