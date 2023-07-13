@@ -4,17 +4,17 @@ import FilterBar from "../filter/FilterBar";
 import BetTable from "../list/BetTable";
 import Footer from "./Footer";
 import { filterBets } from "../../Utils";
-import { book_options_all, bet_type_options } from "../../Options";
+import { book_options_all, bet_type_options, sport_options_all } from "../../Options";
 import axios from "axios";
 import "typeface-roboto";
 import "typeface-roboto-mono";
-import { Option } from "../../enums";
+import { BookType, BookOption, BetType } from "../../enums";
 import Navbar from "../navbar/Navbar";
 import useLocalStorageState from "../common/useLocalStorageState";
 
-function readyBookList(book: Option[]) {
+function removeAllFromBook(book: BookOption[]) {
   let arr = book.map((ob) => ob.value);
-  const indexToRemove = arr.indexOf("all");
+  const indexToRemove = arr.indexOf(BookType.ALL);
   if (indexToRemove !== -1) {
     arr.splice(indexToRemove, 1);
   }
@@ -27,6 +27,7 @@ function App() {
   const [bookB, setBookB] = useLocalStorageState("bookB", book_options_all);
   const [showLive, setShowLive] = useLocalStorageState("showLive", false);
   const [showPush, setShowPush] = useLocalStorageState("showPush", false);
+  const [sport, setSport] = useLocalStorageState("sport", sport_options_all);
   const [data, setData] = useState([]);
   const [hamburgerActive, setHamburgerActive] = useState(false);
 
@@ -41,7 +42,13 @@ function App() {
       });
   }, []);
 
-  const bets = filterBets(data, betOption, readyBookList(bookA), readyBookList(bookB), showLive, showPush);
+  useEffect(() => {
+    if (betOption.value === BetType.ARBITRAGE) {
+      setBookB(bookA);
+    }
+  }, [betOption, bookA]);
+
+  const bets = filterBets(data, betOption, removeAllFromBook(bookA), removeAllFromBook(bookB), showLive, showPush);
 
   return (
     <div className="site">
@@ -64,6 +71,8 @@ function App() {
           setShowLive={setShowLive}
           showPush={showPush}
           setShowPush={setShowPush}
+          sport={sport}
+          setSport={setSport}
         />
         {!bookA.length || !bookB.length ? (
           <div className="select-books-message-container">

@@ -28,3 +28,5 @@ export const sport_options: SportOption[] = [
   { value: SportType.COLLEGE_FOOTBALL, label: "College Football" },
   { value: SportType.TENNIS, label: "Tennis" },
 ];
+
+export const sport_options_all: SportOption[] = [{ value: SportType.ALL, label: "All" }, ...sport_options];
