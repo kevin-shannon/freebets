@@ -18,12 +18,10 @@ export enum BookType {
 
 export enum SportType {
   ALL = "all",
-  NBA = "nba",
-  MLB = "mlb",
-  NHL = "nhl",
-  NFL = "nfl",
-  COLLEGE_BASKETBALL = "college basketball",
-  COLLEGE_FOOTBALL = "college football",
+  BASKETBALL = "basketball",
+  BASEBALL = "baseball",
+  HOCKEY = "hockey",
+  FOOTBALL = "football",
   TENNIS = "tennis",
 }
 

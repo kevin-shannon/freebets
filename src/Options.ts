@@ -20,12 +20,10 @@ export const book_options: BookOption[] = [
 export const book_options_all: BookOption[] = [{ value: BookType.ALL, label: "All" }, ...book_options];
 
 export const sport_options: SportOption[] = [
-  { value: SportType.NBA, label: "NBA" },
-  { value: SportType.MLB, label: "MLB" },
-  { value: SportType.NHL, label: "NHL" },
-  { value: SportType.NFL, label: "NFL" },
-  { value: SportType.COLLEGE_BASKETBALL, label: "College Basketball" },
-  { value: SportType.COLLEGE_FOOTBALL, label: "College Football" },
+  { value: SportType.BASKETBALL, label: "Basketball" },
+  { value: SportType.BASEBALL, label: "Baseball" },
+  { value: SportType.HOCKEY, label: "Hockey" },
+  { value: SportType.FOOTBALL, label: "Football" },
   { value: SportType.TENNIS, label: "Tennis" },
 ];
 
