@@ -6,6 +6,7 @@ import CheckSelect from "./CheckSelect";
 import { bet_type_options, book_options_all, sport_options_all } from "../../Options";
 import { BetType, BetOption, BookOption, SportOption } from "../../enums";
 import { singleSelectStyle } from "../common/SelectStyle";
+import Switch from "../common/Switch";
 
 interface FilterBarProps {
   betOption: BetOption;
@@ -30,10 +31,10 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
   };
 
   return (
-    <table id="filter-bar">
-      <tbody>
-        <tr>
-          <td>
+    <div className="filter-container">
+      <div className="filter-box">
+        <div className="filter-bar">
+          <div className="filter-col">
             <div className="filter-cell">
               <label className="select-helper" htmlFor="bet-type">
                 Bet Type
@@ -48,53 +49,71 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
                 onChange={onChange}
               />
             </div>
-          </td>
-          <td>
+            <div className="filter-cell">
+              <label className="select-helper" htmlFor="sport-select">
+                Sports
+              </label>
+              <CheckSelect id="sport-select" options={sport_options_all} value={sport} setValue={setSport} />
+            </div>
+          </div>
+          <div className="filter-col">
             {betOption.value === BetType.ARBITRAGE ? (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="books-select">
                   Books
                 </label>
-                <CheckSelect id={"books-select"} options={book_options_all} value={bookA} setValue={setBookA} />
+                <CheckSelect id="books-select" options={book_options_all} value={bookA} setValue={setBookA} />
               </div>
             ) : betOption.value === BetType.PLAYTHROUGH ? (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="playthrough-select">
                   Playthrough Book
                 </label>
-                <CheckSelect id={"playthrough-select"} options={book_options_all} value={bookA} setValue={setBookA} />
+                <CheckSelect id="playthrough-select" options={book_options_all} value={bookA} setValue={setBookA} />
               </div>
             ) : (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="freebet-select">
                   Free Bet Book
                 </label>
-                <CheckSelect id={"freebet-select"} options={book_options_all} value={bookA} setValue={setBookA} />
+                <CheckSelect id="freebet-select" options={book_options_all} value={bookA} setValue={setBookA} />
               </div>
             )}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div className="filter-cell">
-              <label className="select-helper" htmlFor="sport-select">
-                Sports
-              </label>
-              <CheckSelect id={"sport-select"} options={sport_options_all} value={sport} setValue={setSport} />
-            </div>
-          </td>
-          <td>
             {betOption.value === BetType.FREEBET || betOption.value === BetType.RISKFREE || betOption.value === BetType.PLAYTHROUGH ? (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="hedge-book-select">
                   Hedge Book
                 </label>
-                <CheckSelect id={"hedge-book-select"} options={book_options_all} value={bookB} setValue={setBookB} />
+                <CheckSelect id="hedge-book-select" options={book_options_all} value={bookB} setValue={setBookB} />
               </div>
             ) : null}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+        <div>
+          <button>show more</button>
+        </div>
+        <div className="filter-extra">
+          <div className="filter-col">
+            <div className="filter-cell">
+              <label className="input-helper" htmlFor="min-odds-input">
+                Min Odds
+              </label>
+              <input className="input-helper"></input>
+            </div>
+            <div className="filter-cell">
+              <label className="input-helper" htmlFor="max-odds-input">
+                Max Odds
+              </label>
+              <input className="input-helper"></input>
+            </div>
+          </div>
+          <div className="filter-col">
+            <div className="filter-cell">
+              <Switch />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

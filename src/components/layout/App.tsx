@@ -22,7 +22,7 @@ function removeAllFromBook(book: BookOption[]) {
 }
 
 function App() {
-  const [betOption, setBetOption] = useLocalStorageState("betOption", bet_type_options[1]);
+  const [betOption, setBetOption] = useLocalStorageState("betOption", bet_type_options[0]);
   const [bookA, setBookA] = useLocalStorageState("bookA", book_options_all);
   const [bookB, setBookB] = useLocalStorageState("bookB", book_options_all);
   const [showLive, setShowLive] = useLocalStorageState("showLive", false);

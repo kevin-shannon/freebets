@@ -3,21 +3,37 @@
   margin: auto;
 }
 
-#filter-bar {
-  margin: 20px auto 40px auto;
-  width: 90%;
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filter-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.filter-bar {
   min-width: 300px;
-  max-width: 600px;
-  table-layout: fixed;
+  max-width: 550px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.filter-col {
+  flex-direction: column;
+  display: flex;
 }
 
 .filter-cell {
   max-width: 250px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-.select-helper {
+.select-helper,
+.input-helper {
   margin-left: 8px;
   font-size: 14px;
 }
