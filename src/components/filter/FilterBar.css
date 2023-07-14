@@ -23,13 +23,23 @@
   justify-content: space-between;
 }
 
-.filter-col {
-  flex-direction: column;
+.filter-extra {
   display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.filter-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
 }
 
 .filter-cell {
-  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 5px;
 }
 
 .select-helper,
@@ -61,4 +71,14 @@
 .switch-container {
   display: flex;
   align-items: center;
+}
+
+.min-odds-input,
+.max-odds-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  background-color: #fafafa;
 }

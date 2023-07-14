@@ -1,3 +1,7 @@
+.switch-container {
+  cursor: pointer;
+}
+
 .switch {
   position: relative;
   display: inline-block;
@@ -7,17 +11,16 @@
 
 .slider {
   position: absolute;
-  cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   transition: 0.1s cubic-bezier(0.4, 0, 1, 1);
   border-radius: 10px;
-  border: 2px solid black;
+  border: 2px solid #323232;
 }
 
-.slider:before {
+.slider::before {
   position: absolute;
   content: "";
   width: 12px;
@@ -26,14 +29,30 @@
   left: 2px;
   transition: 0.1s cubic-bezier(0.4, 0, 1, 1);
   border-radius: 6px;
-  background-color: black;
+  background-color: #323232;
 }
 
-.switch.checked .slider {
+.switch-container.checked .slider {
   border-color: #fa5b67;
 }
 
-.switch.checked .slider:before {
+.switch-container.checked .slider::before {
   transform: translate(15px);
   background-color: #fa5b67;
+}
+
+.slider:hover {
+  border-color: #121212;
+}
+
+.switch:hover .slider::before {
+  background-color: #121212;
+}
+
+.switch-container.checked .slider:hover {
+  border-color: #e65b5b;
+}
+
+.switch-container.checked.switch-container:hover .slider::before {
+  background-color: #e65b5b;
 }

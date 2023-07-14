@@ -89,25 +89,34 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
             ) : null}
           </div>
         </div>
-        <div>
-          <button>show more</button>
-        </div>
+
         <div className="filter-extra">
           <div className="filter-col">
             <div className="filter-cell">
               <label className="input-helper" htmlFor="min-odds-input">
                 Min Odds
               </label>
-              <input className="input-helper"></input>
+              <input className="min-odds-input" inputMode="numeric"></input>
             </div>
             <div className="filter-cell">
               <label className="input-helper" htmlFor="max-odds-input">
                 Max Odds
               </label>
-              <input className="input-helper"></input>
+              <input className="max-odds-input" inputMode="numeric"></input>
             </div>
           </div>
-          <div className="filter-col">
+          <div
+            className="filter-col"
+            style={{
+              marginTop: "16px",
+            }}
+          >
+            <div className="filter-cell">
+              <Switch />
+            </div>
+            <div className="filter-cell">
+              <Switch />
+            </div>
             <div className="filter-cell">
               <Switch />
             </div>

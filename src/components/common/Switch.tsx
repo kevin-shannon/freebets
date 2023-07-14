@@ -9,8 +9,10 @@ export default function Switch() {
   };
 
   return (
-    <div className={`switch ${checked ? "checked" : ""}`} onClick={handleToggle}>
-      <div className="slider"></div>
+    <div className={`switch-container ${checked ? "checked" : ""}`} onClick={handleToggle}>
+      <div className="switch">
+        <div className="slider"></div>
+      </div>
     </div>
   );
 }
