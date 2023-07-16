@@ -4,6 +4,7 @@ import Switch from "../common/Switch";
 import { ReactComponent as Info } from "../../icons/info.svg";
 import { ReactComponent as Chevron } from "../../icons/chevron-down.svg";
 import { Tooltip } from "react-tooltip";
+import OddsInput from "./OddsInput";
 
 export default function FilterExtra() {
   const [checked, setChecked] = React.useState(false);
@@ -18,16 +19,22 @@ export default function FilterExtra() {
         <div className="filter-extra">
           <div className="filter-col">
             <div className="filter-cell">
-              <label className="input-helper" htmlFor="min-odds-input">
-                Min Odds
-              </label>
-              <input className="min-odds-input" inputMode="numeric" placeholder="e.g. -500"></input>
+              <div className="optional-label">
+                <label className="input-helper" htmlFor="min-odds-input">
+                  Min Odds
+                </label>
+                <span className="optional-tag">(optional)</span>
+              </div>
+              <OddsInput sign={"-"} />
             </div>
             <div className="filter-cell">
-              <label className="input-helper" htmlFor="max-odds-input">
-                Max Odds
-              </label>
-              <input className="max-odds-input" inputMode="numeric" placeholder="e.g. +500"></input>
+              <div className="optional-label">
+                <label className="input-helper" htmlFor="max-odds-input">
+                  Max Odds
+                </label>
+                <span className="optional-tag">(optional)</span>
+              </div>
+              <OddsInput sign={"+"} />
             </div>
           </div>
           <div

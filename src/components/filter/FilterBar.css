@@ -31,7 +31,7 @@
 .filter-cell {
   display: flex;
   flex-direction: column;
-  margin: 0 5px;
+  margin: 4px 4px;
 }
 
 .select-helper,
@@ -41,7 +41,7 @@
 }
 
 .info-circle {
-  fill: #554e6b;
+  fill: #3b3b3c;
   vertical-align: baseline;
   height: 14px;
   margin: 4px;

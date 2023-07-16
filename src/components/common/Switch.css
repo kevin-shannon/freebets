@@ -10,6 +10,10 @@
   margin-right: 10px;
 }
 
+.swith-label {
+  color: #323232;
+}
+
 .slider {
   position: absolute;
   top: 0;

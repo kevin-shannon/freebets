@@ -1,0 +1,42 @@
+.optional-label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.optional-tag {
+  color: #555555;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.input-prefix {
+  padding-left: 10px;
+  color: #555555;
+  font-family: monospace;
+  font-size: 16px;
+}
+
+.odds-input {
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+}
+
+.odds-input:focus {
+  outline: 2px solid #fa5b67;
+}
+
+.odds-input input {
+  flex-grow: 1;
+  font-size: 14px;
+  background-color: #fafafa;
+  border: none;
+  outline: none;
+  padding: 10px;
+  border-radius: 4px;
+  width: 100%;
+}

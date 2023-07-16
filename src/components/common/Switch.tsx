@@ -17,7 +17,7 @@ export default function Switch({ label }: SwitchInterface) {
       <div className="switch">
         <div className="slider"></div>
       </div>
-      {label}
+      <span className="swith-label">{label}</span>
     </div>
   );
 }

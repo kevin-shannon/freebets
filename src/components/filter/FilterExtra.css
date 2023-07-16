@@ -3,21 +3,6 @@
   align-items: center;
 }
 
-.min-odds-input,
-.max-odds-input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  background-color: #fafafa;
-}
-
-.min-odds-input:focus,
-.max-odds-input:focus {
-  outline: 2px solid #fa5b67;
-}
-
 .filter-extra {
   display: flex;
   flex-direction: row;
@@ -26,10 +11,11 @@
 }
 
 .filter-a {
-  height: 0;
+  max-height: 0;
   overflow: hidden;
   transition: 0.3s cubic-bezier(0.4, 0, 1, 1);
   width: 100%;
+  padding-bottom: 2px;
 }
 
 .filter-b {
@@ -37,7 +23,7 @@
 }
 
 .filter-a.checked {
-  height: 110px;
+  max-height: 150px;
 }
 
 .show-more-less-button {
