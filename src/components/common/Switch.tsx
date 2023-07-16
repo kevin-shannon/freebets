@@ -1,7 +1,11 @@
 import React from "react";
 import "./Switch.css";
 
-export default function Switch() {
+interface SwitchInterface {
+  label: string;
+}
+
+export default function Switch({ label }: SwitchInterface) {
   const [checked, setChecked] = React.useState(false);
 
   const handleToggle = () => {
@@ -13,6 +17,7 @@ export default function Switch() {
       <div className="switch">
         <div className="slider"></div>
       </div>
+      {label}
     </div>
   );
 }

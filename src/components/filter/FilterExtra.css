@@ -1,0 +1,64 @@
+.switch-container {
+  display: flex;
+  align-items: center;
+}
+
+.min-odds-input,
+.max-odds-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+.min-odds-input:focus,
+.max-odds-input:focus {
+  outline: 2px solid #fa5b67;
+}
+
+.filter-extra {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.filter-a {
+  height: 0;
+  overflow: hidden;
+  transition: 0.3s cubic-bezier(0.4, 0, 1, 1);
+  width: 100%;
+}
+
+.filter-b {
+  width: 100%;
+}
+
+.filter-a.checked {
+  height: 110px;
+}
+
+.show-more-less-button {
+  all: unset;
+  padding: 8px 13px;
+  cursor: pointer;
+}
+
+.show-more-less-container {
+  font-size: 14px;
+  color: #555555;
+  fill: #555555;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.chevron {
+  margin-left: 5px;
+}
+
+.chevron.checked {
+  transform: rotateX(180deg);
+}

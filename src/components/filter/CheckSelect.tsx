@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./CheckSelect.css";
 import Select, { components, MultiValue, ActionMeta, ValueContainerProps, OptionProps } from "react-select";
 import Check from "../common/Check";
-import { multiSelectStyle } from "../common/SelectStyle";
+import { multiSelectStyle } from "../common/etc/SelectStyle";
 import { GenericOption } from "../../enums";
 import { book_options_all } from "../../Options";
 

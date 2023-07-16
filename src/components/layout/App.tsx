@@ -10,7 +10,7 @@ import "typeface-roboto";
 import "typeface-roboto-mono";
 import { BookType, BookOption, BetType } from "../../enums";
 import Navbar from "../navbar/Navbar";
-import useLocalStorageState from "../common/useLocalStorageState";
+import useLocalStorageState from "../common/etc/useLocalStorageState";
 
 function removeAllFromBook(book: BookOption[]) {
   let arr = book.map((ob) => ob.value);

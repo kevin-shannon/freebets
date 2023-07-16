@@ -5,8 +5,8 @@ import { ActionMeta } from "react-select";
 import CheckSelect from "./CheckSelect";
 import { bet_type_options, book_options_all, sport_options_all } from "../../Options";
 import { BetType, BetOption, BookOption, SportOption } from "../../enums";
-import { singleSelectStyle } from "../common/SelectStyle";
-import Switch from "../common/Switch";
+import { singleSelectStyle } from "../common/etc/SelectStyle";
+import FilterExtra from "./FilterExtra";
 
 interface FilterBarProps {
   betOption: BetOption;
@@ -89,39 +89,7 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
             ) : null}
           </div>
         </div>
-
-        <div className="filter-extra">
-          <div className="filter-col">
-            <div className="filter-cell">
-              <label className="input-helper" htmlFor="min-odds-input">
-                Min Odds
-              </label>
-              <input className="min-odds-input" inputMode="numeric"></input>
-            </div>
-            <div className="filter-cell">
-              <label className="input-helper" htmlFor="max-odds-input">
-                Max Odds
-              </label>
-              <input className="max-odds-input" inputMode="numeric"></input>
-            </div>
-          </div>
-          <div
-            className="filter-col"
-            style={{
-              marginTop: "16px",
-            }}
-          >
-            <div className="filter-cell">
-              <Switch />
-            </div>
-            <div className="filter-cell">
-              <Switch />
-            </div>
-            <div className="filter-cell">
-              <Switch />
-            </div>
-          </div>
-        </div>
+        <FilterExtra />
       </div>
     </div>
   );

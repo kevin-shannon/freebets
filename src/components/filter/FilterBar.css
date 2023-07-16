@@ -1,31 +1,21 @@
-#switch-panel {
-  display: grid;
-  margin: auto;
-}
-
 .filter-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 15px auto 15px auto;
 }
 
 .filter-box {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: clamp(350px, 80%, 550px);
 }
 
 .filter-bar {
-  min-width: 300px;
-  max-width: 550px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.filter-extra {
-  display: flex;
-  flex-direction: row;
   width: 100%;
 }
 
@@ -34,6 +24,8 @@
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
+  min-width: 170px;
+  max-width: 250px;
 }
 
 .filter-cell {
@@ -48,37 +40,13 @@
   font-size: 14px;
 }
 
-#show-live,
-#show-push {
-  margin-left: 0;
-  margin-right: 0;
-}
-
 .info-circle {
   fill: #554e6b;
   vertical-align: baseline;
   height: 14px;
+  margin: 4px;
 }
 
 .react-tooltip {
   z-index: 1;
-}
-
-.info-span {
-  padding: 8px;
-}
-
-.switch-container {
-  display: flex;
-  align-items: center;
-}
-
-.min-odds-input,
-.max-odds-input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  background-color: #fafafa;
 }
