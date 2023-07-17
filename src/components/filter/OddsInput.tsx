@@ -11,8 +11,14 @@ export default function OddsInput({ sign }: OddsInputProps) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
 
-    const numericValue = inputValue.replace(/\D/g, "");
+    const numericValue = inputValue.replace(/^0+/, "").replace(/\D/g, "");
     setValue(numericValue);
+  };
+
+  const handleBlur = () => {
+    if (value.length < 3) {
+      setValue("");
+    }
   };
 
   return (
@@ -27,7 +33,8 @@ export default function OddsInput({ sign }: OddsInputProps) {
         placeholder="500"
         value={value}
         onChange={handleChange}
-      ></input>
+        onBlur={handleBlur}
+      />
     </div>
   );
 }
