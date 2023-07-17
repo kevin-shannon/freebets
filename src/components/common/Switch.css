@@ -10,6 +10,12 @@
   margin-right: 10px;
 }
 
+.switch:focus-visible {
+  outline: 2px solid #fa5b67;
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
 .swith-label {
   color: #323232;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, KeyboardEvent } from "react";
 import "./Switch.css";
 
 interface SwitchInterface {
@@ -6,18 +6,25 @@ interface SwitchInterface {
 }
 
 export default function Switch({ label }: SwitchInterface) {
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = useState(false);
 
   const handleToggle = () => {
     setChecked(!checked);
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleToggle();
+    }
+  };
+
   return (
-    <div className={`switch-container ${checked ? "checked" : ""}`} onClick={handleToggle}>
-      <div className="switch">
+    <div className={`switch-container ${checked ? "checked" : ""}`} onClick={handleToggle} onKeyDown={handleKeyDown}>
+      <div className="switch" tabIndex={0}>
         <div className="slider"></div>
       </div>
-      <span className="swith-label">{label}</span>
+      <span className="switch-label">{label}</span>
     </div>
   );
 }
