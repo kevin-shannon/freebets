@@ -3,11 +3,11 @@ import "./Switch.css";
 
 interface SwitchInterface {
   label: string;
+  checked: boolean;
+  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Switch({ label }: SwitchInterface) {
-  const [checked, setChecked] = useState(false);
-
+export default function Switch({ label, checked, setChecked }: SwitchInterface) {
   const handleToggle = () => {
     setChecked(!checked);
   };

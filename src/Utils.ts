@@ -1,6 +1,16 @@
-import { BetType, BetOption, Bet } from "./enums";
+import { AmericanOdds, BetType, BetOption, Bet } from "./enums";
 
-export function filterBets(data: any[], betType: { value: BetType }, books_a: string[], books_b: string[], show_live: boolean, show_push: boolean): Bet[] {
+export function filterBets(
+  data: any[],
+  betType: { value: BetType },
+  books_a: string[],
+  books_b: string[],
+  minOdds: AmericanOdds,
+  maxOdds: AmericanOdds,
+  show_live: boolean,
+  show_push: boolean,
+  showToday: boolean
+): Bet[] {
   let bets: Bet[] = [];
   const func = betType.value === BetType.ARBITRAGE ? computeEv : betType.value === BetType.PLAYTHROUGH ? computePlaythrough : computeConversion;
   for (let i = 0; i < data.length; i++) {
@@ -9,6 +19,7 @@ export function filterBets(data: any[], betType: { value: BetType }, books_a: st
     if (best !== null) {
       if (!show_push && data[i]["outcomes"][0]["name"].includes(".0")) continue;
       if (!show_live && isInPast(data[i]["start"])) continue;
+      if (showToday && !isToday(data[i]["start"])) continue;
       let temp: Bet = {
         sport: data[i]["sport"],
         event: data[i]["event"],
@@ -267,4 +278,11 @@ function isInPast(dateString: string): boolean {
   const date = new Date(dateString);
   const now = new Date();
   return date < now;
+}
+
+function isToday(dateString: string): boolean {
+  const today = new Date();
+  const date = new Date(dateString);
+
+  return date.toDateString() === today.toDateString();
 }

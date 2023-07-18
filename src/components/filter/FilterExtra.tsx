@@ -61,7 +61,7 @@ export default function FilterExtra(props: FilterExtraProps) {
             }}
           >
             <div className="filter-cell" style={{ flexDirection: "row", alignItems: "center" }}>
-              <Switch label={"Live Bets"} />
+              <Switch label={"Live Bets"} checked={showLive} setChecked={setShowLive} />
               <span
                 className="info-span"
                 data-tooltip-id="live-tooltip"
@@ -72,7 +72,7 @@ export default function FilterExtra(props: FilterExtraProps) {
               <Tooltip id="live-tooltip" style={{ backgroundColor: "rgb(65 62 73)", color: "#fff", opacity: 1, borderRadius: "8px" }} place="top" />
             </div>
             <div className="filter-cell" style={{ flexDirection: "row", alignItems: "center" }}>
-              <Switch label={"Push Bets"} />
+              <Switch label={"Push Bets"} checked={showPush} setChecked={setShowPush} />
               <span
                 className="info-span"
                 data-tooltip-id="push-tooltip"
@@ -83,7 +83,7 @@ export default function FilterExtra(props: FilterExtraProps) {
               <Tooltip id="push-tooltip" style={{ backgroundColor: "rgb(65 62 73)", color: "#fff", opacity: 1, borderRadius: "8px" }} place="right" />
             </div>
             <div className="filter-cell" style={{ flexDirection: "row", alignItems: "center" }}>
-              <Switch label={"Only Today"} />
+              <Switch label={"Only Today"} checked={showToday} setChecked={setShowToday} />
               <span className="info-span" data-tooltip-id="today-tooltip" data-tooltip-html="Only shows bets that resolve <br /> today. Time is money!">
                 <Info className="info-circle" />
               </span>

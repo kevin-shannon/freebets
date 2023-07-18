@@ -51,7 +51,7 @@ function App() {
     }
   }, [betOption, bookA]);
 
-  const bets = filterBets(data, betOption, removeAllFromBook(bookA), removeAllFromBook(bookB), showLive, showPush);
+  const bets = filterBets(data, betOption, removeAllFromBook(bookA), removeAllFromBook(bookB), minOdds, maxOdds, showLive, showPush, showToday);
 
   const filterBarProps = {
     betOption,
