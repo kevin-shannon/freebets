@@ -20,6 +20,8 @@ export function filterBets(
       if (!show_push && data[i]["outcomes"][0]["name"].includes(".0")) continue;
       if (!show_live && isInPast(data[i]["start"])) continue;
       if (showToday && !isToday(data[i]["start"])) continue;
+      if (minOdds && (best[0][0] < minOdds.value || best[0][1] < minOdds.value) && Math.abs(minOdds.value) >= 100) continue;
+      if (maxOdds && (best[0][0] > maxOdds.value || best[0][1] > maxOdds.value) && Math.abs(maxOdds.value) >= 100) continue;
       let temp: Bet = {
         sport: data[i]["sport"],
         event: data[i]["event"],
