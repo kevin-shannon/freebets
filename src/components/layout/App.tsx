@@ -8,7 +8,7 @@ import { book_options_all, bet_type_options, sport_options_all } from "../../Opt
 import axios from "axios";
 import "typeface-roboto";
 import "typeface-roboto-mono";
-import { BookType, BookOption, BetType } from "../../enums";
+import { BookType, AmericanOdds, BookOption, BetType } from "../../enums";
 import Navbar from "../navbar/Navbar";
 import useLocalStorageState from "../common/etc/useLocalStorageState";
 
@@ -25,9 +25,12 @@ function App() {
   const [betOption, setBetOption] = useLocalStorageState("betOption", bet_type_options[0]);
   const [bookA, setBookA] = useLocalStorageState("bookA", book_options_all);
   const [bookB, setBookB] = useLocalStorageState("bookB", book_options_all);
+  const [sport, setSport] = useLocalStorageState("sport", sport_options_all);
+  const [minOdds, setMinOdds] = useLocalStorageState<AmericanOdds>("minOdds", null);
+  const [maxOdds, setMaxOdds] = useLocalStorageState<AmericanOdds>("maxOdds", null);
   const [showLive, setShowLive] = useLocalStorageState("showLive", false);
   const [showPush, setShowPush] = useLocalStorageState("showPush", false);
-  const [sport, setSport] = useLocalStorageState("sport", sport_options_all);
+  const [showToday, setShowToday] = useLocalStorageState("showToday", false);
   const [data, setData] = useState([]);
   const [hamburgerActive, setHamburgerActive] = useState(false);
 
@@ -50,6 +53,27 @@ function App() {
 
   const bets = filterBets(data, betOption, removeAllFromBook(bookA), removeAllFromBook(bookB), showLive, showPush);
 
+  const filterBarProps = {
+    betOption,
+    setBetOption,
+    bookA,
+    setBookA,
+    bookB,
+    setBookB,
+    sport,
+    setSport,
+    minOdds,
+    setMinOdds,
+    maxOdds,
+    setMaxOdds,
+    showLive,
+    setShowLive,
+    showPush,
+    setShowPush,
+    showToday,
+    setShowToday,
+  };
+
   return (
     <div className="site">
       <Navbar hamburgerActive={hamburgerActive} setHamburgerActive={setHamburgerActive} />
@@ -60,20 +84,7 @@ function App() {
             setHamburgerActive(false);
           }}
         ></div>
-        <FilterBar
-          betOption={betOption}
-          setBetOption={setBetOption}
-          bookA={bookA}
-          setBookA={setBookA}
-          bookB={bookB}
-          setBookB={setBookB}
-          showLive={showLive}
-          setShowLive={setShowLive}
-          showPush={showPush}
-          setShowPush={setShowPush}
-          sport={sport}
-          setSport={setSport}
-        />
+        <FilterBar {...filterBarProps} />
         {!bookA.length || !bookB.length ? (
           <div className="select-books-message-container">
             <span className="select-some-books">Select some books</span>

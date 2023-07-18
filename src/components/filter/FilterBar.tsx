@@ -4,7 +4,7 @@ import Select from "react-select";
 import { ActionMeta } from "react-select";
 import CheckSelect from "./CheckSelect";
 import { bet_type_options, book_options_all, sport_options_all } from "../../Options";
-import { BetType, BetOption, BookOption, SportOption } from "../../enums";
+import { BetType, AmericanOdds, BetOption, BookOption, SportOption } from "../../enums";
 import { singleSelectStyle } from "../common/etc/SelectStyle";
 import FilterExtra from "./FilterExtra";
 
@@ -15,20 +15,31 @@ interface FilterBarProps {
   setBookA: React.Dispatch<React.SetStateAction<BookOption[]>>;
   bookB: BookOption[];
   setBookB: React.Dispatch<React.SetStateAction<BookOption[]>>;
+  sport: SportOption[];
+  setSport: React.Dispatch<React.SetStateAction<SportOption[]>>;
+  maxOdds: AmericanOdds;
+  setMaxOdds: React.Dispatch<React.SetStateAction<AmericanOdds>>;
+  minOdds: AmericanOdds;
+  setMinOdds: React.Dispatch<React.SetStateAction<AmericanOdds>>;
   showLive: boolean;
   setShowLive: React.Dispatch<React.SetStateAction<boolean>>;
   showPush: boolean;
   setShowPush: React.Dispatch<React.SetStateAction<boolean>>;
-  sport: SportOption[];
-  setSport: React.Dispatch<React.SetStateAction<SportOption[]>>;
+  showToday: boolean;
+  setShowToday: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bookB, setBookB, sport, setSport }: FilterBarProps) {
-  const onChange = (option: BetOption | null, _actionMeta: ActionMeta<BetOption>) => {
+export default function FilterBar(props: FilterBarProps) {
+  const changeBetOption = (option: BetOption | null, _actionMeta: ActionMeta<BetOption>) => {
     if (option !== null) {
       setBetOption(option);
     }
   };
+
+  const { betOption, bookA, bookB, sport, minOdds, maxOdds, showLive, showPush, showToday } = props;
+  const { setBetOption, setBookA, setBookB, setSport, setMinOdds, setMaxOdds, setShowLive, setShowPush, setShowToday } = props;
+
+  const filterExtraProps = { minOdds, maxOdds, showLive, showPush, showToday, setMinOdds, setMaxOdds, setShowLive, setShowPush, setShowToday };
 
   return (
     <div className="filter-container">
@@ -46,7 +57,7 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
                 styles={singleSelectStyle}
                 options={bet_type_options}
                 isSearchable={false}
-                onChange={onChange}
+                onChange={changeBetOption}
               />
             </div>
             <div className="filter-cell">
@@ -89,7 +100,7 @@ export default function FilterBar({ betOption, setBetOption, bookA, setBookA, bo
             ) : null}
           </div>
         </div>
-        <FilterExtra />
+        <FilterExtra {...filterExtraProps} />
       </div>
     </div>
   );

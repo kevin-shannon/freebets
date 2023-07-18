@@ -25,6 +25,10 @@ export enum SportType {
   TENNIS = "tennis",
 }
 
+export type AmericanOdds = {
+  value: number;
+} | null;
+
 export type ScreenType = "small" | "medium" | "large";
 
 export type GenericOption<T> = {

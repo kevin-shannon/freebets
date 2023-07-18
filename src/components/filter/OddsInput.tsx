@@ -1,23 +1,40 @@
+import { AmericanOdds } from "../../enums";
 import "./OddsInput.css";
 import { useState, ChangeEvent } from "react";
 
 interface OddsInputProps {
   sign: string;
+  value: AmericanOdds;
+  setValue: React.Dispatch<React.SetStateAction<AmericanOdds>>;
 }
 
-export default function OddsInput({ sign }: OddsInputProps) {
-  const [value, setValue] = useState("");
+function convertToAmericanOdds(str: string, positive: boolean): AmericanOdds {
+  const number = parseFloat(str);
+  if (isNaN(number)) {
+    return null;
+  }
+  if (positive) return { value: number };
+  else return { value: -number };
+}
 
+function convertFromAmericanOdds(americanOdds: AmericanOdds): string {
+  if (americanOdds === null) {
+    return "";
+  }
+  return Math.abs(americanOdds.value).toString();
+}
+
+export default function OddsInput({ sign, value, setValue }: OddsInputProps) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
 
     const numericValue = inputValue.replace(/^0+/, "").replace(/\D/g, "");
-    setValue(numericValue);
+    setValue(convertToAmericanOdds(numericValue, sign === "+"));
   };
 
   const handleBlur = () => {
-    if (value.length < 3) {
-      setValue("");
+    if (value && Math.abs(value.value) < 100) {
+      setValue(null);
     }
   };
 
@@ -31,7 +48,7 @@ export default function OddsInput({ sign }: OddsInputProps) {
         maxLength={4}
         pattern="[0-9]+"
         placeholder="500"
-        value={value}
+        value={convertFromAmericanOdds(value)}
         onChange={handleChange}
         onBlur={handleBlur}
       />

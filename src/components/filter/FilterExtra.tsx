@@ -5,13 +5,30 @@ import { ReactComponent as Info } from "../../icons/info.svg";
 import { ReactComponent as Chevron } from "../../icons/chevron-down.svg";
 import { Tooltip } from "react-tooltip";
 import OddsInput from "./OddsInput";
+import { AmericanOdds } from "../../enums";
 
-export default function FilterExtra() {
+interface FilterExtraProps {
+  maxOdds: AmericanOdds;
+  setMaxOdds: React.Dispatch<React.SetStateAction<AmericanOdds>>;
+  minOdds: AmericanOdds;
+  setMinOdds: React.Dispatch<React.SetStateAction<AmericanOdds>>;
+  showLive: boolean;
+  setShowLive: React.Dispatch<React.SetStateAction<boolean>>;
+  showPush: boolean;
+  setShowPush: React.Dispatch<React.SetStateAction<boolean>>;
+  showToday: boolean;
+  setShowToday: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function FilterExtra(props: FilterExtraProps) {
   const [checked, setChecked] = React.useState(false);
 
   const handleToggle = () => {
     setChecked(!checked);
   };
+
+  const { minOdds, maxOdds, showLive, showPush, showToday } = props;
+  const { setMinOdds, setMaxOdds, setShowLive, setShowPush, setShowToday } = props;
 
   return (
     <div className="filter-b">
@@ -25,7 +42,7 @@ export default function FilterExtra() {
                 </label>
                 <span className="optional-tag">(optional)</span>
               </div>
-              <OddsInput sign={"-"} />
+              <OddsInput sign={"-"} value={minOdds} setValue={setMinOdds} />
             </div>
             <div className="filter-cell">
               <div className="optional-label">
@@ -34,7 +51,7 @@ export default function FilterExtra() {
                 </label>
                 <span className="optional-tag">(optional)</span>
               </div>
-              <OddsInput sign={"+"} />
+              <OddsInput sign={"+"} value={maxOdds} setValue={setMaxOdds} />
             </div>
           </div>
           <div
