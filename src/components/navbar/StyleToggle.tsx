@@ -1,9 +1,11 @@
 import "./StyleToggle.css";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { ReactComponent as MoonStars } from "../../icons/moon-stars.svg";
 import { ReactComponent as Sun } from "../../icons/sun.svg";
 import { ReactComponent as SystemBrightness } from "../../icons/system-brightness.svg";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { ThemeContext } from "../layout/App";
+import useLocalStorageState from "../common/etc/useLocalStorageState";
 
 const children = [
   <ToggleButton className="toggle-button style" disableRipple={true} value="light" key="left">
@@ -24,11 +26,31 @@ const children = [
 ];
 
 export default function StyleToggle() {
-  const [style, setStyle] = React.useState("system");
+  const [style, setStyle] = useLocalStorageState("style", "system");
+  const { setTheme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    const setThemeBasedOnStyle = (newStyle: string) => {
+      if (newStyle === "system") {
+        if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          setTheme("dark");
+        } else {
+          setTheme("light");
+        }
+      } else {
+        setTheme(newStyle);
+      }
+    };
+
+    setThemeBasedOnStyle(style);
+  }, [style, setTheme]);
 
   const handleChange = (_: React.MouseEvent<HTMLElement>, newStyle: string) => {
-    setStyle(newStyle);
+    if (newStyle !== null) {
+      setStyle(newStyle);
+    }
   };
+
   return (
     <div className="styles-block">
       <label className="menu-setting-label">MODE</label>

@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, Dispatch, SetStateAction } from "react";
 import FilterBar from "../filter/FilterBar";
 import BetTable from "../list/BetTable";
 import Footer from "./Footer";
@@ -21,6 +21,14 @@ function removeAllFromBook(book: BookOption[]) {
   return arr;
 }
 
+interface ThemeContextType {
+  setTheme: Dispatch<SetStateAction<null | string>>;
+}
+
+export const ThemeContext = createContext<ThemeContextType>({
+  setTheme: () => {},
+});
+
 function App() {
   const [betOption, setBetOption] = useLocalStorageState("betOption", bet_type_options[0]);
   const [bookA, setBookA] = useLocalStorageState("bookA", book_options_all);
@@ -33,6 +41,7 @@ function App() {
   const [showToday, setShowToday] = useLocalStorageState("showToday", false);
   const [data, setData] = useState([]);
   const [hamburgerActive, setHamburgerActive] = useState(false);
+  const [theme, setTheme] = useState<null | string>(null);
 
   useEffect(() => {
     axios
@@ -75,26 +84,28 @@ function App() {
   };
 
   return (
-    <div className="site">
-      <Navbar hamburgerActive={hamburgerActive} setHamburgerActive={setHamburgerActive} />
-      <div className="content">
-        <div
-          className={`content-backdrop ${hamburgerActive ? "active" : ""}`}
-          onClick={() => {
-            setHamburgerActive(false);
-          }}
-        ></div>
-        <FilterBar {...filterBarProps} />
-        {!bookA.length || !bookB.length ? (
-          <div className="select-books-message-container">
-            <span className="select-some-books">Select some books</span>
-          </div>
-        ) : (
-          <BetTable betsPerPage={10} bets={bets} betOption={betOption} />
-        )}
+    <ThemeContext.Provider value={{ setTheme }}>
+      <div className="site">
+        <Navbar hamburgerActive={hamburgerActive} setHamburgerActive={setHamburgerActive} />
+        <div className="content">
+          <div
+            className={`content-backdrop ${hamburgerActive ? "active" : ""}`}
+            onClick={() => {
+              setHamburgerActive(false);
+            }}
+          ></div>
+          <FilterBar {...filterBarProps} />
+          {!bookA.length || !bookB.length ? (
+            <div className="select-books-message-container">
+              <span className="select-some-books">Select some books</span>
+            </div>
+          ) : (
+            <BetTable betsPerPage={10} bets={bets} betOption={betOption} />
+          )}
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </ThemeContext.Provider>
   );
 }
 
