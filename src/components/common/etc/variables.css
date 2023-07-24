@@ -1,0 +1,19 @@
+:root {
+  --freebets-green-light: #67fa5b;
+  --freebets-pink-light: #fa5b67;
+  --site-background-light: #fafafa;
+  --high-contrast-text-light: #252527;
+  --low-contrast-text-light: #54555c;
+  --navbar-black-light: #000000cc;
+  --low-contrast-border-light: #cccccc;
+  --dropdown-menu-background-light: #fafafa;
+
+  --freebets-green-dark: #67fa5b;
+  --freebets-pink-dark: #fa5b67;
+  --site-background-dark: #2f3136;
+  --high-contrast-text-dark: #f2f3f5;
+  --low-contrast-text-dark: #999da3;
+  --navbar-black-dark: #1c1e21cc;
+  --low-contrast-border-dark: #52565c;
+  --dropdown-menu-background-dark: #40444b;
+}

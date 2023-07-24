@@ -22,7 +22,34 @@
   font-weight: 700;
 }
 
+@import url("../common/etc/variables.css");
+
+.light-mode {
+  --freebets-green: var(--freebets-green-light);
+  --freebets-pink: var(--freebets-pink-light);
+  --site-background: var(--site-background-light);
+  --high-contrast-text: var(--high-contrast-text-light);
+  --low-contrast-text: var(--low-contrast-text-light);
+  --navbar-black: var(--navbar-black-light);
+  --low-contrast-border: var(--low-contrast-border-light);
+  --dropdown-menu-background: var(--dropdown-menu-background-light);
+}
+
+.dark-mode {
+  --freebets-green: var(--freebets-green-dark);
+  --freebets-pink: var(--freebets-pink-dark);
+  --site-background: var(--site-background-dark);
+  --high-contrast-text: var(--high-contrast-text-dark);
+  --low-contrast-text: var(--low-contrast-text-dark);
+  --navbar-black: var(--navbar-black-dark);
+  --low-contrast-border: var(--low-contrast-border-dark);
+  --dropdown-menu-background: var(--dropdown-menu-background-dark);
+}
+
 .site {
+  background-color: var(--site-background);
+  color: var(--high-contrast-text);
+  fill: var(--high-contrast-text);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -37,7 +64,6 @@
 
 body {
   font-family: "Roboto";
-  background-color: #fafafa;
   margin: 0;
   padding: 0;
 }
@@ -54,7 +80,7 @@ th {
 .bet-row {
   border: solid;
   border-width: 1px 0;
-  border-color: #cccccc;
+  border-color: var(--low-contrast-border);
 }
 
 .book {

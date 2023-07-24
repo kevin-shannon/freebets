@@ -85,7 +85,7 @@ function App() {
 
   return (
     <ThemeContext.Provider value={{ setTheme }}>
-      <div className="site">
+      <div className={`site ${theme === "light" ? "light-mode" : "dark-mode"}`}>
         <Navbar hamburgerActive={hamburgerActive} setHamburgerActive={setHamburgerActive} />
         <div className="content">
           <div

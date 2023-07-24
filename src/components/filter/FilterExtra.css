@@ -34,8 +34,8 @@
 
 .show-more-less-container {
   font-size: 14px;
-  color: #555555;
-  fill: #555555;
+  color: var(--low-contrast-text);
+  fill: var(--low-contrast-text);
   display: flex;
   flex-direction: row;
   align-items: center;
