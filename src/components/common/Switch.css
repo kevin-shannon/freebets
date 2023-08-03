@@ -28,7 +28,7 @@
   bottom: 0;
   transition: 0.1s cubic-bezier(0.4, 0, 1, 1);
   border-radius: 10px;
-  border: 2px solid #323232;
+  border: 2px solid var(--switch-off-outer);
 }
 
 .slider::before {
@@ -40,24 +40,25 @@
   left: 2px;
   transition: 0.1s cubic-bezier(0.4, 0, 1, 1);
   border-radius: 6px;
-  background-color: #323232;
+  background-color: var(--switch-off-inner);
 }
 
 .switch-container.checked .slider {
-  border-color: #fa5b67;
+  border-color: var(--freebets-pink);
 }
 
 .switch-container.checked .slider::before {
   transform: translate(15px);
-  background-color: #fa5b67;
+  background-color: var(--freebets-pink);
 }
 
+.switch:hover,
 .slider:hover {
-  border-color: #121212;
+  border-color: var(--black-white);
 }
 
-.switch:hover .slider::before {
-  background-color: #121212;
+.slider:hover::before {
+  background-color: var(--black-white);
 }
 
 .switch-container.checked .slider:hover {

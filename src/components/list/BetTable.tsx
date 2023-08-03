@@ -1,9 +1,9 @@
 import "./BetTable.css";
 import React, { useState } from "react";
-import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import BetCard from "./BetCard";
 import BetSlab from "./BetSlab";
+import Pagination from "./Pagination";
 import { BetType, ScreenType, BetOption, Bet } from "../../enums";
 
 interface PaginatedBetsProps {
@@ -22,7 +22,7 @@ export default function PaginatedBets({ betsPerPage, bets, betOption }: Paginate
   return (
     <Stack alignItems="center" spacing={4}>
       <BetTable bets={currentBets} betOption={betOption} />
-      <Pagination count={totalPages} onChange={(_, value) => setPage(value)} shape="rounded" />
+      <Pagination total={totalPages} siblings={1} boundaries={1} page={page} setPage={setPage} />
     </Stack>
   );
 }

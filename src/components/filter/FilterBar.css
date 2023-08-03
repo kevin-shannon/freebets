@@ -41,10 +41,10 @@
 }
 
 .info-circle {
-  fill: #3b3b3c;
+  fill: var(--high-contrast-text);
   vertical-align: baseline;
   height: 14px;
-  margin: 4px;
+  margin: 0 4px;
 }
 
 .react-tooltip {

@@ -1,6 +1,6 @@
 import { AmericanOdds } from "../../enums";
 import "./OddsInput.css";
-import { useState, ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 
 interface OddsInputProps {
   sign: string;

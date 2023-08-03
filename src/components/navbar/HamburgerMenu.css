@@ -1,7 +1,7 @@
 .sliding-div {
   width: 300px;
   height: 500px;
-  background-color: #fff;
+  background-color: var(--burger-menu);
   transition: transform 0.3s ease;
   transform: translateY(-100%);
   border-radius: 0 0 10px 10px;
@@ -19,7 +19,7 @@
 
 .sliding-drawer {
   position: relative;
-  top: 45px;
+  top: 44px;
   right: 280px;
 }
 
