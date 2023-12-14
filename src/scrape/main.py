@@ -20,6 +20,13 @@ data = {
     'unibet': generate_unibet()
 }
 
+# count events for debug purposes
+print()
+for book in data:
+    for sport in data[book]:
+        print(f"{book} {sport} has {len(data[book][sport])} events")
+    print()
+
 def make_market_simple(market):
     return market.split(':')[0]
 
