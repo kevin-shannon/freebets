@@ -47,3 +47,5 @@ yarn-debug.log*
 yarn-error.log*
 
 __pycache__/
+
+public/output.json

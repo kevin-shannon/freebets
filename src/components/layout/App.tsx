@@ -46,6 +46,7 @@ function App() {
   useEffect(() => {
     axios
       .get("https://stanleys-bucket.s3.us-east-2.amazonaws.com/output.json")
+      // .get("http://localhost:3000/freebets/output.json")
       .then((response) => {
         setData(response.data);
       })

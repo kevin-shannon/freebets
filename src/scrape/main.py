@@ -1,3 +1,4 @@
+import sys
 import boto3
 import json
 from datetime import datetime, timedelta
@@ -9,7 +10,6 @@ from books.pointsbet.pointsbet import generate_pointsbet
 from books.superbook.superbook import generate_superbook
 from books.unibet.unibet import generate_unibet
 
-output = 'output/output.json'
 data = {
     'betmgm': generate_betmgm(),
     'caesars': generate_caesars(),
@@ -79,3 +79,11 @@ def lambda_handler(event, context):
     s3.put_object(Bucket=bucket_name, Key=key, Body=body, ACL='public-read')
     
     return "Output saved to S3"
+
+def local():
+    with open('./public/output.json', "w") as f:
+        json.dump(aggregate(data), f)
+
+# https://stackoverflow.com/a/52837375
+if __name__ == '__main__':
+    globals()[sys.argv[1]]()
