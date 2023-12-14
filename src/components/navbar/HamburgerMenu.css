@@ -1,0 +1,95 @@
+.sliding-div {
+  width: 300px;
+  height: 500px;
+  background-color: var(--burger-menu);
+  transition: transform 0.3s ease;
+  transform: translateY(-100%);
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sliding-div.visible {
+  transform: translateY(0);
+}
+
+.hamburger-container {
+  display: flex;
+}
+
+.sliding-drawer {
+  position: relative;
+  top: 44px;
+  right: 280px;
+}
+
+.sliding-shelf {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.menu-container {
+  padding: 0 10px;
+}
+
+.hamburger-container.active .sliding-shelf {
+  pointer-events: all;
+}
+
+.burger-wrapper {
+  cursor: pointer;
+  margin: auto;
+  width: 24px;
+  height: 23px;
+  transform: translateY(10px);
+}
+
+.burger-wrapper .hamburger {
+  background: #e5e6e7;
+  width: 24px;
+  height: 3px;
+  position: relative;
+  transition: transform 300ms 50ms ease;
+  border-radius: 10px;
+}
+
+.burger-wrapper .hamburger:before,
+.burger-wrapper .hamburger:after {
+  transition: top 300ms 350ms ease, transform 300ms 50ms ease;
+  position: absolute;
+  background: #e5e6e7;
+  width: 24px;
+  height: 3px;
+  content: "";
+  border-radius: 10px;
+}
+
+.burger-wrapper .hamburger:before {
+  top: -8px;
+}
+
+.burger-wrapper .hamburger:after {
+  top: 8px;
+}
+
+.burger-wrapper:hover .hamburger:before,
+.burger-wrapper:hover .hamburger:after,
+.burger-wrapper:hover .hamburger {
+  background: #b8bcbf;
+}
+
+.hamburger-container.active .hamburger,
+.hamburger-container.active .hamburger:before,
+.hamburger-container.active .hamburger:after {
+  transition: top 300ms 50ms ease, transform 300ms 350ms ease;
+  top: 0;
+}
+
+.hamburger-container.active .hamburger {
+  transform: rotate(45deg);
+}
+
+.hamburger-container.active .hamburger:after {
+  transform: rotate(-90deg);
+}

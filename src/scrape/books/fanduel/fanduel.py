@@ -40,7 +40,7 @@ def generate_fanduel():
 def generate_fanduel_formatted_events(url, sport, market_labels, compititon_name):
     id_to_name_time = {}
     formatted_events = {}
-    headers = {'Cache-Control': 'no-cache'}
+    headers = {'Cache-Control': 'no-cache','User-Agent': 'Chrome'}
     try:
         res = requests.get(url, headers=headers).json()
     except:

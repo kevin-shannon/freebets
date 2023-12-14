@@ -10,13 +10,73 @@
   font-weight: 700;
 }
 
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../../fonts/IBMPlexSans-Medium.ttf") format("truetype");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../../fonts/IBMPlexSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+
+@import url("../common/etc/variables.css");
+
+.light-mode {
+  --freebets-green: var(--freebets-green-light);
+  --freebets-pink: var(--freebets-pink-light);
+  --site-background: var(--site-background-light);
+  --high-contrast-text: var(--high-contrast-text-light);
+  --medium-contrast-text: var(--medium-contrast-text-light);
+  --low-contrast-text: var(--low-contrast-text-light);
+  --navbar-black: var(--navbar-black-light);
+  --low-contrast-border: var(--low-contrast-border-light);
+  --low-contrast-border-highlight: var(--low-contrast-border-highlight-light);
+  --dropdown-menu-background: var(--dropdown-menu-background-light);
+  --switch-off-outer: var(--switch-off-outer-light);
+  --switch-off-inner: var(--switch-off-inner-light);
+  --black-white: var(--black-white-light);
+  --betcard-background: var(--betcard-background-light);
+  --button-hover: var(--button-hover-light);
+  --button-active: var(--button-active-light);
+  --button-active-hover: var(--button-active-hover-light);
+  --burger-menu: var(--burger-menu-light);
+}
+
+.dark-mode {
+  --freebets-green: var(--freebets-green-dark);
+  --freebets-pink: var(--freebets-pink-dark);
+  --site-background: var(--site-background-dark);
+  --high-contrast-text: var(--high-contrast-text-dark);
+  --medium-contrast-text: var(--medium-contrast-text-dark);
+  --low-contrast-text: var(--low-contrast-text-dark);
+  --navbar-black: var(--navbar-black-dark);
+  --low-contrast-border: var(--low-contrast-border-dark);
+  --low-contrast-border-highlight: var(--low-contrast-border-highlight-dark);
+  --dropdown-menu-background: var(--dropdown-menu-background-dark);
+  --switch-off-outer: var(--switch-off-outer-dark);
+  --switch-off-inner: var(--switch-off-inner-dark);
+  --black-white: var(--black-white-dark);
+  --betcard-background: var(--betcard-background-dark);
+  --button-hover: var(--button-hover-dark);
+  --button-active: var(--button-active-dark);
+  --button-active-hover: var(--button-active-hover-dark);
+  --burger-menu: var(--burger-menu-dark);
+}
+
 .site {
+  background-color: var(--site-background);
+  color: var(--high-contrast-text);
+  fill: var(--high-contrast-text);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
 .content {
+  margin: 0 8px;
   flex-grow: 1;
   flex-direction: column;
   justify-content: center;
@@ -24,9 +84,7 @@
 
 body {
   font-family: "Roboto";
-  background-color: #fafafa;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0;
   padding: 0;
 }
 
@@ -42,7 +100,7 @@ th {
 .bet-row {
   border: solid;
   border-width: 1px 0;
-  border-color: #cccccc;
+  border-color: var(--low-contrast-border);
 }
 
 .book {
@@ -69,4 +127,24 @@ th {
 
 svg {
   height: 1em;
+}
+
+.content-backdrop {
+  z-index: 1;
+  background-color: #00000030;
+  backdrop-filter: blur(4px);
+  position: fixed;
+  top: 65px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+  opacity: 0;
+}
+
+.content-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
 }

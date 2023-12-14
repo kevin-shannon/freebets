@@ -1,20 +1,18 @@
 footer {
-    display: flex;
-    flex-shrink: 0;
+  display: flex;
+  flex-shrink: 0;
 }
 
 .footer-container {
-    margin: 40px auto 20px auto;
-}
-
-#octo {
-    color: black;
+  margin: 40px auto 20px auto;
 }
 
 .foot-link {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--medium-contrast-text);
+  fill: var(--medium-contrast-text);
 }

@@ -17,36 +17,28 @@ export enum BookType {
 }
 
 export enum SportType {
-  NBA = "nba",
-  MLB = "mlb",
-  NHL = "nhl",
-  NFL = "nfl",
-  COLLEGE_BASKETBALL = "college basketball",
-  COLLEGE_FOOTBALL = "college football",
+  ALL = "all",
+  BASKETBALL = "basketball",
+  BASEBALL = "baseball",
+  HOCKEY = "hockey",
+  FOOTBALL = "football",
   TENNIS = "tennis",
 }
 
+export type AmericanOdds = {
+  value: number;
+} | null;
+
 export type ScreenType = "small" | "medium" | "large";
 
-export type BetOption = {
-  value: BetType;
+export type GenericOption<T> = {
+  value: T;
   label: string;
 };
 
-export type BookOption = {
-  value: BookType;
-  label: string;
-};
-
-export type SportOption = {
-  value: SportType;
-  label: string;
-};
-
-export type Option = {
-  value: string;
-  label: string;
-};
+export type BetOption = GenericOption<BetType>;
+export type BookOption = GenericOption<BookType>;
+export type SportOption = GenericOption<SportType>;
 
 export interface Bet {
   sport: string;

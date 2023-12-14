@@ -1,0 +1,39 @@
+:root {
+  --freebets-green-light: #67fa5b;
+  --freebets-pink-light: #fa5b67;
+  --site-background-light: #fafafa;
+  --high-contrast-text-light: #252527;
+  --medium-contrast-text-light: #363639;
+  --low-contrast-text-light: #54555c;
+  --navbar-black-light: #000000cc;
+  --low-contrast-border-light: #cccccc;
+  --low-contrast-border-highlight-light: #b3b3b3;
+  --dropdown-menu-background-light: #fafafa;
+  --switch-off-outer-light: #323232;
+  --switch-off-inner-light: #323232;
+  --black-white-light: #000000;
+  --betcard-background-light: #ffffff;
+  --button-hover-light: #f0f0f0;
+  --button-active-light: #e0e0e0;
+  --button-active-hover-light: #d0d0d0;
+  --burger-menu-light: #ffffff;
+
+  --freebets-green-dark: #67fa5b;
+  --freebets-pink-dark: #fa5b67;
+  --site-background-dark: #2f3136;
+  --high-contrast-text-dark: #f2f3f5;
+  --medium-contrast-text-dark: #c4c8ce;
+  --low-contrast-text-dark: #999da3;
+  --navbar-black-dark: #1c1e21cc;
+  --low-contrast-border-dark: #52565c;
+  --low-contrast-border-highlight-dark: #737373;
+  --dropdown-menu-background-dark: #40444b;
+  --switch-off-outer-dark: #cecece;
+  --switch-off-inner-dark: #ffffff;
+  --black-white-dark: #ffffff;
+  --betcard-background-dark: #26282b;
+  --button-hover-dark: #28292c;
+  --button-active-dark: #222325;
+  --button-active-hover-dark: #1f2021;
+  --burger-menu-dark: #181818;
+}

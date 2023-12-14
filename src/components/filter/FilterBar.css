@@ -1,48 +1,52 @@
-#switch-panel {
-  display: grid;
-  margin: auto;
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px auto 15px auto;
 }
 
-#filter-bar {
-  margin: 20px auto 40px auto;
-  width: 90%;
-  min-width: 300px;
-  max-width: 600px;
-  table-layout: fixed;
+.filter-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: clamp(350px, 80%, 550px);
+}
+
+.filter-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.filter-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 170px;
+  max-width: 250px;
 }
 
 .filter-cell {
-  max-width: 250px;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  margin: 4px 4px;
 }
 
-.select-helper {
+.select-helper,
+.input-helper {
   margin-left: 8px;
   font-size: 14px;
 }
 
-#show-live,
-#show-push {
-  margin-left: 0;
-  margin-right: 0;
-}
-
 .info-circle {
-  fill: #554e6b;
+  fill: var(--high-contrast-text);
   vertical-align: baseline;
   height: 14px;
+  margin: 0 4px;
 }
 
 .react-tooltip {
   z-index: 1;
-}
-
-.info-span {
-  padding: 8px;
-}
-
-.switch-container {
-  display: flex;
-  align-items: center;
 }

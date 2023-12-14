@@ -149,6 +149,7 @@ def generate_draftkings_formatted_events(sport_id, sport, market_labels, categor
                                         label = option['label']
                                     except:
                                         print('error getting label')
+                                        continue
                                     # Moneyline
                                     if re.match(market_labels["MONEYLINE"], label):
                                         try:

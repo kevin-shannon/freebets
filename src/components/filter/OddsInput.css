@@ -1,0 +1,44 @@
+.optional-label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.optional-tag {
+  color: var(--low-contrase-text);
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.input-prefix {
+  padding-left: 10px;
+  color: var(--low-contrase-text);
+  font-family: monospace;
+  font-size: 16px;
+}
+
+.odds-input {
+  box-sizing: border-box;
+  border: 1px solid var(--low-contrast-border);
+  border-radius: 4px;
+  background-color: var(--site-background);
+  display: flex;
+  align-items: center;
+}
+
+.odds-input:focus {
+  outline: 2px solid #fa5b67;
+}
+
+.odds-input input {
+  flex-grow: 1;
+  font-size: 16px;
+  background-color: var(--site-background);
+  color: var(--low-contrase-text);
+  caret-color: var(--low-contrase-text);
+  border: none;
+  outline: none;
+  padding: 9px;
+  border-radius: 4px;
+  width: 100%;
+}

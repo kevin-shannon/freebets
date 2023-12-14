@@ -1,0 +1,50 @@
+.switch-container {
+  display: flex;
+  align-items: center;
+}
+
+.filter-extra {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.filter-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.3s cubic-bezier(0.4, 0, 1, 1);
+  width: 100%;
+  padding-bottom: 2px;
+}
+
+.filter-b {
+  width: 100%;
+}
+
+.filter-a.checked {
+  max-height: 150px;
+}
+
+.show-more-less-button {
+  all: unset;
+  padding: 8px 13px;
+  cursor: pointer;
+}
+
+.show-more-less-container {
+  font-size: 14px;
+  color: var(--low-contrast-text);
+  fill: var(--low-contrast-text);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.chevron {
+  margin-left: 5px;
+}
+
+.chevron.checked {
+  transform: rotateX(180deg);
+}

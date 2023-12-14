@@ -1,0 +1,70 @@
+.switch-container {
+  cursor: pointer;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.switch:focus-visible {
+  outline: 2px solid #fa5b67;
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+.swith-label {
+  color: #323232;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.1s cubic-bezier(0.4, 0, 1, 1);
+  border-radius: 10px;
+  border: 2px solid var(--switch-off-outer);
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  width: 12px;
+  height: 12px;
+  top: 2px;
+  left: 2px;
+  transition: 0.1s cubic-bezier(0.4, 0, 1, 1);
+  border-radius: 6px;
+  background-color: var(--switch-off-inner);
+}
+
+.switch-container.checked .slider {
+  border-color: var(--freebets-pink);
+}
+
+.switch-container.checked .slider::before {
+  transform: translate(15px);
+  background-color: var(--freebets-pink);
+}
+
+.switch:hover,
+.slider:hover {
+  border-color: var(--black-white);
+}
+
+.slider:hover::before {
+  background-color: var(--black-white);
+}
+
+.switch-container.checked .slider:hover {
+  border-color: #e65b5b;
+}
+
+.switch-container.checked.switch-container:hover .slider::before {
+  background-color: #e65b5b;
+}
