@@ -1,7 +1,9 @@
 {
   "files": {
-    "main.css": "/freebets/static/css/main.7e9b9711.css",
-    "main.js": "/freebets/static/js/main.8c0cc741.js",
+    "main.css": "/freebets/static/css/main.be7fc9fa.css",
+    "main.js": "/freebets/static/js/main.644d8029.js",
+    "static/media/IBMPlexSans-Medium.ttf": "/freebets/static/media/IBMPlexSans-Medium.56fb541cbbc5462f1c33.ttf",
+    "static/media/IBMPlexSans-Bold.ttf": "/freebets/static/media/IBMPlexSans-Bold.e933eba4e2fcc3d71b31.ttf",
     "static/media/SairaCondensed-Bold.ttf": "/freebets/static/media/SairaCondensed-Bold.4926ab8dd277adb71b68.ttf",
     "static/media/SairaCondensed-SemiBold.ttf": "/freebets/static/media/SairaCondensed-SemiBold.1fad7fabf4cdbcebc3af.ttf",
     "static/media/roboto-latin-900italic.woff": "/freebets/static/media/roboto-latin-900italic.c20d916c1a1b094c1cec.woff",
@@ -56,15 +58,21 @@
     "static/media/roboto-mono-latin-600.woff2": "/freebets/static/media/roboto-mono-latin-600.ff2c5c919a01e9ddda85.woff2",
     "static/media/roboto-mono-latin-400.woff2": "/freebets/static/media/roboto-mono-latin-400.535bc89d4af715503b01.woff2",
     "static/media/roboto-mono-latin-700.woff2": "/freebets/static/media/roboto-mono-latin-700.c5c3959c04004102ea46.woff2",
+    "static/media/sun.svg": "/freebets/static/media/sun.2248f451261bb1b422374b307dd6c163.svg",
+    "static/media/moon-stars.svg": "/freebets/static/media/moon-stars.24fb467d8ebd6796c953b439261f53dc.svg",
     "static/media/calculator.svg": "/freebets/static/media/calculator.951101e3187fe39527b137e55259e650.svg",
     "index.html": "/freebets/index.html",
     "static/media/sitemap.svg": "/freebets/static/media/sitemap.19245986e39012d461c7822f1edde5c0.svg",
     "static/media/info.svg": "/freebets/static/media/info.9696d85c210b450e6ae8ab8631c126c5.svg",
-    "main.7e9b9711.css.map": "/freebets/static/css/main.7e9b9711.css.map",
-    "main.8c0cc741.js.map": "/freebets/static/js/main.8c0cc741.js.map"
+    "static/media/chevron-left.svg": "/freebets/static/media/chevron-left.3c14c8c631dc87bc64ff68e33fb590c3.svg",
+    "static/media/chevron-right.svg": "/freebets/static/media/chevron-right.b8db64fee5098d08028d10d5638fe77a.svg",
+    "static/media/system-brightness.svg": "/freebets/static/media/system-brightness.992da6c1bdd2f69d915af6ecd967d111.svg",
+    "static/media/chevron-down.svg": "/freebets/static/media/chevron-down.2d7ccf1adc81685d6eaf6ac019f6b6b7.svg",
+    "main.be7fc9fa.css.map": "/freebets/static/css/main.be7fc9fa.css.map",
+    "main.644d8029.js.map": "/freebets/static/js/main.644d8029.js.map"
   },
   "entrypoints": [
-    "static/css/main.7e9b9711.css",
-    "static/js/main.8c0cc741.js"
+    "static/css/main.be7fc9fa.css",
+    "static/js/main.644d8029.js"
   ]
 }
