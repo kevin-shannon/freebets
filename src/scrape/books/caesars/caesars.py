@@ -37,13 +37,17 @@ def generate_caesars():
 
 def generate_caesars_formatted_events(url, sport, market_labels):
     formatted_events = {}
-    headers = {'Cache-Control': 'no-cache'}
+    headers = {'Cache-Control': 'no-cache', 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
     try:
         res = requests.get(url, headers=headers).json()
     except:
-        print('error getting url')
+        print('error getting api.americanwagering.com')
         return formatted_events
     try:
+        if len(res['competitions']) == 0:
+            print(f'{sport} has no competitions')
+            return formatted_events
+
         events = res['competitions'][0]['events']
     except:
         print('error parsing events')  
@@ -62,11 +66,11 @@ def generate_caesars_formatted_events(url, sport, market_labels):
         if event_name not in formatted_events:
             formatted_events[event_name] = {}
         formatted_events[event_name][start] = {'offers': {}}
-        url = f'https://www.williamhill.com/us/mi/bet/api/v3/events/{event["id"]}'
+        url = f'https://api.americanwagering.com/regions/us/locations/il/brands/czr/sb/v3/events/{event["id"]}'
         try:
             res = requests.get(url, headers=headers).json()
         except:
-            print('error getting url')
+            print('error getting williamhill.com')
             continue
         try:
             markets = res['markets']
