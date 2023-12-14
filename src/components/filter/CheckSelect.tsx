@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./CheckSelect.css";
 import Select, { components, MultiValue, ActionMeta, ValueContainerProps, OptionProps } from "react-select";
 import Check from "../common/Check";

@@ -1,9 +1,7 @@
 import React from "react";
 import "./Pagination.css";
 import { ReactComponent as ChevronLeft } from "../../icons/chevron-left.svg";
-import { ReactComponent as ChevronsLeft } from "../../icons/chevrons-left.svg";
 import { ReactComponent as ChevronRight } from "../../icons/chevron-right.svg";
-import { ReactComponent as ChevronsRight } from "../../icons/chevrons-right.svg";
 
 interface PaginationProps {
   total: number;

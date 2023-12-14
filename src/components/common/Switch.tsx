@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from "react";
+import React, { KeyboardEvent } from "react";
 import "./Switch.css";
 
 interface SwitchInterface {

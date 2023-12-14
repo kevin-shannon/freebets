@@ -59,7 +59,7 @@ function App() {
     if (betOption.value === BetType.ARBITRAGE) {
       setBookB(bookA);
     }
-  }, [betOption, bookA]);
+  }, [betOption, bookA, setBookB]);
 
   const bets = filterBets(data, betOption, removeAllFromBook(bookA), removeAllFromBook(bookB), minOdds, maxOdds, showLive, showPush, showToday);
 

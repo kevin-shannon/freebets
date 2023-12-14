@@ -26,7 +26,7 @@ export default function Navbar({ hamburgerActive, setHamburgerActive }: NavbarPr
     <nav className={`sticky-navbar${hasBoxShadow ? " has-box-shadow" : ""}`}>
       <div className="nav-container">
         <div className="logo-container">
-          <img src="/freebets/FreebetsLogo.svg" height="44px" />
+          <img src="/freebets/FreebetsLogo.svg" height="44px" alt="logo" />
         </div>
         <div className="links-container">
           <div className="nav-link link-active">Bets</div>
