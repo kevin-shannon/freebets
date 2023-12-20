@@ -39,25 +39,20 @@ export default function StyleToggle() {
         sx={{
           "& .MuiToggleButton-root.Mui-selected": {
             backgroundColor: "#32c85536;",
-            color: "#339636",
-            fill: "#339636",
+            color: "var(--slider-green)",
+            fill: "var(--slider-green)",
+            borderColor: "#098a27",
+          },
+          "& .MuiToggleButton-root.Mui-selected:hover": {
+            backgroundColor: "#32c85536;",
+            color: "var(--slider-green)",
+            fill: "var(--slider-green)",
             borderColor: "#098a27",
           },
           "& .MuiToggleButton-root": {
-            color: "#4d534f",
-            fill: "#606461",
+            color: "var(--slider-text)",
+            fill: "var(--slider-text)",
             borderColor: "#CFD9DE",
-          },
-          "& .MuiToggleButton-root:hover": {
-            backgroundColor: "#00000008",
-            color: "#4d534f",
-            fill: "#606461",
-          },
-          "& .MuiToggleButton-root.Mui-selected:hover": {
-            backgroundColor: "#24ae4442;",
-            color: "#339636",
-            fill: "#339636",
-            borderColor: "#098a27",
           },
         }}
       >

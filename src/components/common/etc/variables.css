@@ -17,6 +17,9 @@
   --button-active-light: #e0e0e0;
   --button-active-hover-light: #d0d0d0;
   --burger-menu-light: #ffffff;
+  --blur-background-light: #00000030;
+  --slider-text-light: #717171;
+  --slider-green-light: #339636;
 
   --freebets-green-dark: #67fa5b;
   --freebets-pink-dark: #fa5b67;
@@ -35,5 +38,8 @@
   --button-hover-dark: #28292c;
   --button-active-dark: #222325;
   --button-active-hover-dark: #1f2021;
-  --burger-menu-dark: #181818;
+  --burger-menu-dark: #1f2225;
+  --blur-background-dark: #30303030;
+  --slider-text-dark: #cfcfcf;
+  --slider-green-dark: #2fa33a;
 }

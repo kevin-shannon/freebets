@@ -43,6 +43,9 @@
   --button-active: var(--button-active-light);
   --button-active-hover: var(--button-active-hover-light);
   --burger-menu: var(--burger-menu-light);
+  --blur-background: var(--blur-background-light);
+  --slider-text: var(--slider-text-light);
+  --slider-green: var(--slider-green-light);
 }
 
 .dark-mode {
@@ -64,6 +67,9 @@
   --button-active: var(--button-active-dark);
   --button-active-hover: var(--button-active-hover-dark);
   --burger-menu: var(--burger-menu-dark);
+  --blur-background: var(--blur-background-dark);
+  --slider-text: var(--slider-text-dark);
+  --slider-green: var(--slider-green-dark);
 }
 
 .site {
@@ -131,7 +137,7 @@ svg {
 
 .content-backdrop {
   z-index: 1;
-  background-color: #00000030;
+  background-color: var(--blur-background);
   backdrop-filter: blur(4px);
   position: fixed;
   top: 65px;

@@ -13,10 +13,10 @@
   font-family: "IBM Plex Sans";
   font-weight: 700;
   margin-left: 2px;
-  color: rgb(84 85 92);
   margin-bottom: 8px;
   font-size: 12px;
   letter-spacing: 1px;
+  color: var(--slider-text);
 }
 
 .style-icon {
