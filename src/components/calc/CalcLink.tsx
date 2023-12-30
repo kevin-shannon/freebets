@@ -124,22 +124,6 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
               <ScenarioTab betOption={betOption} amount_a={amount_a} amount_b={amount_b} bet_a={bet_a} bet_b={bet_b} stats={stats} />
             </div>
           </SwipeableViews>
-          <Tabs className="calc-tabs" aria-label="Icon tabs" defaultValue={0} value={activeTab} onChange={handleTabSelect} size="md">
-            <TabList>
-              <Tab className="calc-tabs-tab" value={0}>
-                <Calculator className="tab-icon" />
-              </Tab>
-              {amount_a !== "" && amount_b !== "" ? (
-                <Tab className="calc-tabs-tab" value={1}>
-                  <Sitemap className="tab-icon" />
-                </Tab>
-              ) : (
-                <Tab className="calc-tabs-tab" value={1} disabled sx={{ opacity: "50%" }}>
-                  <Sitemap className="tab-icon" />
-                </Tab>
-              )}
-            </TabList>
-          </Tabs>
         </Sheet>
       </Modal>
     </div>
