@@ -2,12 +2,11 @@ import { useState } from "react";
 import "./CalcLink.css";
 import "react-orgchart/index.css";
 import { Bet, BetOption, ScreenType, BetType } from "../../enums";
-import { ReactComponent as Sitemap } from "../../icons/sitemap.svg";
 import { ReactComponent as Calculator } from "../../icons/calculator.svg";
 import { computeEv, computeConversion, calcBetStats } from "../../Utils";
 import CalcTab from "./CalcTab";
 import ScenarioTab from "./ScenarioTab";
-import { Tab, TabList, Tabs, Modal, ModalClose } from "@mui/joy";
+import { Modal, ModalClose } from "@mui/joy";
 import Sheet from "@mui/joy/Sheet";
 import SwipeableViews from "react-swipeable-views";
 import Book from "../common/Book";
@@ -64,10 +63,6 @@ export default function ModalLink({ bet, betOption, screenType }: ModalLinkProps
     bet_b = bet.outcomes[1].name;
   }
   const stats = calcBetStats(betOption, Number(amount_a), Number(amount_b), odds_a, odds_b, Number(conversion));
-
-  const handleTabSelect = (_event: any, index: any) => {
-    setActiveTab(index);
-  };
 
   const handleChangeIndex = (index: number) => {
     setActiveTab(index);
