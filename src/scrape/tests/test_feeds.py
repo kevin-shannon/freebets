@@ -307,7 +307,6 @@ class FailureHandlingTests(unittest.TestCase):
         replies = [
             response([{"eventId": nba["event"]["id"], "started": False}]), response(nba),
             response([{"eventId": nhl["event"]["id"], "started": False}]), response(nhl),
-            response({"events": [], "markets": [], "selections": []}),
         ]
         client = FeedClient("mo")
         generated_id = uuid.UUID("00000000-0000-4000-8000-000000000001")
@@ -315,7 +314,9 @@ class FailureHandlingTests(unittest.TestCase):
             with patch.object(client.session, "send", side_effect=replies) as send:
                 self.assertEqual(main.counts(fetch_caesars("nba", client))["markets"], 3)
                 self.assertEqual(main.counts(fetch_caesars("nhl", client))["markets"], 3)
-                fetch_draftkings("nba", client)
+                with patch("http_client.browser_requests.Session") as browser:
+                    browser.return_value.get.return_value = response({"events": [], "markets": [], "selections": []})
+                    fetch_draftkings("nba", client)
         self.assertEqual(make_id.call_count, 1)
         requests_sent = [call.args[0] for call in send.call_args_list]
         for prepared in requests_sent[:4]:
@@ -329,11 +330,12 @@ class FailureHandlingTests(unittest.TestCase):
             self.assertNotIn("Authorization", prepared.headers)
             self.assertNotIn("x-aws-waf-token", prepared.headers)
             self.assertNotIn("Cookie", prepared.headers)
-        self.assertNotIn("X-Unique-Device-Id", requests_sent[-1].headers)
+        self.assertNotIn("X-Unique-Device-Id", browser.call_args.kwargs["headers"])
+        self.assertIsNone(browser.return_value.get.call_args.kwargs["headers"])
         self.assertNotIn("X-Platform", client.session.headers)
         client.close()
 
-    def test_requests_send_complete_agent_without_session_cookies(self):
+    def test_draftkings_uses_browser_transport_and_closes_it(self):
         import requests
 
         client = FeedClient("mo")
@@ -341,16 +343,18 @@ class FailureHandlingTests(unittest.TestCase):
         response.status_code = 200
         response.headers["Content-Type"] = "application/json"
         response._content = b'{"events": [], "markets": [], "selections": []}'
-        with patch.object(client.session, "send", return_value=response) as send:
+        with patch("http_client.browser_requests.Session") as browser, patch.object(client.session, "get") as regular:
+            browser.return_value.get.return_value = response
             fetch_draftkings("nba", client)
-        prepared = send.call_args.args[0]
-        agent = prepared.headers["User-Agent"]
-        self.assertIn("AppleWebKit/", agent)
-        self.assertIn("Chrome/", agent)
-        self.assertIn("Safari/", agent)
-        self.assertNotIn("Cookie", prepared.headers)
-        self.assertEqual(send.call_count, 1)
-        client.close()
+            fetch_draftkings("nba", client)
+            self.assertEqual(browser.call_count, 1)
+            self.assertEqual(browser.call_args.kwargs["impersonate"], "chrome")
+            self.assertEqual(browser.return_value.get.call_count, 2)
+            self.assertEqual(browser.return_value.get.call_args.kwargs["timeout"], (5, 20))
+            self.assertNotIn("Cookie", browser.call_args.kwargs["headers"])
+            regular.assert_not_called()
+            client.close()
+            browser.return_value.close.assert_called_once()
 
     def test_http_403_and_html_redirects_are_explicit_errors(self):
         client = FeedClient()

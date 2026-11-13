@@ -21,6 +21,17 @@ in New Jersey with 374 normalized markets and no incomplete-coverage state.
 Caesars was also verified separately in Missouri. This result uses live network
 responses, not replayed browser captures.
 
+Production uses AWS Lambda, so local success alone is insufficient. On November
+13, both Lambda and GitHub's hosted Windows/Linux runners returned HTTP 403 for
+Caesars and DraftKings with `requests`, including after upgrading Lambda from
+Python 3.9 to 3.13. Dependency versions and the runtime upgrade did not resolve
+those access failures. DraftKings returned valid NBA JSON on both cloud runners
+with `curl_cffi`'s Chrome-compatible TLS/HTTP transport. The collector now scopes
+that transport to DraftKings, while the other books continue using `requests`.
+Caesars still requires separate production access investigation. The deployment
+workflow invokes the collector and rejects incomplete coverage after upload;
+`scrape-status.json` records the actual per-book result.
+
 ## Verified source routes
 
 - BetMGM configuration: `https://www.nj.betmgm.com/en/api/clientconfig`, with the

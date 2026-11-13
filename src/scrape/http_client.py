@@ -1,5 +1,8 @@
-"""Bounded public-feed requests with actionable failures (no login or WAF bypass)."""
+"""Bounded public-feed requests with actionable failures and no account login."""
+from urllib.parse import urlsplit
+
 import requests
+from curl_cffi import requests as browser_requests
 
 
 # DraftKings rejects the abbreviated "Mozilla/5.0" agent with HTTP 403 while
@@ -29,11 +32,22 @@ class FeedClient:
         })
         self.cache = {}
         self.warnings = []
+        self.browser_session = None
 
     def get_json(self, url, *, params=None, headers=None):
+        session = self.session
+        if urlsplit(url).hostname == "sportsbook-nash.draftkings.com":
+            # Cloud hosts need a browser-compatible TLS/HTTP connection as well
+            # as public headers. Keep that transport scoped to DraftKings.
+            if self.browser_session is None:
+                self.browser_session = browser_requests.Session(impersonate="chrome", headers={
+                    "Origin": "https://sportsbook.draftkings.com",
+                    "Referer": "https://sportsbook.draftkings.com/",
+                })
+            session = self.browser_session
         try:
-            response = self.session.get(url, params=params, headers=headers, timeout=(5, 20))
-        except requests.RequestException as error:
+            response = session.get(url, params=params, headers=headers, timeout=(5, 20))
+        except (requests.RequestException, browser_requests.RequestsError) as error:
             raise FeedError(f"Request failed: {url}: {type(error).__name__}") from error
         if response.status_code in (401, 403, 451):
             raise FeedError(f"HTTP {response.status_code}: public feed access denied at {url}", "blocked")
@@ -58,3 +72,5 @@ class FeedClient:
 
     def close(self):
         self.session.close()
+        if self.browser_session is not None:
+            self.browser_session.close()
