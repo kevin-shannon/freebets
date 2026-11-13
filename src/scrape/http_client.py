@@ -1,4 +1,5 @@
 """Bounded public-feed requests with actionable failures and no account login."""
+import os
 from urllib.parse import urlsplit
 
 import requests
@@ -33,6 +34,24 @@ class FeedClient:
         self.cache = {}
         self.warnings = []
         self.browser_session = None
+        self.caesars_proxy_url = os.getenv("CAESARS_PROXY_URL", "").strip()
+
+    def request_options(self, url):
+        options = {"timeout": (5, 20)}
+        if urlsplit(url).hostname == "api.americanwagering.com" and self.caesars_proxy_url:
+            try:
+                proxy = urlsplit(self.caesars_proxy_url)
+                valid = (
+                    proxy.scheme in {"http", "https"} and proxy.hostname and proxy.port != 0
+                    and proxy.path in {"", "/"} and not proxy.query and not proxy.fragment
+                )
+                if not valid:
+                    raise ValueError("Invalid proxy")
+            except ValueError:
+                # Malformed URLs can contain passwords; never include them in errors.
+                raise FeedError("CAESARS_PROXY_URL must be an http:// or https:// forward-proxy URL.") from None
+            options["proxies"] = {"http": self.caesars_proxy_url, "https": self.caesars_proxy_url}
+        return options
 
     def get_json(self, url, *, params=None, headers=None):
         session = self.session
@@ -46,7 +65,7 @@ class FeedClient:
                 })
             session = self.browser_session
         try:
-            response = session.get(url, params=params, headers=headers, timeout=(5, 20))
+            response = session.get(url, params=params, headers=headers, **self.request_options(url))
         except (requests.RequestException, browser_requests.RequestsError) as error:
             raise FeedError(f"Request failed: {url}: {type(error).__name__}") from error
         if response.status_code in (401, 403, 451):

@@ -55,5 +55,27 @@ failed collections, and invalid responses fail the deployment check. A valid
 empty schedule passes. See the per-book production `scrape-status.json` for
 current coverage; the standalone `scrape:check` command remains strict.
 
+Caesars can optionally use an external HTTP/HTTPS forward proxy while the
+collector stays in Lambda. Configure `CAESARS_PROXY_URL` in Lambda's environment
+with the endpoint supplied by your proxy service, such as
+`https://USERNAME:PASSWORD@proxy.example.com:8443`. URL-encode credentials as
+needed and keep the actual value out of source control. This setting applies
+only to `api.americanwagering.com`; all other books keep their existing routing.
+Leaving it unset keeps the existing routing. The proxy must provide a working
+exit network; changing the route has not yet been verified to resolve Caesars'
+403 response. No proxy service is configured or provisioned by this code.
+
+To compare direct and proxy access with the same diagnostic request, configure
+the variable locally, then run:
+
+```powershell
+python src/scrape/diagnose_caesars_request.py
+python src/scrape/diagnose_caesars_request.py --via-proxy
+```
+
+The diagnostic labels the route without logging the proxy URL or credentials.
+After configuring the production endpoint, check the live per-book status to
+verify actual access; a successful deployment alone does not establish coverage.
+
 See [the sportsbook investigation](docs/sportsbook-feeds.md) for current results,
 endpoint migrations, sources, and the remaining access restrictions.

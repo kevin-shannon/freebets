@@ -2,6 +2,7 @@
 import importlib
 import copy
 import json
+import os
 import pathlib
 import sys
 import tempfile
@@ -292,6 +293,61 @@ class MatchingTests(unittest.TestCase):
 
 
 class FailureHandlingTests(unittest.TestCase):
+    def test_proxy_routes_caesars_only_and_keeps_existing_timeouts(self):
+        proxy = "https://test-user:test-password@proxy.example:8443"
+        with patch.dict(os.environ, {"CAESARS_PROXY_URL": proxy}):
+            client = FeedClient()
+        response = Mock(status_code=200, ok=True, headers={"Content-Type": "application/json"})
+        response.json.return_value = {}
+        with patch.object(client.session, "get", return_value=response) as get:
+            for path in ("/sports/basketball/schedule", "/events/example"):
+                client.get_json("https://api.americanwagering.com" + path)
+                self.assertEqual(get.call_args.kwargs["proxies"], {"http": proxy, "https": proxy})
+                self.assertEqual(get.call_args.kwargs["timeout"], (5, 20))
+                self.assertNotIn("verify", get.call_args.kwargs)
+            for host in ("cf-us1-cds-api.itsfogo.com", "sbapi.nj.sportsbook.fanduel.com", "api.americanwagering.com.example"):
+                client.get_json("https://" + host + "/feed")
+                self.assertNotIn("proxies", get.call_args.kwargs)
+        with patch("http_client.browser_requests.Session") as browser:
+            browser.return_value.get.return_value = response
+            client.get_json("https://sportsbook-nash.draftkings.com/feed")
+            self.assertNotIn("proxies", browser.return_value.get.call_args.kwargs)
+            client.close()
+
+    def test_unconfigured_caesars_proxy_keeps_existing_routing(self):
+        with patch.dict(os.environ, {"CAESARS_PROXY_URL": ""}):
+            client = FeedClient()
+        self.assertNotIn("proxies", client.request_options("https://api.americanwagering.com/feed"))
+        client.close()
+
+    def test_invalid_proxy_configuration_does_not_disable_other_books_or_expose_secrets(self):
+        for proxy in ("socks5://test-user:test-password@proxy.example:1080", "https://test-user:test-password@", "https://test-user:test-password@proxy.example:invalid", "https://[invalid"):
+            with self.subTest(proxy=proxy), patch.dict(os.environ, {"CAESARS_PROXY_URL": proxy}):
+                client = FeedClient()
+                with patch.object(client.session, "get") as get:
+                    with self.assertRaises(FeedError) as context:
+                        client.get_json("https://api.americanwagering.com/feed")
+                    self.assertIn("CAESARS_PROXY_URL", str(context.exception))
+                    self.assertNotIn(proxy, str(context.exception))
+                    self.assertNotIn("test-password", str(context.exception))
+                    get.assert_not_called()
+                self.assertNotIn("proxies", client.request_options("https://sbapi.nj.sportsbook.fanduel.com/feed"))
+                client.close()
+
+    def test_proxy_connection_failure_does_not_expose_credentials(self):
+        import requests
+
+        proxy = "https://test-user:test-password@proxy.example:8443"
+        with patch.dict(os.environ, {"CAESARS_PROXY_URL": proxy}):
+            client = FeedClient()
+        with patch.object(client.session, "get", side_effect=requests.exceptions.ProxyError("Failed: " + proxy)):
+            with self.assertRaises(FeedError) as context:
+                client.get_json("https://api.americanwagering.com/feed")
+        self.assertIn("ProxyError", str(context.exception))
+        self.assertNotIn("test-password", str(context.exception))
+        self.assertNotIn(proxy, str(context.exception))
+        client.close()
+
     def test_caesars_public_metadata_is_consistent_and_does_not_leak_to_other_books(self):
         import requests
         import uuid

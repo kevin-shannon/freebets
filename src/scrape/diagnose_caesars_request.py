@@ -14,7 +14,7 @@ import requests
 from urllib3.util.ssl_ import create_urllib3_context
 
 from books.caesars.caesars import COMPETITIONS, request_headers
-from http_client import FeedClient
+from http_client import FeedClient, FeedError
 
 
 # A dedicated public test identity, never a user's browser/account identity.
@@ -31,10 +31,12 @@ BODY_SIGNALS = (
 )
 
 
-def snapshot(region):
+def snapshot(region, via_proxy=False):
     client = FeedClient(region)
-    # Remove environment proxy/netrc settings as uncontrolled variables.
+    # Remove generic environment proxy/netrc settings as uncontrolled variables.
     client.session.trust_env = False
+    if via_proxy and not client.caesars_proxy_url:
+        raise ValueError("Set CAESARS_PROXY_URL before using --via-proxy.")
     headers = {**request_headers(client), "X-Unique-Device-Id": DIAGNOSTIC_DEVICE_ID}
     url = f"https://api.americanwagering.com/regions/us/locations/{region}/brands/czr/sb/v4/sports/basketball/schedule"
     prepared = client.session.prepare_request(requests.Request(
@@ -51,17 +53,19 @@ def snapshot(region):
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "environment": {
             "os": platform.platform(), "python": platform.python_version(), "openssl": ssl.OPENSSL_VERSION,
+            "route": "caesars-proxy" if via_proxy else "direct",
             "dependencies": {name: importlib.metadata.version(name) for name in (
                 "requests", "urllib3", "certifi", "charset-normalizer", "idna",
             )},
             "tlsCiphers": ciphers,
-            "destinationAddresses": sorted({item[4][0] for item in socket.getaddrinfo(urlsplit(url).hostname, 443, type=socket.SOCK_STREAM)}),
+            "destinationAddresses": None if via_proxy else sorted({item[4][0] for item in socket.getaddrinfo(urlsplit(url).hostname, 443, type=socket.SOCK_STREAM)}),
         },
         "request": request,
         "requestSha256": hashlib.sha256(json.dumps(request, sort_keys=True).encode()).hexdigest(),
     }
     try:
-        response = client.session.send(prepared, timeout=(5, 20), allow_redirects=False)
+        options = client.request_options(url) if via_proxy else {"timeout": (5, 20)}
+        response = client.session.send(prepared, allow_redirects=False, **options)
         text = response.text.lower() if response.status_code != 200 else ""
         result["response"] = {
             "status": response.status_code, "elapsedSeconds": round(response.elapsed.total_seconds(), 3),
@@ -83,8 +87,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--region", choices=("nj", "mo"), default="nj")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--via-proxy", action="store_true", help="Use CAESARS_PROXY_URL; the default comparison stays direct")
     args = parser.parse_args()
-    result = snapshot(args.region)
+    try:
+        result = snapshot(args.region, via_proxy=args.via_proxy)
+    except (ValueError, FeedError) as error:
+        parser.error(str(error))
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
