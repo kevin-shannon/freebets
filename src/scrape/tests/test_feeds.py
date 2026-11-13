@@ -370,6 +370,22 @@ class FailureHandlingTests(unittest.TestCase):
             self.assertEqual(get.call_args.kwargs["timeout"], (5, 20))
         client.close()
 
+    def test_browser_transport_preserves_access_and_network_failure_states(self):
+        from curl_cffi.requests import RequestsError
+
+        client = FeedClient()
+        with patch("http_client.browser_requests.Session") as browser:
+            browser.return_value.get.side_effect = RequestsError("Connection failed")
+            with self.assertRaises(FeedError) as context:
+                client.get_json("https://sportsbook-nash.draftkings.com/feed")
+            self.assertEqual(context.exception.state, "error")
+            browser.return_value.get.side_effect = None
+            browser.return_value.get.return_value = Mock(status_code=403)
+            with self.assertRaises(FeedError) as context:
+                client.get_json("https://sportsbook-nash.draftkings.com/feed")
+            self.assertEqual(context.exception.state, "blocked")
+            client.close()
+
     def test_one_failed_book_does_not_discard_successful_data(self):
         with patch.dict(main.FETCHERS, {"betmgm": lambda sport, client: sample_events(), "fanduel": Mock(side_effect=FeedError("403", "blocked"))}, clear=True):
             rows, report = main.collect(sports=("nba",))

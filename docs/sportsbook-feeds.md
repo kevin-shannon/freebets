@@ -28,7 +28,13 @@ Python 3.9 to 3.13. Dependency versions and the runtime upgrade did not resolve
 those access failures. DraftKings returned valid NBA JSON on both cloud runners
 with `curl_cffi`'s Chrome-compatible TLS/HTTP transport. The collector now scopes
 that transport to DraftKings, while the other books continue using `requests`.
-Caesars still requires separate production access investigation. The deployment
+The deployed DraftKings fix was verified in S3: 11 events and 57 markets across
+NBA/NHL, alongside live BetMGM and FanDuel prices. Caesars continues returning
+403 from Lambda and both cloud runner operating systems, even with the public
+platform headers and browser-compatible transport. An anonymous Chrome session
+on the Linux runner also received 403 on the site's own API requests. Local
+collection still succeeds. A permitted production access path or data source
+is needed before Caesars can be restored there. The deployment
 workflow invokes the collector and rejects incomplete coverage after upload;
 `scrape-status.json` records the actual per-book result.
 

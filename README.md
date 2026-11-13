@@ -6,6 +6,7 @@ sportsbook bets aggregator
 ## Run locally
 
 ```powershell
+# Python 3.13 is used by the production collector and its build.
 python -m pip install -r src/scrape/requirements.txt
 npm run scrape
 npm start
@@ -45,6 +46,12 @@ Production continues to read S3. Override `REACT_APP_DATA_URL` and optionally
 invocation, including warm invocations, and writes both JSON files to
 `OUTPUT_BUCKET` (default `stanleys-bucket`). Publishing these changes requires
 deploying the app and Lambda separately.
+
+Local and hosted feed access can differ. Production currently receives live
+BetMGM, DraftKings, and FanDuel prices; Caesars returns HTTP 403 from cloud hosts
+despite working locally. The Lambda deployment includes a live coverage check,
+which reports failure while a book remains blocked even if the code upload
+succeeds. See the per-book production `scrape-status.json` for current coverage.
 
 See [the sportsbook investigation](docs/sportsbook-feeds.md) for current results,
 endpoint migrations, sources, and the remaining access restrictions.
