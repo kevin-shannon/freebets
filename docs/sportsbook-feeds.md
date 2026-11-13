@@ -35,8 +35,12 @@ platform headers and browser-compatible transport. An anonymous Chrome session
 on the Linux runner also received 403 on the site's own API requests. Local
 collection still succeeds. A permitted production access path or data source
 is needed before Caesars can be restored there. The deployment
-workflow invokes the collector and rejects incomplete coverage after upload;
-`scrape-status.json` records the actual per-book result.
+workflow invokes the collector after upload. Usable partial coverage produces a
+warning and job summary; invocation errors, failed collections, and malformed
+responses fail the check. Valid empty schedules pass. The redundant build-runner
+collection was removed from deployment; the dedicated access diagnostic workflow
+still supports host comparisons. `scrape-status.json` records the actual per-book
+result, and the standalone `scrape:check` command remains strict.
 
 ## Verified source routes
 

@@ -49,9 +49,11 @@ deploying the app and Lambda separately.
 
 Local and hosted feed access can differ. Production currently receives live
 BetMGM, DraftKings, and FanDuel prices; Caesars returns HTTP 403 from cloud hosts
-despite working locally. The Lambda deployment includes a live coverage check,
-which reports failure while a book remains blocked even if the code upload
-succeeds. See the per-book production `scrape-status.json` for current coverage.
+despite working locally. The Lambda deployment includes a live collection check:
+usable partial coverage produces a warning and a job summary. Invocation errors,
+failed collections, and invalid responses fail the deployment check. A valid
+empty schedule passes. See the per-book production `scrape-status.json` for
+current coverage; the standalone `scrape:check` command remains strict.
 
 See [the sportsbook investigation](docs/sportsbook-feeds.md) for current results,
 endpoint migrations, sources, and the remaining access restrictions.

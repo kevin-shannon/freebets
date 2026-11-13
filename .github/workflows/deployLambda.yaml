@@ -36,10 +36,6 @@ jobs:
       - name: Test sportsbook adapters
         run: python -m unittest discover -s src/scrape/tests -v
 
-      - name: Compare feeds from build runner
-        continue-on-error: true
-        run: python src/scrape/main.py check
-
       - name: Zip code
         run: |
           cd src/scrape
@@ -65,13 +61,4 @@ jobs:
           aws lambda invoke --function-name scrape-books \
             --payload fileb://invoke-event.json \
             --cli-read-timeout 120 invoke-result.json > invoke-metadata.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          metadata = json.loads(Path('invoke-metadata.json').read_text())
-          result = json.loads(Path('invoke-result.json').read_text())
-          print(json.dumps(result, indent=2))
-          if metadata.get('FunctionError') or result.get('state') not in {'ok', 'no_events'}:
-              raise SystemExit('Live collection failed. See scrape-status.json for per-book errors.')
-          PY
+          python src/scrape/deployment_health.py invoke-metadata.json invoke-result.json
