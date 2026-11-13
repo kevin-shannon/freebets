@@ -1,0 +1,77 @@
+name: Build Home Assistant relay
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - caesars_relay/**
+      - repository.yaml
+      - .github/workflows/testHomeRelay.yaml
+  pull_request:
+    paths:
+      - caesars_relay/**
+      - repository.yaml
+      - .github/workflows/testHomeRelay.yaml
+
+permissions:
+  contents: read
+
+jobs:
+  container:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        architecture: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/setup-qemu-action@v4
+        with:
+          platforms: arm64
+      - uses: docker/setup-buildx-action@v4
+      - name: Build relay image
+        run: docker buildx build --platform linux/${{ matrix.architecture }} --load --tag freebets-caesars-relay:test caesars_relay
+      - name: Start with Home Assistant options
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          Path('relay-options.json').write_text(json.dumps({
+              'region': 'nj', 'relay_token': 'ci-container-test-token-' + 'a' * 40,
+          }))
+          PY
+          docker run --detach --name freebets-caesars-relay \
+            --platform linux/${{ matrix.architecture }} \
+            --publish 127.0.0.1:18787:8787 \
+            --volume "$PWD/relay-options.json:/data/options.json:ro" \
+            freebets-caesars-relay:test
+      - name: Verify liveness and authentication
+        run: |
+          python3 - <<'PY'
+          import json
+          import time
+          from urllib.error import HTTPError, URLError
+          from urllib.request import Request, urlopen
+          origin = 'http://127.0.0.1:18787'
+          for attempt in range(30):
+              try:
+                  with urlopen(origin + '/health', timeout=2) as response:
+                      assert json.load(response) == {'status': 'ok'}
+                  break
+              except (URLError, TimeoutError):
+                  time.sleep(1)
+          else:
+              raise SystemExit('Relay failed to start')
+          for headers, expected in [({}, 401), ({'Authorization': 'Bearer ci-container-test-token-' + 'a' * 40}, 400)]:
+              try:
+                  urlopen(Request(origin + '/not-a-caesars-endpoint', headers=headers), timeout=2)
+                  raise AssertionError('Unsupported request was accepted')
+              except HTTPError as error:
+                  assert error.code == expected, error.code
+          print('Container reads Home Assistant options, serves health, and enforces authentication/path restrictions.')
+          PY
+      - name: Container logs
+        if: always()
+        run: docker logs freebets-caesars-relay
+      - name: Stop test container
+        if: always()
+        run: docker rm --force freebets-caesars-relay

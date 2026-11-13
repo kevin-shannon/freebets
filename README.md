@@ -55,6 +55,16 @@ failed collections, and invalid responses fail the deployment check. A valid
 empty schedule passes. See the per-book production `scrape-status.json` for
 current coverage; the standalone `scrape:check` command remains strict.
 
+For an always-on Home Assistant OS server, install the
+[Caesars home relay app](caesars_relay/DOCS.md) from this repository and publish
+it through your existing Cloudflare Tunnel with Access service authentication.
+Set `CAESARS_RELAY_URL`, `CAESARS_RELAY_TOKEN`,
+`CAESARS_RELAY_ACCESS_CLIENT_ID`, and `CAESARS_RELAY_ACCESS_CLIENT_SECRET` in
+Lambda. Caesars requests then run through the home relay; aggregation and S3
+publishing remain in AWS. Relay routing takes precedence over the optional
+forward proxy below. The server and tunnel must be installed and a live
+collection verified before Caesars can be considered restored in production.
+
 Caesars can optionally use an external HTTP/HTTPS forward proxy while the
 collector stays in Lambda. Configure `CAESARS_PROXY_URL` in Lambda's environment
 with the endpoint supplied by your proxy service, such as

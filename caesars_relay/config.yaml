@@ -1,0 +1,22 @@
+name: Freebets Caesars Relay
+version: "0.1.0"
+slug: caesars_relay
+description: Fetch public Caesars odds through your home internet connection
+url: https://github.com/kevin-shannon/freebets/tree/main/caesars_relay
+arch:
+  - aarch64
+  - amd64
+startup: services
+boot: auto
+init: true
+ports:
+  8787/tcp: 8787
+ports_description:
+  8787/tcp: Caesars relay for your existing Cloudflare Tunnel
+watchdog: http://[HOST]:[PORT:8787]/health
+options:
+  region: nj
+  relay_token: ""
+schema:
+  region: match(^[a-z]{2}$)
+  relay_token: password

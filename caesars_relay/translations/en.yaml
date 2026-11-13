@@ -1,0 +1,7 @@
+configuration:
+  region:
+    name: State
+    description: Two-letter state code, such as nj or mo. Match the collector's SPORTSBOOK_REGION.
+  relay_token:
+    name: Relay token
+    description: Paste a newly generated random token of at least 32 characters. Use the same value for CAESARS_RELAY_TOKEN in Lambda.
