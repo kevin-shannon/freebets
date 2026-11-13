@@ -20,6 +20,7 @@ jobs:
   container:
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         architecture: [amd64, arm64]
     steps:
@@ -57,7 +58,7 @@ jobs:
                   with urlopen(origin + '/health', timeout=2) as response:
                       assert json.load(response) == {'status': 'ok'}
                   break
-              except (URLError, TimeoutError):
+              except (URLError, TimeoutError, ConnectionError):
                   time.sleep(1)
           else:
               raise SystemExit('Relay failed to start')
