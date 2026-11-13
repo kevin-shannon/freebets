@@ -106,6 +106,35 @@ are live only after that end-to-end check succeeds.
 To disable the relay, remove `CAESARS_RELAY_URL` from Lambda. The collector then
 uses the configured Caesars forward proxy, or its existing direct connection.
 
+## Verify that Lambda used the home relay
+
+Update this app to **0.1.1** or newer for request logging. In Home Assistant,
+open **Settings -> Apps -> Freebets Caesars Relay -> Logs**. Health polls are
+quiet; authenticated odds requests produce records such as:
+
+```json
+{"event":"caesars_relay_request","trace_id":"<collection UUID>","kind":"schedule","status":200,"upstream_status":200}
+```
+
+The full record also contains a UTC timestamp, response byte count, and duration.
+It contains no credentials, cookies, client IPs, upstream body, or raw query.
+
+For Lambda, open **scrape-books -> Monitor -> View CloudWatch logs**, choose
+`/aws/lambda/scrape-books`, and open the stream with the newest last-event time.
+Look for:
+
+```text
+caesars transport=home_relay trace_id=<collection UUID>
+caesars      nba ok ... events, ... markets
+```
+
+Run a manual Lambda test with `{}` while watching the app's logs. The same trace
+ID in both logs ties the Lambda collection to the actual relay requests. A relay
+record with `upstream_status: 200` means Caesars returned data to this home
+server. The latest S3 `scrape-status.json` includes `generatedAt`, and under
+`books.caesars`, `transport`, `relayTraceId`, and `relayRequests`. No direct
+fallback occurs when the home relay is configured.
+
 ## What the app accepts
 
 - GET requests to Caesars v4 NBA/NHL/MLB schedule and event-detail paths for the

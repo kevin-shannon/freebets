@@ -1,5 +1,6 @@
 """Bounded public-feed requests with actionable failures and no account login."""
 import os
+import uuid
 from urllib.parse import urlsplit
 
 import requests
@@ -40,6 +41,8 @@ class FeedClient:
         self.caesars_access_id = os.getenv("CAESARS_RELAY_ACCESS_CLIENT_ID", "").strip()
         self.caesars_access_secret = os.getenv("CAESARS_RELAY_ACCESS_CLIENT_SECRET", "").strip()
         self.caesars_relay_failure = None
+        self.caesars_relay_trace_id = str(uuid.uuid4())
+        self.caesars_relay_requests = 0
 
     def relay_response(self, url, params, headers):
         try:
@@ -60,13 +63,17 @@ class FeedClient:
             raise FeedError("Set both CAESARS_RELAY_ACCESS_CLIENT_ID and CAESARS_RELAY_ACCESS_CLIENT_SECRET.")
         source = urlsplit(url)
         target = relay._replace(path=source.path, query=source.query).geturl()
-        relay_headers = {**(headers or {}), "Authorization": "Bearer " + self.caesars_relay_token}
+        relay_headers = {
+            **(headers or {}), "Authorization": "Bearer " + self.caesars_relay_token,
+            "X-Freebets-Trace-Id": self.caesars_relay_trace_id,
+        }
         if self.caesars_access_id:
             relay_headers.update({
                 "CF-Access-Client-Id": self.caesars_access_id,
                 "CF-Access-Client-Secret": self.caesars_access_secret,
             })
         # Credentials belong only to this configured origin, including on redirects.
+        self.caesars_relay_requests += 1
         return self.session.get(target, params=params, headers=relay_headers,
                                 timeout=(5, 20), allow_redirects=False)
 

@@ -1,9 +1,12 @@
 """Authenticated, read-only Caesars relay for a Home Assistant app container."""
 import hmac
 import json
+import logging
 import os
 import re
 import threading
+import time
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
@@ -14,6 +17,7 @@ import requests
 UPSTREAM = "https://api.americanwagering.com"
 PORT = 8787
 MAX_RESPONSE_BYTES = 8 * 1024 * 1024
+LOGGER = logging.getLogger(__name__)
 PUBLIC_HEADERS = (
     "User-Agent", "Accept", "Cache-Control", "Content-Type", "X-Platform-Type",
     "X-Platform", "X-App-Version", "X-Unique-Device-Id",
@@ -59,7 +63,7 @@ def fetch_upstream(url, headers):
 
 
 class RelayHandler(BaseHTTPRequestHandler):
-    server_version = "FreebetsRelay/0.1"
+    server_version = "FreebetsRelay/0.1.1"
     sys_version = ""
 
     def log_message(self, format, *args):
@@ -78,8 +82,18 @@ class RelayHandler(BaseHTTPRequestHandler):
             self.send_header("X-Freebets-Relay-Error", error)
         if upstream_status is not None:
             self.send_header("X-Freebets-Upstream-Status", str(upstream_status))
+        if getattr(self, "relay_trace_id", None):
+            self.send_header("X-Freebets-Trace-Id", self.relay_trace_id)
         self.end_headers()
         self.close_connection = True
+        if hasattr(self, "request_started"):
+            LOGGER.info(json.dumps({
+                "time": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "event": "caesars_relay_request", "trace_id": getattr(self, "relay_trace_id", None),
+                "kind": getattr(self, "request_kind", "invalid"), "status": status,
+                "upstream_status": getattr(self, "upstream_status", None), "response_bytes": len(body),
+                "duration_ms": round((time.monotonic() - self.request_started) * 1000),
+            }))
         try:
             if self.command != "HEAD":
                 self.wfile.write(body)
@@ -97,8 +111,12 @@ class RelayHandler(BaseHTTPRequestHandler):
         if self.headers.get("Content-Length", "0") != "0" or "Transfer-Encoding" in self.headers:
             self.respond(400, {"error": "request_body_not_supported"}, error="invalid_request")
             return
+        self.request_started = time.monotonic()
         try:
+            trace = self.headers.get("X-Freebets-Trace-Id")
+            self.relay_trace_id = str(UUID(trace)) if trace else None
             url = target_url(self.path, self.server.region)
+            self.request_kind = "schedule" if "/sports/" in urlsplit(url).path else "event"
             headers = {name: self.headers[name] for name in PUBLIC_HEADERS if name in self.headers}
             UUID(headers.get("X-Unique-Device-Id", ""))
             if any("\r" in value or "\n" in value or len(value) > 512 for value in headers.values()):
@@ -112,6 +130,7 @@ class RelayHandler(BaseHTTPRequestHandler):
         try:
             try:
                 status, body = self.server.fetch(url, headers)
+                self.upstream_status = status
             except requests.RequestException:
                 self.respond(502, {"error": "upstream_unavailable"}, error="upstream_unavailable")
                 return
@@ -153,6 +172,7 @@ def make_server(address, token, region="nj", fetch=fetch_upstream):
 
 
 def main():
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
     options_path = Path("/data/options.json")
     options = json.loads(options_path.read_text()) if options_path.exists() else {}
     token = os.getenv("CAESARS_RELAY_TOKEN", options.get("relay_token", ""))

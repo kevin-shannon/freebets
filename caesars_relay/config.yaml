@@ -1,5 +1,5 @@
 name: Freebets Caesars Relay
-version: "0.1.0"
+version: "0.1.1"
 slug: caesars_relay
 description: Fetch public Caesars odds through your home internet connection
 url: https://github.com/kevin-shannon/freebets/tree/main/caesars_relay

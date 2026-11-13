@@ -1,10 +1,12 @@
 """Exercise the home relay over HTTP, including its network and credential boundaries."""
 import json
+import io
 import os
 from pathlib import Path
 import sys
 import threading
 import unittest
+from contextlib import redirect_stdout
 from unittest.mock import MagicMock, Mock, patch
 
 import requests
@@ -14,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src/scrape"))
 
 from caesars_relay.server import make_server, fetch_upstream
-from books.caesars.caesars import fetch_sport, COMPETITIONS
+from books.caesars.caesars import COMPETITIONS
 from http_client import FeedClient, FeedError
 import main
 
@@ -64,6 +66,33 @@ class HomeRelayTests(unittest.TestCase):
         self.assertEqual(url, "https://api.americanwagering.com" + SCHEDULE)
         self.assertEqual(sent, {"User-Agent": "test-browser", "X-Platform": "rn-web", "X-Unique-Device-Id": DEVICE_ID, "Accept": "*/*"})
 
+    def test_request_log_and_response_share_trace_without_credentials_or_health_noise(self):
+        trace = "11111111-1111-4111-8111-111111111111"
+        headers = {**self.headers, "X-Freebets-Trace-Id": trace,
+                   "CF-Access-Client-Secret": "test-access-secret", "Cookie": "test-cookie"}
+        with self.assertLogs("caesars_relay.server", level="INFO") as output:
+            requests.get(self.origin + "/health", timeout=2)
+            response = requests.get(self.origin + SCHEDULE, headers=headers, timeout=2)
+        self.assertEqual(response.headers["X-Freebets-Trace-Id"], trace)
+        self.assertEqual(len(output.records), 1)
+        message = output.records[0].getMessage()
+        record = json.loads(message)
+        self.assertEqual(record["trace_id"], trace)
+        self.assertEqual(record["kind"], "schedule")
+        self.assertEqual(record["status"], 200)
+        self.assertEqual(record["upstream_status"], 200)
+        self.assertTrue(record["time"].endswith("Z"))
+        for value in (TOKEN, "test-access-secret", "test-cookie", DEVICE_ID, COMPETITIONS["nba"][1], "127.0.0.1"):
+            self.assertNotIn(value, message)
+        self.assertNotIn("X-Freebets-Trace-Id", self.upstream.call_args.args[1])
+
+    def test_invalid_trace_is_rejected_without_logging_its_value(self):
+        with self.assertLogs("caesars_relay.server", level="INFO") as output:
+            response = requests.get(self.origin + SCHEDULE, headers={**self.headers, "X-Freebets-Trace-Id": "test-secret"}, timeout=2)
+        self.assertEqual(response.status_code, 400)
+        self.assertNotIn("test-secret", output.records[0].getMessage())
+        self.upstream.assert_not_called()
+
     def test_invalid_targets_and_queries_never_contact_upstream(self):
         paths = [
             "/https://example.com/", "//169.254.169.254/latest/meta-data/",
@@ -98,7 +127,14 @@ class HomeRelayTests(unittest.TestCase):
                              CAESARS_RELAY_ACCESS_CLIENT_ID="test-access-id",
                              CAESARS_RELAY_ACCESS_CLIENT_SECRET="test-access-secret")
         try:
-            self.assertEqual(main.counts(fetch_sport("nba", client)), {"events": 1, "markets": 3})
+            console = io.StringIO()
+            with patch.object(main, "FeedClient", return_value=client), redirect_stdout(console):
+                rows, report = main.collect(books=("caesars",), sports=("nba",))
+            self.assertEqual(len(rows), 3)
+            self.assertEqual(report["books"]["caesars"]["transport"], "home_relay")
+            self.assertEqual(report["books"]["caesars"]["relayTraceId"], client.caesars_relay_trace_id)
+            self.assertEqual(report["books"]["caesars"]["relayRequests"], 2)
+            self.assertIn("transport=home_relay trace_id=" + client.caesars_relay_trace_id, console.getvalue())
             self.assertEqual(self.upstream.call_count, 2)
             for call in self.upstream.call_args_list:
                 headers = call.args[1]

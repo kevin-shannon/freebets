@@ -40,6 +40,10 @@ def collect(books=None, sports=SPORTS, region=None):
             if book not in FETCHERS:
                 raise ValueError(f"Unknown sportsbook: {book}")
             data[book], sport_statuses = {}, {}
+            if book == "caesars":
+                transport = "home_relay" if client.caesars_relay_url else "forward_proxy" if client.caesars_proxy_url else "direct"
+                trace = f" trace_id={client.caesars_relay_trace_id}" if transport == "home_relay" else ""
+                print(f"caesars transport={transport}{trace}", flush=True)
             for sport in sports:
                 client.warnings = []
                 try:
@@ -70,6 +74,10 @@ def collect(books=None, sports=SPORTS, region=None):
             else:
                 state = next(iter(states)) if len(states) == 1 else "error"
             statuses[book] = {"state": state, "events": total_events, "markets": total_markets, "sports": sport_statuses}
+            if book == "caesars":
+                statuses[book]["transport"] = transport
+                if transport == "home_relay":
+                    statuses[book].update(relayTraceId=client.caesars_relay_trace_id, relayRequests=client.caesars_relay_requests)
     finally:
         client.close()
     rows = aggregate(data)
