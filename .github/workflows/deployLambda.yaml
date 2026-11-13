@@ -7,23 +7,26 @@ on:
 
 jobs:
   deploy:
-    # Python 3.9 builds are available on 22.04, not the current ubuntu-latest.
     runs-on: ubuntu-22.04
     permissions:
       contents: read
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_PAGER: ""
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update && sudo apt-get install -y awscli
+      - name: Check AWS CLI
+        run: aws --version
 
       - name: Set up Python environment
         uses: actions/setup-python@v6
         with:
-          python-version: "3.9"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
@@ -33,6 +36,10 @@ jobs:
       - name: Test sportsbook adapters
         run: python -m unittest discover -s src/scrape/tests -v
 
+      - name: Compare feeds from build runner
+        continue-on-error: true
+        run: python src/scrape/main.py check
+
       - name: Zip code
         run: |
           cd src/scrape
@@ -41,10 +48,30 @@ jobs:
 
       - name: Deploy
         run: |
+          aws lambda update-function-configuration \
+            --function-name scrape-books \
+            --runtime python3.13 \
+            --query '{Runtime:Runtime,LastUpdateStatus:LastUpdateStatus}'
+          aws lambda wait function-updated --function-name scrape-books
           aws lambda update-function-code \
             --function-name scrape-books \
             --zip-file fileb://scrape-books.zip \
-            --region us-east-2
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            --query '{Runtime:Runtime,LastUpdateStatus:LastUpdateStatus,CodeSha256:CodeSha256}'
+          aws lambda wait function-updated --function-name scrape-books
+
+      - name: Verify live collection
+        run: |
+          echo '{}' > invoke-event.json
+          aws lambda invoke --function-name scrape-books \
+            --payload fileb://invoke-event.json \
+            --cli-read-timeout 120 invoke-result.json > invoke-metadata.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          metadata = json.loads(Path('invoke-metadata.json').read_text())
+          result = json.loads(Path('invoke-result.json').read_text())
+          print(json.dumps(result, indent=2))
+          if metadata.get('FunctionError') or result.get('state') not in {'ok', 'no_events'}:
+              raise SystemExit('Live collection failed. See scrape-status.json for per-book errors.')
+          PY

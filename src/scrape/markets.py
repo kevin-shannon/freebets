@@ -7,8 +7,8 @@ from utils import convert_team_event_name, standardize_team_name
 
 
 def parse_start(value):
-    # DraftKings emits seven fractional digits. Python 3.9 (the Lambda build
-    # version) accepts only three or six; normalize to microsecond precision.
+    # DraftKings emits seven fractional digits; normalize to microseconds so
+    # older local Python versions can parse the same feed as Lambda.
     value = re.sub(
         r"\.(\d+)(?=Z$|[+-]\d{2}:\d{2}$|$)",
         lambda match: "." + match.group(1)[:6].ljust(6, "0"),

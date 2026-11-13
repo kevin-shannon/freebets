@@ -51,7 +51,7 @@ responses, not replayed browser captures.
   agent. Live NBA control-data requests and NHL Stadium/category requests now
   pass; the stored browser capture remains a regression fixture.
   Seven-digit fractional timestamps are normalized
-  to microseconds for the Lambda build's Python 3.9 parser, whose supported
+  to microseconds for compatibility with older local Python 3.9 parsers, whose supported
   fractional formats are documented in
   [Python's datetime reference](https://docs.python.org/3.9/library/datetime.html#datetime.datetime.fromisoformat).
   Non-pregame statuses are excluded, and invalid event starts now produce a
