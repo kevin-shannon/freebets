@@ -88,6 +88,14 @@
   justify-content: center;
 }
 
+.feed-status {
+  color: var(--medium-contrast-text);
+  font-size: 0.85rem;
+  margin: 12px auto 20px;
+  max-width: 1100px;
+  text-align: center;
+}
+
 body {
   font-family: "Roboto";
   margin: 0;

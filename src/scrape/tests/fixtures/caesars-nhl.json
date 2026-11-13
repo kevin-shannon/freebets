@@ -1,0 +1,298 @@
+{
+  "event": {
+    "id": "d5e3b422-190f-4890-af55-baf34d2e6359",
+    "name": "New York Rangers at Vancouver Canucks",
+    "startTime": "2026-11-14T02:00:00Z",
+    "display": true,
+    "active": true,
+    "started": false,
+    "keyMarketGroups": [
+      {
+        "marketDisplayTypeId": "standard_six_pack",
+        "marketDisplayGroupDisplayName": "Game Lines",
+        "isOddsBoost": false,
+        "markets": [
+          {
+            "id": "bce1892e-72df-327a-b630-2bfcefed0143",
+            "name": "|Puck Line|",
+            "type": "two-way-handicap",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "line": 1.5,
+            "templateName": "|Puck Line Handicap|",
+            "specialConditions": "",
+            "metadata": {
+              "marketCategory": "POINTS_HANDICAP",
+              "period": "FULL_TIME",
+              "flowSegment": "event"
+            },
+            "selections": [
+              {
+                "id": "3ecf8c4d-285b-3ab1-a45b-7a27f51553f0",
+                "display": true,
+                "name": "|New York Rangers|",
+                "active": true,
+                "type": "away",
+                "price": {
+                  "f": "113/100",
+                  "d": 2.13,
+                  "a": 113
+                }
+              },
+              {
+                "id": "098d59c6-50b1-309f-a402-8e0594cceac3",
+                "display": true,
+                "name": "|Vancouver Canucks|",
+                "active": true,
+                "type": "home",
+                "price": {
+                  "f": "25/33",
+                  "d": 1.75758,
+                  "a": -132
+                }
+              }
+            ]
+          },
+          {
+            "id": "f0ce953c-1bba-3218-aa7a-fb717e918ceb",
+            "name": "|Money Line|",
+            "type": "standard-market-template",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "templateName": "|Money Line|",
+            "specialConditions": "",
+            "metadata": {
+              "marketCategory": "HEAD_TO_HEAD",
+              "flowSegment": "event"
+            },
+            "selections": [
+              {
+                "id": "f0a39835-6674-3a77-a9ba-53091b6d54a2",
+                "display": true,
+                "name": "|New York Rangers|",
+                "active": true,
+                "type": "away",
+                "price": {
+                  "f": "50/109",
+                  "d": 1.45872,
+                  "a": -218
+                }
+              },
+              {
+                "id": "a6c426a4-81ff-311c-814c-f495e09f8ee0",
+                "display": true,
+                "name": "|Vancouver Canucks|",
+                "active": true,
+                "type": "home",
+                "price": {
+                  "f": "91/50",
+                  "d": 2.82,
+                  "a": 182
+                }
+              }
+            ]
+          },
+          {
+            "id": "11ecad93-1d66-36b3-a4c0-b010334a6f82",
+            "name": "|Total Goals|",
+            "type": "over-under",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "line": 6.5,
+            "templateName": "|Total Goals|",
+            "specialConditions": "",
+            "metadata": {
+              "marketCategory": "TOTAL_POINTS",
+              "flowSegment": "event"
+            },
+            "selections": [
+              {
+                "id": "160125c7-4818-331f-8253-9227d8ea7e2b",
+                "display": true,
+                "name": "|Over|",
+                "active": true,
+                "type": "over",
+                "price": {
+                  "f": "20/21",
+                  "d": 1.95238,
+                  "a": -105
+                }
+              },
+              {
+                "id": "1bb83472-0af0-3bdb-a785-540b694769fa",
+                "display": true,
+                "name": "|Under|",
+                "active": true,
+                "type": "under",
+                "price": {
+                  "f": "50/59",
+                  "d": 1.84746,
+                  "a": -118
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "marketDisplayTypeId": "moving_lines_slider",
+        "marketDisplayGroupDisplayName": "Puck Line",
+        "isOddsBoost": false,
+        "markets": [
+          {
+            "id": "bce1892e-72df-327a-b630-2bfcefed0143",
+            "name": "|Puck Line|",
+            "type": "two-way-handicap",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "line": 1.5,
+            "templateName": "|Puck Line Handicap|",
+            "specialConditions": "",
+            "metadata": {
+              "marketCategory": "POINTS_HANDICAP",
+              "period": "FULL_TIME",
+              "flowSegment": "event"
+            },
+            "selections": [
+              {
+                "id": "3ecf8c4d-285b-3ab1-a45b-7a27f51553f0",
+                "display": true,
+                "name": "|New York Rangers|",
+                "active": true,
+                "type": "away",
+                "price": {
+                  "f": "113/100",
+                  "d": 2.13,
+                  "a": 113
+                }
+              },
+              {
+                "id": "098d59c6-50b1-309f-a402-8e0594cceac3",
+                "display": true,
+                "name": "|Vancouver Canucks|",
+                "active": true,
+                "type": "home",
+                "price": {
+                  "f": "25/33",
+                  "d": 1.75758,
+                  "a": -132
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "marketDisplayTypeId": "moving_lines_slider",
+        "marketDisplayGroupDisplayName": "Total Goals",
+        "isOddsBoost": false,
+        "markets": [
+          {
+            "id": "11ecad93-1d66-36b3-a4c0-b010334a6f82",
+            "name": "|Total Goals|",
+            "type": "over-under",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "line": 6.5,
+            "templateName": "|Total Goals|",
+            "specialConditions": "",
+            "metadata": {
+              "marketCategory": "TOTAL_POINTS",
+              "flowSegment": "event"
+            },
+            "selections": [
+              {
+                "id": "160125c7-4818-331f-8253-9227d8ea7e2b",
+                "display": true,
+                "name": "|Over|",
+                "active": true,
+                "type": "over",
+                "price": {
+                  "f": "20/21",
+                  "d": 1.95238,
+                  "a": -105
+                }
+              },
+              {
+                "id": "1bb83472-0af0-3bdb-a785-540b694769fa",
+                "display": true,
+                "name": "|Under|",
+                "active": true,
+                "type": "under",
+                "price": {
+                  "f": "50/59",
+                  "d": 1.84746,
+                  "a": -118
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "marketDisplayTypeId": "full_width_selections",
+        "marketDisplayGroupDisplayName": "Period 3-Way",
+        "isOddsBoost": false,
+        "markets": [
+          {
+            "id": "3d05a64d-8bd6-33ab-8a50-9d10cb24b3b7",
+            "name": "|1st Period Betting|",
+            "type": "standard-market-template",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "templateName": "|1st Period Betting|",
+            "specialConditions": "",
+            "metadata": {
+              "marketCategory": "WIN_DRAW_WIN",
+              "flowSegment": "regulation_time/period_1"
+            },
+            "selections": [
+              {
+                "id": "fc6b87d7-37af-3248-8a29-7da523c54c03",
+                "display": true,
+                "name": "|New York Rangers|",
+                "active": true,
+                "type": "away",
+                "price": {
+                  "f": "123/100",
+                  "d": 2.23,
+                  "a": 123
+                }
+              },
+              {
+                "id": "286b6af6-fb85-3193-b15a-ac0a4039b3f8",
+                "display": true,
+                "name": "|Draw|",
+                "active": true,
+                "type": "draw",
+                "price": {
+                  "f": "33/20",
+                  "d": 2.65,
+                  "a": 165
+                }
+              },
+              {
+                "id": "924e2ef7-8913-3df3-975c-4614b4ca655c",
+                "display": true,
+                "name": "|Vancouver Canucks|",
+                "active": true,
+                "type": "home",
+                "price": {
+                  "f": "9/4",
+                  "d": 3.25,
+                  "a": 225
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

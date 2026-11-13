@@ -1,144 +1,74 @@
+"""FanDuel's public attachments API (main and alternate full-game lines)."""
 import re
-import requests
-from datetime import datetime
+from collections import defaultdict
 
-from utils import build_team_spread_market_name
-from utils import construct_total_market_name
-from utils import convert_team_event_name
-from utils import standardize_team_name
-from utils import standardize_team_spread
+from http_client import FeedError
+from markets import add_market, event_info, trailing_line
 
-
-nhl = {
-    'sport': 'nhl',
-    'url': 'https://sbapi.nj.sportsbook.fanduel.com/api/content-managed-page?page=CUSTOM&customPageId=nhl&_ak=FhMFpcPWXMeyZxOx',
-    'market_labels': {"MONEYLINE": r'^Moneyline - Inc. OT', "TOTAL": r'^Alternate Total Goals$', "SPREAD": r'^Alternate Puck Line$'},
-    'compititon_name': 'NHL - Matches',
+PUBLIC_KEY = "FhMFpcPWXMeyZxOx"
+LABELS = {
+    "moneyline": {"Moneyline", "Moneyline - Inc. OT", "Moneyline (Including Overtime)"},
+    "total": {"Total Points", "Total Goals", "Total Runs", "Alternate Total Points", "Alternate Total Goals", "Alternate Total Runs"},
+    "spread": {"Spread", "Puck Line", "Run Line", "Alternate Puck Line", "Alternate Run Lines", "Alternate Run Line", "Alternative Spreads", "Alternate Spread", "Alternate Spreads"},
 }
 
-mlb = {
-    'sport': 'mlb',
-    'url': 'https://sbapi.nj.sportsbook.fanduel.com/api/content-managed-page?page=CUSTOM&customPageId=mlb&_ak=FhMFpcPWXMeyZxOx',
-    'market_labels': {"MONEYLINE": r'^Moneyline$', "TOTAL": r'^Alternate Total Runs$', "SPREAD": r'^Alternate Run Lines$'},
-    'compititon_name': 'MLB',
-}
 
-nba = {
-    'sport': 'nba', 
-    'url': 'https://sbapi.nj.sportsbook.fanduel.com/api/content-managed-page?page=CUSTOM&customPageId=nba&_ak=FhMFpcPWXMeyZxOx', 
-    'market_labels': {"MONEYLINE": r'^Moneyline$', "TOTAL": r'^Alternate Total Points$', "SPREAD": r'^Alternative Spreads$'},
-    'compititon_name': 'NBA',
-}
-
-def generate_fanduel():
-    return {
-        'nhl': generate_fanduel_formatted_events(**nhl),
-        'mlb': generate_fanduel_formatted_events(**mlb),
-        'nba': generate_fanduel_formatted_events(**nba),
-    }
-
-def generate_fanduel_formatted_events(url, sport, market_labels, compititon_name):
-    id_to_name_time = {}
-    formatted_events = {}
-    headers = {'Cache-Control': 'no-cache','User-Agent': 'Chrome'}
+def parse_attachments(payload, sport, client=None):
     try:
-        res = requests.get(url, headers=headers).json()
-    except:
-        print('error getting url')
-        return formatted_events
-    try:
-        competitions = res['attachments']['competitions']
-    except:
-        print('error getting competitions')
-    else:
-        for id, competition in competitions.items():
-            if competition.get('name') == compititon_name:
-                competition_id = int(id)
-                break
-        else:
-            print('error finding competition id', sport)
-            return formatted_events
-    try:
-        events = res['attachments']['events']
-    except:
-        print('error getting events')
-        return formatted_events
-    for event_id, event in events.items():
-        if event.get('competitionId') == competition_id:
-            try:
-                event_name = convert_team_event_name(event['name'], sport)
-            except:
-                print('error parsing team event name')
-                continue
-            try:
-                start = datetime.strptime(re.sub('\.\d*', '', event['openDate']), '%Y-%m-%dT%H:%M:%SZ')
-            except ValueError:
-                print('error parsing date time')
-                start = None
-            id_to_name_time[event_id] = (event_name, start)
-            if event_name not in formatted_events:
-                formatted_events[event_name] = {}
-            formatted_events[event_name][start] = {'offers': {}}
-    for event_id in id_to_name_time:
-        url = f'https://sbapi.nj.sportsbook.fanduel.com/api/event-page?_ak=FhMFpcPWXMeyZxOx&eventId={event_id}'
-        try:
-            res = requests.get(url, headers=headers).json()
-        except:
-            print('error getting url')
+        attachments = payload["attachments"]
+        competitions = attachments["competitions"]
+        raw_events = attachments["events"]
+        markets = attachments["markets"]
+    except (KeyError, TypeError) as error:
+        raise FeedError("FanDuel response has no competition/event/market attachments", "schema_changed") from error
+    league_names = {sport.upper(), "NHL - Matches"} if sport == "nhl" else {sport.upper()}
+    competition_ids = {str(key) for key, value in competitions.items() if value.get("name") in league_names}
+    ids = {}
+    for key, event in raw_events.items():
+        if str(event.get("competitionId")) not in competition_ids:
             continue
         try:
-            markets = res['attachments']['markets']
-        except:
-            print('error getting markets')
+            ids[str(key)] = event_info(event["name"], event["openDate"], sport)
+        except Exception:
+            continue  # League attachments also contain season futures and awards.
+    formatted = {}
+    for market in markets.values():
+        if market.get("marketStatus") != "OPEN" or market.get("inPlay"):
             continue
-        for market in markets.values():
-            try:
-                label = market['marketName']
-                runners = market['runners']
-            except:
-                print('error getting event info')
-                continue
-            # Moneyline
-            if re.match(market_labels["MONEYLINE"], label):
-                try:
-                    event_name, start = id_to_name_time[str(market['eventId'])]
-                    outcomes = [{'name': standardize_team_name(outcome['runnerName'], sport), 'odds': int(outcome['winRunnerOdds']['americanDisplayOdds']['americanOdds'])} for outcome in runners]
-                    formatted_events[event_name][start]['offers']['Moneyline'] = outcomes
-                except:
-                    print('something went wrong adding market moneyline')
-            # Totals
-            elif re.match(market_labels["TOTAL"], label):
-                for runner in runners:
-                    try:
-                        event_name, start = id_to_name_time[str(market['eventId'])]
-                        bet_name, line = runner['runnerName'].replace('(', '').replace(')', '').split(' ')
-                        market_name = construct_total_market_name(line)
-                        outcome = {'name': bet_name, 'odds': int(runner['winRunnerOdds']['americanDisplayOdds']['americanOdds'])}
-                        if market_name in formatted_events[event_name][start]['offers']:
-                            formatted_events[event_name][start]['offers'][market_name].append(outcome)
-                        else:
-                            formatted_events[event_name][start]['offers'][market_name] = [outcome]
-                    except:
-                        print('something went wrong adding market total')
-            # Spread
-            elif re.match(market_labels["SPREAD"], label):
-                try:
-                    event_name, start = id_to_name_time[str(market['eventId'])]
-                    teams = event_name.split(' vs ')
-                except:
-                    print('error getting event info')
-                    continue
-                for runner in runners:
-                    try:
-                        spread = standardize_team_spread(runner['runnerName'], sport)
-                        market_name = build_team_spread_market_name(teams, spread, sport)
-                        outcome = {'name': spread, 'odds': int(runner['winRunnerOdds']['americanDisplayOdds']['americanOdds'])}
-                        if market_name in formatted_events[event_name][start]['offers']:
-                            formatted_events[event_name][start]['offers'][market_name].append(outcome)
-                        else:
-                            formatted_events[event_name][start]['offers'][market_name] = [outcome]
-                    except:
-                        print('something went wrong adding market spread')
-    return formatted_events
-    
-    
+        event_id = str(market.get("eventId"))
+        if event_id not in ids:
+            continue
+        label = market.get("marketName", "")
+        kind = next((kind for kind, labels in LABELS.items() if label in labels), None)
+        if kind is None:
+            continue
+        runners = market.get("runners", [])
+        if any(runner.get("runnerStatus") != "ACTIVE" for runner in runners):
+            continue
+        grouped = defaultdict(list)
+        try:
+            for runner in runners:
+                name = runner["runnerName"]
+                selection = {"name": name, "odds": runner["winRunnerOdds"]["americanDisplayOdds"]["americanOdds"]}
+                if kind in {"spread", "total"}:
+                    # Main lines use handicap; alternate runners embed it in the label.
+                    embedded = re.search(r"[+\-−]?\d+(?:\.\d+)?\)?$", name.strip())
+                    line = trailing_line(name) if embedded else runner["handicap"]
+                    selection["line"] = line
+                    group = abs(float(line)) if kind == "spread" else float(line)
+                else:
+                    group = None
+                grouped[group].append(selection)
+            event, start = ids[event_id]
+            for selections in grouped.values():
+                add_market(formatted, sport, event, start, kind, selections)
+        except (KeyError, ValueError, TypeError) as error:
+            if client:
+                client.warn(f"Skipped {label}: {error}")
+    return formatted
+
+
+def fetch_sport(sport, client):
+    url = f"https://sbapi.{client.region}.sportsbook.fanduel.com/api/content-managed-page"
+    payload = client.get_json(url, params={"page": "CUSTOM", "customPageId": sport, "_ak": PUBLIC_KEY})
+    return parse_attachments(payload, sport, client)

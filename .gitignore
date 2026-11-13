@@ -49,3 +49,6 @@ yarn-error.log*
 __pycache__/
 
 public/output.json
+public/scrape-status.json
+.local/
+.venv/

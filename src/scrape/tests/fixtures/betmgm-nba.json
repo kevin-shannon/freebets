@@ -1,0 +1,400 @@
+{
+  "fixtures": [
+    {
+      "optionMarkets": [
+        {
+          "name": {
+            "value": "Moneyline"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2333238697,
+              "status": "Visible",
+              "name": {
+                "value": "Jazz"
+              },
+              "sourceName": {
+                "value": "1"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 9,
+                "denominator": 1,
+                "odds": 10.0,
+                "americanOdds": 900,
+                "priceHistory": []
+              },
+              "participantId": 2554200
+            },
+            {
+              "id": 2333238698,
+              "status": "Visible",
+              "name": {
+                "value": "Rockets"
+              },
+              "sourceName": {
+                "value": "2"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 1,
+                "denominator": 16,
+                "odds": 1.06,
+                "americanOdds": -1600,
+                "priceHistory": []
+              },
+              "participantId": 2554176
+            }
+          ]
+        },
+        {
+          "name": {
+            "value": "Totals"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2350501442,
+              "status": "Visible",
+              "name": {
+                "value": "Over 219.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 10,
+                "denominator": 11,
+                "odds": 1.91,
+                "americanOdds": -110,
+                "priceHistory": []
+              },
+              "totalsPrefix": "Over"
+            },
+            {
+              "id": 2350501443,
+              "status": "Visible",
+              "name": {
+                "value": "Under 219.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 10,
+                "denominator": 11,
+                "odds": 1.91,
+                "americanOdds": -110,
+                "priceHistory": []
+              },
+              "totalsPrefix": "Under"
+            }
+          ],
+          "attr": "219.5"
+        },
+        {
+          "name": {
+            "value": "Spread"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2350501448,
+              "status": "Visible",
+              "name": {
+                "value": "Utah Jazz +17.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 20,
+                "denominator": 23,
+                "odds": 1.87,
+                "americanOdds": -115,
+                "priceHistory": []
+              },
+              "participantId": 2554200,
+              "attr": "+17.5"
+            },
+            {
+              "id": 2350501449,
+              "status": "Visible",
+              "name": {
+                "value": "Houston Rockets -17.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 19,
+                "denominator": 20,
+                "odds": 1.95,
+                "americanOdds": -105,
+                "priceHistory": []
+              },
+              "participantId": 2554176,
+              "attr": "-17.5"
+            }
+          ]
+        },
+        {
+          "name": {
+            "value": "Utah Jazz: Total points"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2350501462,
+              "status": "Visible",
+              "name": {
+                "value": "Over 99.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 4,
+                "denominator": 5,
+                "odds": 1.78,
+                "americanOdds": -130,
+                "priceHistory": []
+              },
+              "totalsPrefix": "Over"
+            },
+            {
+              "id": 2350501465,
+              "status": "Visible",
+              "name": {
+                "value": "Under 99.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 1,
+                "denominator": 1,
+                "odds": 2.0,
+                "americanOdds": 100,
+                "priceHistory": []
+              },
+              "totalsPrefix": "Under"
+            }
+          ],
+          "attr": "99.5"
+        },
+        {
+          "name": {
+            "value": "Houston Rockets: Total points"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2350501472,
+              "status": "Visible",
+              "name": {
+                "value": "Over 115.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 14,
+                "denominator": 25,
+                "odds": 1.56,
+                "americanOdds": -180,
+                "priceHistory": []
+              },
+              "totalsPrefix": "Over"
+            },
+            {
+              "id": 2350501473,
+              "status": "Visible",
+              "name": {
+                "value": "Under 115.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 7,
+                "denominator": 5,
+                "odds": 2.4,
+                "americanOdds": 140,
+                "priceHistory": []
+              },
+              "totalsPrefix": "Under"
+            }
+          ],
+          "attr": "115.5"
+        },
+        {
+          "name": {
+            "value": "Total points in regulation"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2350501524,
+              "status": "Visible",
+              "name": {
+                "value": "150 or less"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 150,
+                "denominator": 1,
+                "odds": 151.0,
+                "americanOdds": 15000,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501525,
+              "status": "Visible",
+              "name": {
+                "value": "151 to 160"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 150,
+                "denominator": 1,
+                "odds": 151.0,
+                "americanOdds": 15000,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501526,
+              "status": "Visible",
+              "name": {
+                "value": "161 to 170"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 150,
+                "denominator": 1,
+                "odds": 151.0,
+                "americanOdds": 15000,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501527,
+              "status": "Visible",
+              "name": {
+                "value": "171 to 180"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 40,
+                "denominator": 1,
+                "odds": 41.0,
+                "americanOdds": 4000,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501528,
+              "status": "Visible",
+              "name": {
+                "value": "181 to 190"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 14,
+                "denominator": 1,
+                "odds": 15.5,
+                "americanOdds": 1450,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501529,
+              "status": "Visible",
+              "name": {
+                "value": "191 to 200"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 13,
+                "denominator": 2,
+                "odds": 7.75,
+                "americanOdds": 675,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501530,
+              "status": "Visible",
+              "name": {
+                "value": "201 to 210"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 4,
+                "denominator": 1,
+                "odds": 5.0,
+                "americanOdds": 400,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501531,
+              "status": "Visible",
+              "name": {
+                "value": "211 to 220"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 3,
+                "denominator": 1,
+                "odds": 4.0,
+                "americanOdds": 300,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501532,
+              "status": "Visible",
+              "name": {
+                "value": "221 to 230"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 16,
+                "denominator": 5,
+                "odds": 4.2,
+                "americanOdds": 320,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501533,
+              "status": "Visible",
+              "name": {
+                "value": "231 to 240"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 19,
+                "denominator": 4,
+                "odds": 5.75,
+                "americanOdds": 475,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2350501534,
+              "status": "Visible",
+              "name": {
+                "value": "241 or more"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 21,
+                "denominator": 4,
+                "odds": 6.25,
+                "americanOdds": 525,
+                "priceHistory": []
+              }
+            }
+          ],
+          "attr": "150"
+        }
+      ],
+      "games": [],
+      "name": {
+        "value": "Utah Jazz at Houston Rockets"
+      },
+      "stage": "PreMatch",
+      "startDate": "2026-11-14T01:40:00.000Z",
+      "isOpenForBetting": true
+    }
+  ]
+}

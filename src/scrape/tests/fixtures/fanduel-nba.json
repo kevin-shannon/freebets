@@ -1,0 +1,173 @@
+{
+  "attachments": {
+    "competitions": {
+      "10547864": {
+        "name": "NBA",
+        "competitionId": 10547864,
+        "eventTypeId": 7522,
+        "eventId": 28049020
+      }
+    },
+    "events": {
+      "36307618": {
+        "eventId": 36307618,
+        "name": "Oklahoma City Thunder @ Los Angeles Clippers",
+        "eventTypeId": 7522,
+        "competitionId": 10547864,
+        "countryCode": "GB",
+        "openDate": "2026-11-14T03:40:00.000Z",
+        "videoAvailable": false,
+        "statsAvailable": true
+      }
+    },
+    "markets": {
+      "734.197401976": {
+        "eventId": 36307618,
+        "marketName": "Total Points",
+        "marketType": "TOTAL_POINTS_(OVER/UNDER)",
+        "marketStatus": "OPEN",
+        "inPlay": false,
+        "runners": [
+          {
+            "handicap": 222.5,
+            "runnerName": "Over",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": -112,
+                "americanOddsInt": -112
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 1.892857142857143
+                },
+                "fractionalOdds": {
+                  "numerator": 100,
+                  "denominator": 112
+                }
+              }
+            }
+          },
+          {
+            "handicap": 222.5,
+            "runnerName": "Under",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": -108,
+                "americanOddsInt": -108
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 1.925925925925926
+                },
+                "fractionalOdds": {
+                  "numerator": 100,
+                  "denominator": 108
+                }
+              }
+            }
+          }
+        ]
+      },
+      "734.197118650": {
+        "eventId": 36307618,
+        "marketName": "Spread",
+        "marketType": "MATCH_HANDICAP_(2-WAY)",
+        "marketStatus": "OPEN",
+        "inPlay": false,
+        "runners": [
+          {
+            "handicap": -7.5,
+            "runnerName": "Oklahoma City Thunder",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": -114,
+                "americanOddsInt": -114
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 1.87719298245614
+                },
+                "fractionalOdds": {
+                  "numerator": 100,
+                  "denominator": 114
+                }
+              }
+            }
+          },
+          {
+            "handicap": 7.5,
+            "runnerName": "Los Angeles Clippers",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": -106,
+                "americanOddsInt": -106
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 1.943396226415094
+                },
+                "fractionalOdds": {
+                  "numerator": 100,
+                  "denominator": 106
+                }
+              }
+            }
+          }
+        ]
+      },
+      "734.197118651": {
+        "eventId": 36307618,
+        "marketName": "Moneyline",
+        "marketType": "MONEY_LINE",
+        "marketStatus": "OPEN",
+        "inPlay": false,
+        "runners": [
+          {
+            "handicap": 0,
+            "runnerName": "Oklahoma City Thunder",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": -300,
+                "americanOddsInt": -300
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 1.333333333333333
+                },
+                "fractionalOdds": {
+                  "numerator": 10,
+                  "denominator": 30
+                }
+              }
+            }
+          },
+          {
+            "handicap": 0,
+            "runnerName": "Los Angeles Clippers",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": 245,
+                "americanOddsInt": 245
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 3.45
+                },
+                "fractionalOdds": {
+                  "numerator": 245,
+                  "denominator": 100
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

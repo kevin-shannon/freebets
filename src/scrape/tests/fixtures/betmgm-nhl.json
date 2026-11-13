@@ -1,0 +1,208 @@
+{
+  "fixtures": [
+    {
+      "optionMarkets": [
+        {
+          "name": {
+            "value": "Moneyline"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2342472419,
+              "status": "Visible",
+              "name": {
+                "value": "Predators"
+              },
+              "sourceName": {
+                "value": "1"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 77,
+                "denominator": 50,
+                "odds": 2.54,
+                "americanOdds": 154,
+                "priceHistory": []
+              },
+              "participantId": 2563449
+            },
+            {
+              "id": 2342472420,
+              "status": "Visible",
+              "name": {
+                "value": "Golden Knights"
+              },
+              "sourceName": {
+                "value": "2"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 8,
+                "denominator": 15,
+                "odds": 1.53,
+                "americanOdds": -190,
+                "priceHistory": []
+              },
+              "participantId": 2767046
+            }
+          ]
+        },
+        {
+          "name": {
+            "value": "3-way result: Regular time"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2342472421,
+              "status": "Visible",
+              "name": {
+                "value": "Predators"
+              },
+              "sourceName": {
+                "value": "1"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 12,
+                "denominator": 5,
+                "odds": 3.4,
+                "americanOdds": 240,
+                "priceHistory": []
+              },
+              "participantId": 2563449
+            },
+            {
+              "id": 2342472422,
+              "status": "Visible",
+              "name": {
+                "value": "Tie"
+              },
+              "sourceName": {
+                "value": "Tie"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 31,
+                "denominator": 10,
+                "odds": 4.1,
+                "americanOdds": 310,
+                "priceHistory": []
+              }
+            },
+            {
+              "id": 2342472423,
+              "status": "Visible",
+              "name": {
+                "value": "Golden Knights"
+              },
+              "sourceName": {
+                "value": "2"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 17,
+                "denominator": 20,
+                "odds": 1.85,
+                "americanOdds": -118,
+                "priceHistory": []
+              },
+              "participantId": 2767046
+            }
+          ]
+        },
+        {
+          "name": {
+            "value": "Spread"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2342472428,
+              "status": "Visible",
+              "name": {
+                "value": "Nashville Predators +1.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 13,
+                "denominator": 20,
+                "odds": 1.65,
+                "americanOdds": -155,
+                "priceHistory": []
+              },
+              "participantId": 2563449,
+              "attr": "+1.5"
+            },
+            {
+              "id": 2342472429,
+              "status": "Visible",
+              "name": {
+                "value": "Vegas Golden Knights -1.5"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 5,
+                "denominator": 4,
+                "odds": 2.25,
+                "americanOdds": 125,
+                "priceHistory": []
+              },
+              "participantId": 2767046,
+              "attr": "-1.5"
+            }
+          ]
+        },
+        {
+          "name": {
+            "value": "Totals (including OT and shootouts)"
+          },
+          "status": "Visible",
+          "options": [
+            {
+              "id": 2342472446,
+              "status": "Visible",
+              "name": {
+                "value": "Over 6"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 10,
+                "denominator": 11,
+                "odds": 1.91,
+                "americanOdds": -110,
+                "priceHistory": []
+              },
+              "totalsPrefix": "Over"
+            },
+            {
+              "id": 2342472447,
+              "status": "Visible",
+              "name": {
+                "value": "Under 6"
+              },
+              "price": {
+                "id": -1,
+                "numerator": 10,
+                "denominator": 11,
+                "odds": 1.91,
+                "americanOdds": -110,
+                "priceHistory": []
+              },
+              "totalsPrefix": "Under"
+            }
+          ],
+          "attr": "6"
+        }
+      ],
+      "games": [],
+      "name": {
+        "value": "Nashville Predators at Vegas Golden Knights"
+      },
+      "stage": "PreMatch",
+      "startDate": "2026-11-14T03:08:00.000Z",
+      "isOpenForBetting": true
+    }
+  ]
+}

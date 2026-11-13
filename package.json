@@ -41,6 +41,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "scrape": "python src/scrape/main.py local",
+    "scrape:check": "python src/scrape/main.py check",
+    "scrape:watch": "python src/scrape/main.py local --watch",
+    "scrape:test": "python -m unittest discover -s src/scrape/tests -v",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

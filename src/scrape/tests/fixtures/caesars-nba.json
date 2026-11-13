@@ -1,0 +1,185 @@
+{
+  "event": {
+    "id": "331fdfe5-f39c-48a2-b560-3d829fad2e96",
+    "name": "Milwaukee Bucks at Orlando Magic",
+    "startTime": "2026-11-14T00:00:00Z",
+    "display": true,
+    "active": true,
+    "started": false,
+    "keyMarketGroups": [
+      {
+        "marketDisplayTypeId": "standard_six_pack",
+        "marketDisplayGroupDisplayName": "Game Lines",
+        "isOddsBoost": false,
+        "markets": [
+          {
+            "id": "95f2c631-d92b-319a-80d8-7707115293f9",
+            "name": "|Spread|",
+            "type": "two-way-handicap",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "line": -9.0,
+            "templateName": "|Spread|",
+            "specialConditions": "",
+            "metadata": {
+              "marketCategory": "POINTS_HANDICAP",
+              "period": "MATCH_INC_OT"
+            },
+            "selections": [
+              {
+                "id": "f81bbb15-29d1-3924-b23c-2ffd124fc09e",
+                "display": true,
+                "name": "|Milwaukee Bucks|",
+                "active": true,
+                "type": "away",
+                "price": {
+                  "f": "10/11",
+                  "d": 1.91,
+                  "a": -110
+                }
+              },
+              {
+                "id": "b5f2640e-af1c-3eb4-8806-7981c62b5692",
+                "display": true,
+                "name": "|Orlando Magic|",
+                "active": true,
+                "type": "home",
+                "price": {
+                  "f": "10/11",
+                  "d": 1.91,
+                  "a": -110
+                }
+              }
+            ]
+          },
+          {
+            "id": "8c30e0bf-d358-3f59-815c-af78d7c2ff15",
+            "name": "|Money Line|",
+            "type": "standard-market-template",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "templateName": "|Money Line|",
+            "specialConditions": "",
+            "metadata": {
+              "marketCategory": "MONEY_LINE",
+              "period": "MATCH_INC_OT"
+            },
+            "selections": [
+              {
+                "id": "a58e2a7f-9500-3e25-b90a-1cccacfce28f",
+                "display": true,
+                "name": "|Milwaukee Bucks|",
+                "active": true,
+                "type": "away",
+                "price": {
+                  "f": "31/10",
+                  "d": 4.1,
+                  "a": 310
+                }
+              },
+              {
+                "id": "38a020b9-5745-3876-8c25-ef399bd7e856",
+                "display": true,
+                "name": "|Orlando Magic|",
+                "active": true,
+                "type": "home",
+                "price": {
+                  "f": "1/4",
+                  "d": 1.25,
+                  "a": -400
+                }
+              }
+            ]
+          },
+          {
+            "id": "a6490d7c-4ce2-345c-a50d-245fdbab6d73",
+            "name": "|Total Points|",
+            "type": "over-under",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "line": 223.5,
+            "templateName": "|Total Points|",
+            "specialConditions": "",
+            "metadata": {
+              "marketCategory": "TOTAL_POINTS",
+              "period": "MATCH_INC_OT"
+            },
+            "selections": [
+              {
+                "id": "4571259c-6216-3835-9ced-d59da1c4ec8d",
+                "display": true,
+                "name": "|Over|",
+                "active": true,
+                "type": "over",
+                "price": {
+                  "f": "10/11",
+                  "d": 1.91,
+                  "a": -110
+                }
+              },
+              {
+                "id": "83d94d9d-a402-3b01-aa04-e9c4d7781298",
+                "display": true,
+                "name": "|Under|",
+                "active": true,
+                "type": "under",
+                "price": {
+                  "f": "10/11",
+                  "d": 1.91,
+                  "a": -110
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "marketDisplayTypeId": "full_width_selections",
+        "marketDisplayGroupDisplayName": "Both Teams Score in 1st Minute",
+        "isOddsBoost": false,
+        "markets": [
+          {
+            "id": "b27db864-a544-3f1c-ae63-f0ac6bb9fe68",
+            "name": "|Both Teams to Score in the First Minute|",
+            "type": "standard-market-template",
+            "display": true,
+            "active": true,
+            "placeholder": false,
+            "templateName": "|Both Teams to Score in the First Minute|",
+            "specialConditions": "*12:00-11:01 time remaining in 1Q",
+            "metadata": {},
+            "selections": [
+              {
+                "id": "dc58c15c-3b6e-376b-b164-795a087bcd3c",
+                "display": true,
+                "name": "Yes",
+                "active": true,
+                "type": "generic",
+                "price": {
+                  "f": "113/100",
+                  "d": 2.13,
+                  "a": 113
+                }
+              },
+              {
+                "id": "abf42f96-e43f-3373-a801-a5c8df91eec9",
+                "display": true,
+                "name": "No",
+                "active": true,
+                "type": "generic",
+                "price": {
+                  "f": "100/157",
+                  "d": 1.63694,
+                  "a": -157
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

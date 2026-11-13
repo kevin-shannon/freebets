@@ -8,16 +8,20 @@ export const bet_type_options: BetOption[] = [
 ];
 
 export const book_options: BookOption[] = [
-  { value: BookType.BETMGM, label: "BetMgm" },
+  { value: BookType.BETMGM, label: "BetMGM" },
   { value: BookType.CAESARS, label: "Caesars" },
-  { value: BookType.DRAFTKINGS, label: "Draftkings" },
-  { value: BookType.FANDUEL, label: "Fanduel" },
-  { value: BookType.POINTSBET, label: "Pointsbet" },
-  { value: BookType.SUPERBOOK, label: "Superbook" },
-  { value: BookType.UNIBET, label: "Unibet" },
+  { value: BookType.DRAFTKINGS, label: "DraftKings" },
+  { value: BookType.FANDUEL, label: "FanDuel" },
 ];
 
 export const book_options_all: BookOption[] = [{ value: BookType.ALL, label: "All" }, ...book_options];
+
+export function normalizeBookSelection(selection: BookOption[]): BookOption[] {
+  if (!Array.isArray(selection)) return book_options_all;
+  const selected = new Set(selection.map((option) => option?.value));
+  if (selected.has(BookType.ALL)) return book_options_all;
+  return book_options.filter((option) => selected.has(option.value));
+}
 
 export const sport_options: SportOption[] = [
   { value: SportType.BASKETBALL, label: "Basketball" },

@@ -1,127 +1,80 @@
+"""BetMGM's CDS feed, discovered through the public sports client config."""
 import re
-import requests
-from datetime import datetime
 
-from utils import construct_spread_market_name
-from utils import construct_team_total_market_name
-from utils import construct_total_market_name
-from utils import generate_team_event_name
-from utils import standardize_over_under
-from utils import standardize_team_name
-from utils import standardize_team_spread
+from http_client import FeedError
+from markets import add_market, event_info, trailing_line
+
+COMPETITIONS = {"nhl": (12, 34), "mlb": (23, 75), "nba": (7, 6004)}
 
 
-nhl = {
-    'sport': 'nhl',
-    'url': 'https://sports.dc.betmgm.com/en/sports/api/widget?layoutSize=Large&page=CompetitionLobby&sportId=12&regionId=9&competitionId=34&shouldIncludePayload=true',
-    'market_labels': {"MONEYLINE": r'^Money Line$', "TOTAL": r'^Totals \(including overtime', "SPREAD": r'^Spread \(including overtime', "TEAM_TOTAL": r'^How many total runs will the .* score\? \(including overtime'}
-}
-
-mlb = {
-    'sport': 'mlb',
-    'url': 'https://sports.dc.betmgm.com/en/sports/api/widget?layoutSize=Large&page=CompetitionLobby&sportId=23&regionId=9&competitionId=75&shouldIncludePayload=true',
-    'market_labels': {"MONEYLINE": r'^Money Line$', "TOTAL": r'^Totals$', "SPREAD": r'^Run Line Spread$', "TEAM_TOTAL": r'^How many total runs will the .* score\?$'}
-}
-
-nba = {
-    'sport': 'nba', 
-    'url': 'https://sports.dc.betmgm.com/en/sports/api/widget?layoutSize=Large&page=CompetitionLobby&sportId=7&regionId=9&competitionId=6004&shouldIncludePayload=true', 
-    'market_labels': {"MONEYLINE": r'^Money Line$', "TOTAL": r'^Totals$', "SPREAD": r'^Run Line Spread$', "TEAM_TOTAL": r'^How many points will the .* score\?$'}
-}
-
-def generate_betmgm():
-    return {
-        'nhl': generate_betmgm_formatted_events(**nhl),
-        'mlb': generate_betmgm_formatted_events(**mlb),
-        'nba': generate_betmgm_formatted_events(**nba),
-    }
-
-def generate_betmgm_formatted_events(url, sport, market_labels):
-    formatted_events = {}
-    id_to_name_time = {}
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
-               'Cache-Control': 'no-cache'}
-    xbwin_id = 'YTBiYWQ3ZjItMjBlZi00ODU2LWFmNjMtMTQzYjAzOGUxNDM2'
-    try:
-        res = requests.get(url, headers=headers).json()
-    except:
-        print('error getting url')
-        return formatted_events
-    try:
-        events = res['widgets'][0]['payload']['items'][0]['activeChildren'][0]['payload']['fixtures']
-    except:
-        print('error parsing events')
-        return formatted_events
-    for event in events:
-        try:
-            event_name = generate_team_event_name(event['participants'][0]['name']['value'], event['participants'][1]['name']['value'], sport)
-        except:
-            print('error parsing event name')
-        else:
-            try:
-                start = datetime.strptime(event['startDate'], '%Y-%m-%dT%H:%M:%SZ')
-            except ValueError:
-                print('error parsing date time')
-                start = None
-            try:
-                id_to_name_time[event['id']] = (event_name, start)
-            except:
-                print('error parsing event id')
-            if event_name not in formatted_events:
-                formatted_events[event_name] = {}
-            formatted_events[event_name][start] = {'offers': {}}
-
-    for fixtureId, (event_name, start) in id_to_name_time.items():
-        url = f'https://sports.dc.betmgm.com/cds-api/bettingoffer/fixture-view?x-bwin-accessid={xbwin_id}&lang=en-us&country=US&offerMapping=All&scoreboardMode=Full&fixtureIds={fixtureId}'
-        try:
-            res = requests.get(url, headers=headers).json()
-        except:
-            print('error getting url')
+def parse_fixtures(payload, sport, client=None):
+    if not isinstance(payload, dict) or not isinstance(payload.get("fixtures"), list):
+        raise FeedError("BetMGM response has no fixtures list", "schema_changed")
+    formatted = {}
+    for fixture in payload["fixtures"]:
+        if fixture.get("isOpenForBetting") is False or fixture.get("stage") != "PreMatch":
             continue
         try:
-            games = res['fixture']['games']
-        except:
-            print('error getting games')
-        for game in games:
-            try:
-                label = game['name']['value']
-            except:
-                print('error getting label')
+            event, start = event_info(fixture["name"]["value"], fixture["startDate"], sport)
+        except Exception as error:
+            # Futures and player-special fixtures are intentionally excluded.
+            if " at " in fixture.get("name", {}).get("value", "") and client:
+                client.warn(f"Skipped event: {error}")
+            continue
+        markets = fixture.get("optionMarkets", []) + fixture.get("games", [])
+        for market in markets:
+            if market.get("status", "Visible") != "Visible":
                 continue
-            # Moneyline
-            if re.match(market_labels["MONEYLINE"], label):
-                try:
-                    formatted_events[event_name][start]['offers']['Moneyline'] = [{'name': standardize_team_name(outcome['name']['value'], sport), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
-                except:
-                    print('something went wrong adding market moneyline')
-            # Totals
-            if re.match(market_labels["TOTAL"], label):
-                try:
-                    line = float(game['attr'])
-                    market_name = construct_total_market_name(line)
-                    formatted_events[event_name][start]['offers'][market_name] = [{'name': standardize_over_under(outcome['name']['value']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
-                except:
-                    print('something went wrong adding market total')
-            # Spreads
-            if re.match(market_labels["SPREAD"], label):
-                try:
-                    line = float(game['results'][0]['name']['value'].strip().split(' ')[-1])
-                    if line < 0:
-                        team = ' '.join(game['results'][0]['name']['value'].strip().split(' ')[:-1])
-                    else:
-                        team = ' '.join(game['results'][1]['name']['value'].strip().split(' ')[:-1])
-                        line = -line
-                    market_name = construct_spread_market_name(team, line, sport)
-                    formatted_events[event_name][start]['offers'][market_name] = [{'name': standardize_team_spread(outcome['name']['value'].strip(), sport), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
-                except:
-                    print('something went wrong adding market spread')
-            # Team Totals
-            if re.match(market_labels["TEAM_TOTAL"], label):
-                try:
-                    team = standardize_team_name(label, sport)
-                    line =  float(game['attr'])
-                    market_name = construct_team_total_market_name(team, line, sport)
-                    formatted_events[event_name][start]['offers'][market_name] = [{'name': standardize_over_under(outcome['name']['value']), 'odds': int(outcome['americanOdds'])} for outcome in game['results']]
-                except:
-                    print('something went wrong adding market team total')    
-    return formatted_events
+            label = market.get("name", {}).get("value", "")
+            if label in {"Moneyline", "Money Line"}:
+                kind, team = "moneyline", None
+            elif re.fullmatch(r"(?:Totals|Total Goals|Total Runs)(?: \(including (?:overtime|OT)(?: and shootouts?)?\))?", label, re.I):
+                kind, team = "total", None
+            elif re.fullmatch(r"(?:Spread|Run Line(?: Spread)?|Puck Line)(?: \(including overtime(?: and shootout)?\))?", label, re.I):
+                kind, team = "spread", None
+            elif re.fullmatch(r".+: Total (?:points|runs|goals)", label, re.I):
+                kind, team = "team_total", label.split(":")[0]
+            else:
+                continue
+            options = market.get("options", market.get("results", []))
+            if any(option.get("status", "Visible") != "Visible" for option in options):
+                continue
+            try:
+                selections = []
+                for option in options:
+                    name = option["name"]["value"]
+                    selection = {"name": name, "odds": option.get("price", option)["americanOdds"]}
+                    if kind == "spread":
+                        selection["line"] = option["attr"] if "attr" in option else trailing_line(name)
+                    elif kind in {"total", "team_total"}:
+                        selection["line"] = market["attr"] if "attr" in market else trailing_line(name)
+                    selections.append(selection)
+                add_market(formatted, sport, event, start, kind, selections, team)
+            except (KeyError, ValueError, TypeError) as error:
+                if client:
+                    client.warn(f"Skipped {label}: {error}")
+    return formatted
+
+
+def fetch_sport(sport, client):
+    host = f"https://www.{client.region}.betmgm.com"
+    config = client.cached_json("betmgm_config", host + "/en/api/clientconfig", headers={
+        "x-bwin-sports-api": "prod", "x-from-product": "host-app",
+    })
+    try:
+        connection = config["msConnection"]
+        api = connection["cdsApiUrl"].rstrip("/")
+        access_id = connection["pushAccessId"]
+        if not api.startswith("https://"):
+            raise ValueError("Invalid CDS host")
+    except (KeyError, TypeError, ValueError) as error:
+        raise FeedError("BetMGM client config no longer contains CDS connection details", "schema_changed") from error
+    sport_id, competition_id = COMPETITIONS[sport]
+    payload = client.get_json(api + "/bettingoffer/fixtures", params={
+        "x-bwin-accessid": access_id, "lang": "en-us", "country": "US", "usercountry": "US",
+        "state": "Latest", "offerMapping": "All", "sportIds": sport_id,
+        "competitionIds": competition_id, "fixtureTypes": "Standard",
+    })
+    if payload.get("totalCount", 0) > len(payload.get("fixtures", [])):
+        client.warn("BetMGM returned a truncated fixture list; coverage is partial")
+    return parse_fixtures(payload, sport, client)

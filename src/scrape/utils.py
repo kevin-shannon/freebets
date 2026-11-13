@@ -1,3 +1,4 @@
+import re
 from config import team_sports
 
 def convert_decimal_to_american(dec):
@@ -52,12 +53,10 @@ def convert_team_event_name(name, sport):
     str
         standardized event name.
     '''
-    separators = ['@', 'at', 'vs', 'vs.', 'versus']
-    for separator in separators:
-        if separator in name:
-            team_a, team_b = name.split(f' {separator} ')
-            return generate_team_event_name(team_a, team_b, sport)
-    raise Exception(f'Could not parse team event name {name} for sport {sport}')
+    parts = re.split(r'\s+(?:@|at|vs\.?|versus|v)\s+', name.strip(), flags=re.I)
+    if len(parts) == 2:
+        return generate_team_event_name(parts[0], parts[1], sport)
+    raise ValueError(f'Could not parse team event name {name} for sport {sport}')
 
 def standardize_team_spread(spread, sport):
     '''
@@ -195,10 +194,16 @@ def standardize_team_name(team, sport):
         standardized team name.
     '''
     teams = team_sports[sport]
+    normalized = team.strip().lower()
+    for known_team in teams:
+        if normalized == known_team.lower():
+            return known_team
+    if sport == 'nhl' and any(alias in normalized for alias in ('utah mammoth', 'utah hockey club', 'uta mammoth')):
+        return 'UTA Mammoth'
     for known_team in teams:
         if ' '.join(known_team.split(' ')[1:]).lower() in team.lower():
             return known_team
-    raise Exception(f"Could not standardize team {team}")
+    raise ValueError(f"Could not standardize team {team}")
 
 def standardize_over_under(outcome):
     '''

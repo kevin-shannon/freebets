@@ -1,0 +1,1478 @@
+{
+  "sports": [
+    {
+      "id": "2",
+      "seoIdentifier": "basketball",
+      "name": "Basketball",
+      "sortOrder": 59
+    }
+  ],
+  "leagues": [
+    {
+      "id": "42648",
+      "seoIdentifier": "nba",
+      "name": "NBA",
+      "sportId": "2",
+      "sortOrder": 4858,
+      "tags": [
+        "Featured"
+      ],
+      "isTeamSwap": true
+    }
+  ],
+  "events": [
+    {
+      "id": "34516397",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "NY Knicks @ IND Pacers",
+      "startEventDate": "2026-11-14T00:10:00.0000000Z",
+      "eventParticipantType": "TwoTeam",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "35010441",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "MIL Bucks @ ORL Magic",
+      "startEventDate": "2026-11-14T00:10:00.0000000Z",
+      "eventParticipantType": "TwoTeam",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "35010442",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "ATL Hawks @ CHI Bulls",
+      "startEventDate": "2026-11-14T01:10:00.0000000Z",
+      "eventParticipantType": "TwoTeam",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "35010444",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "CLE Cavaliers @ MIA Heat",
+      "startEventDate": "2026-11-14T01:10:00.0000000Z",
+      "eventParticipantType": "TwoTeam",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "35010445",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "MEM Grizzlies @ NO Pelicans",
+      "startEventDate": "2026-11-14T01:10:00.0000000Z",
+      "eventParticipantType": "TwoTeam",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "35010447",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "UTA Jazz @ HOU Rockets",
+      "startEventDate": "2026-11-14T01:40:00.0000000Z",
+      "eventParticipantType": "TwoTeam",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "34516403",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "GS Warriors @ SA Spurs",
+      "startEventDate": "2026-11-14T02:40:00.0000000Z",
+      "eventParticipantType": "TwoTeam",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "35010448",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "POR Trail Blazers @ SAC Kings",
+      "startEventDate": "2026-11-14T03:10:00.0000000Z",
+      "eventParticipantType": "TwoTeam",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "35010452",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "OKC Thunder @ LA Clippers",
+      "startEventDate": "2026-11-14T03:40:00.0000000Z",
+      "eventParticipantType": "TwoTeam",
+      "status": "NOT_STARTED"
+    }
+  ],
+  "markets": [
+    {
+      "id": "1_85860021",
+      "eventId": "34516397",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Moneyline",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "1_0",
+        "betOfferTypeId": 2,
+        "name": "Moneyline"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "2_85860021",
+      "eventId": "34516397",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Spread",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "2_0",
+        "betOfferTypeId": 1,
+        "name": "Spread"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "3_85860021",
+      "eventId": "34516397",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Total",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "3_0",
+        "betOfferTypeId": 6,
+        "name": "Total"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "1_87219862",
+      "eventId": "35010441",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Moneyline",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "1_0",
+        "betOfferTypeId": 2,
+        "name": "Moneyline"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "2_87219862",
+      "eventId": "35010441",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Spread",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "2_0",
+        "betOfferTypeId": 1,
+        "name": "Spread"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "3_87219862",
+      "eventId": "35010441",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Total",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "3_0",
+        "betOfferTypeId": 6,
+        "name": "Total"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "1_87219863",
+      "eventId": "35010442",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Moneyline",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "1_0",
+        "betOfferTypeId": 2,
+        "name": "Moneyline"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "2_87219863",
+      "eventId": "35010442",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Spread",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "2_0",
+        "betOfferTypeId": 1,
+        "name": "Spread"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "3_87219863",
+      "eventId": "35010442",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Total",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "3_0",
+        "betOfferTypeId": 6,
+        "name": "Total"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "1_87219866",
+      "eventId": "35010444",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Moneyline",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "1_0",
+        "betOfferTypeId": 2,
+        "name": "Moneyline"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "2_87219866",
+      "eventId": "35010444",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Spread",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "2_0",
+        "betOfferTypeId": 1,
+        "name": "Spread"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "3_87219866",
+      "eventId": "35010444",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Total",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "3_0",
+        "betOfferTypeId": 6,
+        "name": "Total"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "1_87219867",
+      "eventId": "35010445",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Moneyline",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "1_0",
+        "betOfferTypeId": 2,
+        "name": "Moneyline"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "2_87219867",
+      "eventId": "35010445",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Spread",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "2_0",
+        "betOfferTypeId": 1,
+        "name": "Spread"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "3_87219867",
+      "eventId": "35010445",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Total",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "3_0",
+        "betOfferTypeId": 6,
+        "name": "Total"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "1_87219875",
+      "eventId": "35010447",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Moneyline",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "1_0",
+        "betOfferTypeId": 2,
+        "name": "Moneyline"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "2_87219875",
+      "eventId": "35010447",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Spread",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "2_0",
+        "betOfferTypeId": 1,
+        "name": "Spread"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "3_87219875",
+      "eventId": "35010447",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Total",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "3_0",
+        "betOfferTypeId": 6,
+        "name": "Total"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "1_85860027",
+      "eventId": "34516403",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Moneyline",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "1_0",
+        "betOfferTypeId": 2,
+        "name": "Moneyline"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "2_85860027",
+      "eventId": "34516403",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Spread",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "2_0",
+        "betOfferTypeId": 1,
+        "name": "Spread"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "3_85860027",
+      "eventId": "34516403",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Total",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "3_0",
+        "betOfferTypeId": 6,
+        "name": "Total"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "1_87219876",
+      "eventId": "35010448",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Moneyline",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "1_0",
+        "betOfferTypeId": 2,
+        "name": "Moneyline"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "2_87219876",
+      "eventId": "35010448",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Spread",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "2_0",
+        "betOfferTypeId": 1,
+        "name": "Spread"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "3_87219876",
+      "eventId": "35010448",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Total",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "3_0",
+        "betOfferTypeId": 6,
+        "name": "Total"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "1_87219880",
+      "eventId": "35010452",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Moneyline",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "1_0",
+        "betOfferTypeId": 2,
+        "name": "Moneyline"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "2_87219880",
+      "eventId": "35010452",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Spread",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "2_0",
+        "betOfferTypeId": 1,
+        "name": "Spread"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    },
+    {
+      "id": "3_87219880",
+      "eventId": "35010452",
+      "sportId": "2",
+      "leagueId": "42648",
+      "name": "Total",
+      "subcategoryId": "4511",
+      "marketType": {
+        "id": "3_0",
+        "betOfferTypeId": 6,
+        "name": "Total"
+      },
+      "tags": [
+        "SGP",
+        "YourBetEligible",
+        "Cashout",
+        "FeaturedSubcategory",
+        "OSB",
+        "Default",
+        "PrimaryMarket"
+      ]
+    }
+  ],
+  "selections": [
+    {
+      "id": "0ML85860021_3",
+      "marketId": "1_85860021",
+      "label": "NY Knicks",
+      "displayOdds": {
+        "american": "\u2212269"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0ML85860021_1",
+      "marketId": "1_85860021",
+      "label": "IND Pacers",
+      "displayOdds": {
+        "american": "+220"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0HC85860021N650_3",
+      "marketId": "2_85860021",
+      "label": "NY Knicks",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": -6.5
+    },
+    {
+      "id": "0HC85860021P650_1",
+      "marketId": "2_85860021",
+      "label": "IND Pacers",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 6.5
+    },
+    {
+      "id": "0OU85860021O21950_1",
+      "marketId": "3_85860021",
+      "label": "Over",
+      "displayOdds": {
+        "american": "\u2212110"
+      },
+      "outcomeType": "Over",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 219.5
+    },
+    {
+      "id": "0OU85860021U21950_3",
+      "marketId": "3_85860021",
+      "label": "Under",
+      "displayOdds": {
+        "american": "\u2212110"
+      },
+      "outcomeType": "Under",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 219.5
+    },
+    {
+      "id": "0ML87219862_3",
+      "marketId": "1_87219862",
+      "label": "MIL Bucks",
+      "displayOdds": {
+        "american": "+300"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0ML87219862_1",
+      "marketId": "1_87219862",
+      "label": "ORL Magic",
+      "displayOdds": {
+        "american": "\u2212378"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0HC87219862P950_3",
+      "marketId": "2_87219862",
+      "label": "MIL Bucks",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 9.5
+    },
+    {
+      "id": "0HC87219862N950_1",
+      "marketId": "2_87219862",
+      "label": "ORL Magic",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": -9.5
+    },
+    {
+      "id": "0OU87219862O22350_1",
+      "marketId": "3_87219862",
+      "label": "Over",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Over",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 223.5
+    },
+    {
+      "id": "0OU87219862U22350_3",
+      "marketId": "3_87219862",
+      "label": "Under",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Under",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 223.5
+    },
+    {
+      "id": "0ML87219863_3",
+      "marketId": "1_87219863",
+      "label": "ATL Hawks",
+      "displayOdds": {
+        "american": "\u2212277"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0ML87219863_1",
+      "marketId": "1_87219863",
+      "label": "CHI Bulls",
+      "displayOdds": {
+        "american": "+227"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0HC87219863N650_3",
+      "marketId": "2_87219863",
+      "label": "ATL Hawks",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": -6.5
+    },
+    {
+      "id": "0HC87219863P650_1",
+      "marketId": "2_87219863",
+      "label": "CHI Bulls",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 6.5
+    },
+    {
+      "id": "0OU87219863O24550_1",
+      "marketId": "3_87219863",
+      "label": "Over",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Over",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 245.5
+    },
+    {
+      "id": "0OU87219863U24550_3",
+      "marketId": "3_87219863",
+      "label": "Under",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Under",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 245.5
+    },
+    {
+      "id": "0ML87219866_3",
+      "marketId": "1_87219866",
+      "label": "CLE Cavaliers",
+      "displayOdds": {
+        "american": "+114"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0ML87219866_1",
+      "marketId": "1_87219866",
+      "label": "MIA Heat",
+      "displayOdds": {
+        "american": "\u2212135"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0HC87219866P250_3",
+      "marketId": "2_87219866",
+      "label": "CLE Cavaliers",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 2.5
+    },
+    {
+      "id": "0HC87219866N250_1",
+      "marketId": "2_87219866",
+      "label": "MIA Heat",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": -2.5
+    },
+    {
+      "id": "0OU87219866O23650_1",
+      "marketId": "3_87219866",
+      "label": "Over",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Over",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 236.5
+    },
+    {
+      "id": "0OU87219866U23650_3",
+      "marketId": "3_87219866",
+      "label": "Under",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Under",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 236.5
+    },
+    {
+      "id": "0ML87219867_3",
+      "marketId": "1_87219867",
+      "label": "MEM Grizzlies",
+      "displayOdds": {
+        "american": "\u2212158"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0ML87219867_1",
+      "marketId": "1_87219867",
+      "label": "NO Pelicans",
+      "displayOdds": {
+        "american": "+133"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0HC87219867N350_3",
+      "marketId": "2_87219867",
+      "label": "MEM Grizzlies",
+      "displayOdds": {
+        "american": "\u2212110"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": -3.5
+    },
+    {
+      "id": "0HC87219867P350_1",
+      "marketId": "2_87219867",
+      "label": "NO Pelicans",
+      "displayOdds": {
+        "american": "\u2212110"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 3.5
+    },
+    {
+      "id": "0OU87219867O23550_1",
+      "marketId": "3_87219867",
+      "label": "Over",
+      "displayOdds": {
+        "american": "\u2212107"
+      },
+      "outcomeType": "Over",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 235.5
+    },
+    {
+      "id": "0OU87219867U23550_3",
+      "marketId": "3_87219867",
+      "label": "Under",
+      "displayOdds": {
+        "american": "\u2212113"
+      },
+      "outcomeType": "Under",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 235.5
+    },
+    {
+      "id": "0ML87219875_3",
+      "marketId": "1_87219875",
+      "label": "UTA Jazz",
+      "displayOdds": {
+        "american": "+900"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0ML87219875_1",
+      "marketId": "1_87219875",
+      "label": "HOU Rockets",
+      "displayOdds": {
+        "american": "\u22121580"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0HC87219875P1650_3",
+      "marketId": "2_87219875",
+      "label": "UTA Jazz",
+      "displayOdds": {
+        "american": "\u2212104"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 16.5
+    },
+    {
+      "id": "0HC87219875N1650_1",
+      "marketId": "2_87219875",
+      "label": "HOU Rockets",
+      "displayOdds": {
+        "american": "\u2212116"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": -16.5
+    },
+    {
+      "id": "0OU87219875O21950_1",
+      "marketId": "3_87219875",
+      "label": "Over",
+      "displayOdds": {
+        "american": "\u2212107"
+      },
+      "outcomeType": "Over",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 219.5
+    },
+    {
+      "id": "0OU87219875U21950_3",
+      "marketId": "3_87219875",
+      "label": "Under",
+      "displayOdds": {
+        "american": "\u2212113"
+      },
+      "outcomeType": "Under",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 219.5
+    },
+    {
+      "id": "0ML85860027_3",
+      "marketId": "1_85860027",
+      "label": "GS Warriors",
+      "displayOdds": {
+        "american": "+530"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0ML85860027_1",
+      "marketId": "1_85860027",
+      "label": "SA Spurs",
+      "displayOdds": {
+        "american": "\u2212750"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0HC85860027P1250_3",
+      "marketId": "2_85860027",
+      "label": "GS Warriors",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 12.5
+    },
+    {
+      "id": "0HC85860027N1250_1",
+      "marketId": "2_85860027",
+      "label": "SA Spurs",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": -12.5
+    },
+    {
+      "id": "0OU85860027O21950_1",
+      "marketId": "3_85860027",
+      "label": "Over",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Over",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 219.5
+    },
+    {
+      "id": "0OU85860027U21950_3",
+      "marketId": "3_85860027",
+      "label": "Under",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Under",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 219.5
+    },
+    {
+      "id": "0ML87219876_3",
+      "marketId": "1_87219876",
+      "label": "POR Trail Blazers",
+      "displayOdds": {
+        "american": "\u2212546"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0ML87219876_1",
+      "marketId": "1_87219876",
+      "label": "SAC Kings",
+      "displayOdds": {
+        "american": "+411"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0HC87219876N1050_3",
+      "marketId": "2_87219876",
+      "label": "POR Trail Blazers",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": -10.5
+    },
+    {
+      "id": "0HC87219876P1050_1",
+      "marketId": "2_87219876",
+      "label": "SAC Kings",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 10.5
+    },
+    {
+      "id": "0OU87219876O22850_1",
+      "marketId": "3_87219876",
+      "label": "Over",
+      "displayOdds": {
+        "american": "\u2212115"
+      },
+      "outcomeType": "Over",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 228.5
+    },
+    {
+      "id": "0OU87219876U22850_3",
+      "marketId": "3_87219876",
+      "label": "Under",
+      "displayOdds": {
+        "american": "\u2212105"
+      },
+      "outcomeType": "Under",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 228.5
+    },
+    {
+      "id": "0ML87219880_3",
+      "marketId": "1_87219880",
+      "label": "OKC Thunder",
+      "displayOdds": {
+        "american": "\u2212283"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0ML87219880_1",
+      "marketId": "1_87219880",
+      "label": "LA Clippers",
+      "displayOdds": {
+        "american": "+231"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "SGP",
+        "OSB"
+      ]
+    },
+    {
+      "id": "0HC87219880N750_3",
+      "marketId": "2_87219880",
+      "label": "OKC Thunder",
+      "displayOdds": {
+        "american": "\u2212105"
+      },
+      "outcomeType": "Away",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": -7.5
+    },
+    {
+      "id": "0HC87219880P750_1",
+      "marketId": "2_87219880",
+      "label": "LA Clippers",
+      "displayOdds": {
+        "american": "\u2212115"
+      },
+      "outcomeType": "Home",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 7.5
+    },
+    {
+      "id": "0OU87219880O22250_1",
+      "marketId": "3_87219880",
+      "label": "Over",
+      "displayOdds": {
+        "american": "\u2212112"
+      },
+      "outcomeType": "Over",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 222.5
+    },
+    {
+      "id": "0OU87219880U22250_3",
+      "marketId": "3_87219880",
+      "label": "Under",
+      "displayOdds": {
+        "american": "\u2212108"
+      },
+      "outcomeType": "Under",
+      "tags": [
+        "MainPointLine",
+        "SGP",
+        "OSB"
+      ],
+      "points": 222.5
+    }
+  ]
+}

@@ -11,9 +11,6 @@ export enum BookType {
   CAESARS = "caesars",
   DRAFTKINGS = "draftkings",
   FANDUEL = "fanduel",
-  POINTSBET = "pointsbet",
-  SUPERBOOK = "superbook",
-  UNIBET = "unibet",
 }
 
 export enum SportType {

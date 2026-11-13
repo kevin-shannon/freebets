@@ -1,0 +1,173 @@
+{
+  "attachments": {
+    "competitions": {
+      "12550521": {
+        "name": "NHL",
+        "competitionId": 12550521,
+        "eventTypeId": 7524,
+        "eventId": 32024172
+      }
+    },
+    "events": {
+      "36309171": {
+        "eventId": 36309171,
+        "name": "Nashville Predators @ Vegas Golden Knights",
+        "eventTypeId": 7524,
+        "competitionId": 12550521,
+        "countryCode": "GB",
+        "openDate": "2026-11-14T03:00:00.000Z",
+        "videoAvailable": true,
+        "statsAvailable": false
+      }
+    },
+    "markets": {
+      "734.197179012": {
+        "eventId": 36309171,
+        "marketName": "Puck Line",
+        "marketType": "MATCH_HANDICAP_(2-WAY)",
+        "marketStatus": "OPEN",
+        "inPlay": false,
+        "runners": [
+          {
+            "handicap": 1.5,
+            "runnerName": "Nashville Predators",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": -162,
+                "americanOddsInt": -162
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 1.617283950617284
+                },
+                "fractionalOdds": {
+                  "numerator": 100,
+                  "denominator": 162
+                }
+              }
+            }
+          },
+          {
+            "handicap": -1.5,
+            "runnerName": "Vegas Golden Knights",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": 132,
+                "americanOddsInt": 132
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 2.32
+                },
+                "fractionalOdds": {
+                  "numerator": 132,
+                  "denominator": 100
+                }
+              }
+            }
+          }
+        ]
+      },
+      "734.197178993": {
+        "eventId": 36309171,
+        "marketName": "Moneyline",
+        "marketType": "MONEY_LINE",
+        "marketStatus": "OPEN",
+        "inPlay": false,
+        "runners": [
+          {
+            "handicap": 0,
+            "runnerName": "Nashville Predators",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": 152,
+                "americanOddsInt": 152
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 2.52
+                },
+                "fractionalOdds": {
+                  "numerator": 152,
+                  "denominator": 100
+                }
+              }
+            }
+          },
+          {
+            "handicap": 0,
+            "runnerName": "Vegas Golden Knights",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": -184,
+                "americanOddsInt": -184
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 1.543478260869565
+                },
+                "fractionalOdds": {
+                  "numerator": 100,
+                  "denominator": 184
+                }
+              }
+            }
+          }
+        ]
+      },
+      "734.197179009": {
+        "eventId": 36309171,
+        "marketName": "Total Goals",
+        "marketType": "TOTAL_POINTS_(OVER/UNDER)",
+        "marketStatus": "OPEN",
+        "inPlay": false,
+        "runners": [
+          {
+            "handicap": 6.5,
+            "runnerName": "Over",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": 114,
+                "americanOddsInt": 114
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 2.14
+                },
+                "fractionalOdds": {
+                  "numerator": 114,
+                  "denominator": 100
+                }
+              }
+            }
+          },
+          {
+            "handicap": 6.5,
+            "runnerName": "Under",
+            "runnerStatus": "ACTIVE",
+            "winRunnerOdds": {
+              "americanDisplayOdds": {
+                "americanOdds": -140,
+                "americanOddsInt": -140
+              },
+              "trueOdds": {
+                "decimalOdds": {
+                  "decimalOdds": 1.714285714285714
+                },
+                "fractionalOdds": {
+                  "numerator": 100,
+                  "denominator": 140
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
