@@ -34,6 +34,9 @@ jobs:
           python -m pip install -r src/scrape/requirements.txt --target src/scrape
 
       - name: Test sportsbook adapters
+        env:
+          # Dependencies are packaged here by pip --target, not installed globally.
+          PYTHONPATH: ${{ github.workspace }}/src/scrape
         run: python -m unittest discover -s src/scrape/tests -v
 
       - name: Zip code
