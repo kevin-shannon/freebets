@@ -25,6 +25,11 @@ def offers(text=SAMPLE):
 
 
 class Bet365Tests(unittest.TestCase):
+    def setUp(self):
+        clock = patch("books.bet365.bet365.utc_now", return_value=datetime(2026, 11, 15, 12))
+        clock.start()
+        self.addCleanup(clock.stop)
+
     def test_saved_capture_cli_writes_normalized_odds_and_prints_counts(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "capture.txt"
@@ -74,6 +79,28 @@ class Bet365Tests(unittest.TestCase):
         self.assertNotIn("Moneyline", offers(SAMPLE.replace("OD=47/20;FS=0;OS=1", "OD=47/20;FS=0;OS=0")))
         self.assertNotIn("Moneyline", offers(SAMPLE.replace("OD=47/20;", "")))
         self.assertNotIn("Moneyline", offers(SAMPLE.replace("OD=47/20;FS=0", "OD=47/20;FS=1")))
+        self.assertNotIn("Moneyline", offers(SAMPLE.replace("OD=47/20;", "OD=47/20;SU=1;")))
+
+    def test_real_capture_with_omitted_os_fields_retains_available_upcoming_markets(self):
+        text = (Path(__file__).parent / "fixtures/bet365-nba-optional-status.txt").read_text(encoding="utf-8")
+        self.assertNotIn("OS=", text)
+        warnings = Mock()
+        events = parse_markets(text, client=warnings, now=datetime(2026, 11, 15, 18, 30))
+        self.assertEqual(len(events), 8)
+        self.assertEqual(sum(len(item["offers"]) for starts in events.values() for item in starts.values()), 24)
+        self.assertNotIn("IND Pacers vs PHI 76ers", events)
+        markets = next(iter(events["LA Lakers vs PHO Suns"].values()))["offers"]
+        self.assertEqual(markets["Moneyline"], [{"name": "LA Lakers", "odds": -158}, {"name": "PHO Suns", "odds": 133}])
+        self.assertEqual(markets["Spread: LA Lakers: -2.5"], [{"name": "LA Lakers -2.5", "odds": -114}, {"name": "PHO Suns +2.5", "odds": -106}])
+        warnings.warn.assert_not_called()
+
+    def test_capture_cutoff_excludes_games_at_or_after_start_without_affecting_replays(self):
+        self.assertEqual(len(parse_markets(SAMPLE)), 2)
+        self.assertEqual(len(parse_markets(SAMPLE, now=datetime(2026, 11, 15, 17, 59))), 2)
+        events = parse_markets(SAMPLE, now=datetime(2026, 11, 15, 18))
+        self.assertNotIn("IND Pacers vs PHI 76ers", events)
+        self.assertEqual(len(events), 1)
+        self.assertEqual(parse_markets(SAMPLE, now=datetime(2026, 11, 15, 22)), {})
 
     def test_event_flags_and_times_are_required(self):
         for before, after in [("MP=0;FD=IND", "MP=1;FD=IND"), ("FS=0;MP=0;FD=IND", "FS=1;MP=0;FD=IND"),

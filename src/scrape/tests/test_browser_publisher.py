@@ -25,6 +25,9 @@ TOKEN = "publisher-test-token-" + "a" * 48
 
 class BrowserPublisherTests(unittest.TestCase):
     def setUp(self):
+        clock = patch("books.bet365.bet365.utc_now", return_value=datetime(2026, 11, 15, 12))
+        clock.start()
+        self.addCleanup(clock.stop)
         self.clock = 0
         self.upstream = Mock(side_effect=AssertionError("Browser captures must not call an upstream"))
         self.server = make_server(("127.0.0.1", 0), TOKEN, fetch=self.upstream, enable_bet365=True,

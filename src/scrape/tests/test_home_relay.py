@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import threading
 import unittest
+from datetime import datetime
 from contextlib import redirect_stdout
 from unittest.mock import MagicMock, Mock, patch
 
@@ -91,6 +92,9 @@ class HomeRelayTests(unittest.TestCase):
             client.close()
 
     def setUp(self):
+        clock = patch("books.bet365.bet365.utc_now", return_value=datetime(2026, 11, 15, 12))
+        clock.start()
+        self.addCleanup(clock.stop)
         self.upstream = Mock(return_value=(200, b"[]"))
         self.server = make_server(("127.0.0.1", 0), TOKEN, fetch=self.upstream)
         self.thread = threading.Thread(target=lambda: self.server.serve_forever(poll_interval=0.01), daemon=True)

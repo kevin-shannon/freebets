@@ -48,7 +48,11 @@ def records(text):
     return result
 
 
-def parse_markets(text, sport="nba", client=None):
+def utc_now():
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
+def parse_markets(text, sport="nba", client=None, *, now=None):
     if sport != "nba":
         raise FeedError("bet365 only has a verified NBA capture", "unsupported")
     rows = records(text)
@@ -77,6 +81,8 @@ def parse_markets(text, sport="nba", client=None):
                     raise ValueError("Unrecognized event identity")
                 start = datetime.strptime(row["BC"], "%Y%m%d%H%M%S").replace(tzinfo=timezone.utc)
                 name, start = event_info(f"{away} @ {home}", start.isoformat(), sport)
+                if now is not None and start <= now:
+                    continue  # The page can retain priced rows after a game starts.
                 events[row["FI"]] = (name, start, away, home, row["ID"][2:])
             except (KeyError, ValueError, TypeError) as error:
                 if client:
@@ -97,7 +103,9 @@ def parse_markets(text, sport="nba", client=None):
         try:
             if len(pair) != 2:
                 raise ValueError("Market does not have exactly two selections")
-            if any(row.get("FS") != "0" or row.get("OS") != "1" for row in pair):
+            # OS is omitted from otherwise priced, unsuspended selections in
+            # the second real browser capture. Do not require its presence.
+            if any(row.get("FS") != "0" or row.get("OS") not in {None, "1"} or row.get("SU") == "1" for row in pair):
                 continue
             if kind == "spread" and pair[0].get("ID") != away_selection:
                 raise ValueError("Spread order does not match the event's away selection")
@@ -136,4 +144,4 @@ def fetch_sport(sport, client):
     text = client.get_text(url, params={
         "lid": "32", "zid": "0", "pd": NBA_PAGE, "cid": "198", "cgid": "3", "ctid": "198",
     }, headers={"Accept": "*/*", "Referer": "https://www.mo.bet365.com/"})
-    return parse_markets(text, sport, client)
+    return parse_markets(text, sport, client, now=utc_now())

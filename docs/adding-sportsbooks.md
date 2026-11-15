@@ -185,3 +185,12 @@ read. This verifies recurring browser -> local relay -> parser delivery.
 HA/Cloudflare/AWS production rollout still requires publishing app 0.3.0,
 moving the publisher to the protected relay, and enabling the explicit flags.
 See [publisher setup](../tools/bet365-devtools/README.md) for complete steps.
+
+The second production-era capture omitted `OS` on all 54 priced selections.
+The original parser incorrectly required `OS=1`, turning a nonempty feed into
+`no_events`. `OS` is now optional; explicit unavailable/suspended flags and
+valid two-sided prices/lines are still checked. Live collection additionally
+excludes games whose listed UTC start has passed, because the page can retain
+their rows. The sanitized second fixture validates 8 upcoming NBA games and 24
+markets at its afternoon cutoff, including the changed Lakers prices. Offline
+parsing accepts an explicit cutoff for deterministic fixture replay.
