@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "Freebets public odds capture",
+  "version": "0.2.0",
+  "description": "Local DevTools panel for capturing the verified public bet365 MO NBA response.",
+  "devtools_page": "devtools.html",
+  "permissions": ["storage"],
+  "optional_host_permissions": ["https://*/*", "http://127.0.0.1/*", "http://localhost/*"]
+}

@@ -1,44 +1,28 @@
-.optional-label {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.optional-tag {
-  color: var(--low-contrase-text);
-  font-size: 12px;
-  margin-right: 5px;
-}
-
-.input-prefix {
-  padding-left: 10px;
-  color: var(--low-contrase-text);
-  font-family: monospace;
-  font-size: 16px;
-}
-
 .odds-input {
-  box-sizing: border-box;
-  border: 1px solid var(--low-contrast-border);
-  border-radius: 4px;
-  background-color: var(--site-background);
   display: flex;
   align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--low-contrast-border);
+  border-radius: 9px;
 }
-
-.odds-input:focus {
-  outline: 2px solid #fa5b67;
+.odds-input:focus-within {
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 1px var(--focus-ring);
 }
-
+.input-prefix {
+  color: var(--low-contrast-text);
+}
 .odds-input input {
-  flex-grow: 1;
-  font-size: 16px;
-  background-color: var(--site-background);
-  color: var(--low-contrase-text);
-  caret-color: var(--low-contrase-text);
-  border: none;
-  outline: none;
-  padding: 9px;
-  border-radius: 4px;
+  background: transparent;
   width: 100%;
+  min-width: 0;
+  border: 0;
+  color: var(--high-contrast-text);
+  outline: none;
+  font-variant-numeric: tabular-nums;
+}
+.odds-input input::placeholder {
+  color: var(--low-contrast-text);
 }

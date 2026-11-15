@@ -1,63 +1,33 @@
 import "./OddsFormatToggle.css";
-import React from "react";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { usePreferences } from "../common/etc/Preferences";
 
-const children = [
-  <ToggleButton className="toggle-button style" disableRipple={true} value="american" key="left">
-    <div className="odd-format-option col1-content">
-      <span>American</span>
-      <span>+150</span>
-    </div>
-  </ToggleButton>,
-  <ToggleButton className="toggle-button style" disableRipple={true} value="probability" key="right">
-    <div className="odd-format-option col2-content">
-      <span>Probability</span>
-      <span>40%</span>
-    </div>
-  </ToggleButton>,
-  <ToggleButton className="toggle-button style" disableRipple={true} value="decimal" key="center">
-    <div className="odd-format-option col3-content">
-      <span>Decimal</span>
-      <span>2.5</span>
-    </div>
-  </ToggleButton>,
-];
-
-export default function StyleToggle() {
-  const [style, setStyle] = React.useState("american");
-
-  const handleChange = (_: React.MouseEvent<HTMLElement>, newStyle: string) => {
-    setStyle(newStyle);
-  };
+const choices = [
+  { value: "american", label: "American", example: "+150" },
+  { value: "decimal", label: "Decimal", example: "2.50" },
+  { value: "probability", label: "Probability", example: "40%" },
+] as const;
+export default function OddsFormatToggle() {
+  const { oddsFormat, setOddsFormat } = usePreferences();
   return (
-    <div className="styles-block">
-      <label className="menu-setting-label">ODDS FORMAT</label>
-      <ToggleButtonGroup
-        value={style}
-        exclusive
-        onChange={handleChange}
-        sx={{
-          "& .MuiToggleButton-root.Mui-selected": {
-            backgroundColor: "#32c85536;",
-            color: "var(--slider-green)",
-            fill: "var(--slider-green)",
-            borderColor: "#098a27",
-          },
-          "& .MuiToggleButton-root.Mui-selected:hover": {
-            backgroundColor: "#32c85536;",
-            color: "var(--slider-green)",
-            fill: "var(--slider-green)",
-            borderColor: "#098a27",
-          },
-          "& .MuiToggleButton-root": {
-            color: "var(--slider-text)",
-            fill: "var(--slider-text)",
-            borderColor: "#CFD9DE",
-          },
-        }}
-      >
-        {children}
-      </ToggleButtonGroup>
-    </div>
+    <fieldset className="preference-group">
+      <legend>Odds format</legend>
+      <div className="segmented-control">
+        {choices.map(({ value, label, example }) => (
+          <label className="segment" key={value}>
+            <input
+              type="radio"
+              name="odds-format"
+              value={value}
+              checked={oddsFormat === value}
+              onChange={() => setOddsFormat(value)}
+            />
+            <span className="odds-format-choice">
+              {label}
+              <small>{example}</small>
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
   );
 }

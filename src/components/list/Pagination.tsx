@@ -1,79 +1,59 @@
 import React from "react";
 import "./Pagination.css";
-import { ReactComponent as ChevronLeft } from "../../icons/chevron-left.svg";
-import { ReactComponent as ChevronRight } from "../../icons/chevron-right.svg";
+import { ReactComponent as Left } from "../../icons/chevron-left.svg";
+import { ReactComponent as Right } from "../../icons/chevron-right.svg";
 
-interface PaginationProps {
+export default function Pagination({
+  total,
+  page,
+  setPage,
+}: {
   total: number;
-  siblings: number;
-  boundaries: number;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-}
-
-function Pagination({ total, siblings, boundaries, page, setPage }: PaginationProps) {
-  let pageNumbers: [string | number, number][] = [];
-
-  const maxPagesToShow = 2 * siblings + 2 * boundaries + 3;
-  if (total <= maxPagesToShow) {
-    for (let i = 1; i <= total; i++) {
-      pageNumbers.push([i, i]);
-    }
-  } else {
-    if (page <= siblings + boundaries + 2) {
-      for (let i = 1; i <= 2 * siblings + boundaries + 2; i++) {
-        pageNumbers.push([i, i]);
-      }
-      pageNumbers.push(["…", 2 * siblings + boundaries + 3]);
-      for (let i = total - boundaries + 1; i <= total; i++) {
-        pageNumbers.push([i, i]);
-      }
-    } else if (page >= total - (siblings + boundaries + 1)) {
-      for (let i = 1; i <= boundaries; i++) {
-        pageNumbers.push([i, i]);
-      }
-      pageNumbers.push(["…", total - (2 * siblings + boundaries + 2)]);
-      for (let i = total - (siblings + boundaries + 2); i <= total; i++) {
-        pageNumbers.push([i, i]);
-      }
-    } else {
-      for (let i = 1; i <= boundaries; i++) {
-        pageNumbers.push([i, i]);
-      }
-      pageNumbers.push(["…", page - 2]);
-      for (let i = page - siblings; i <= page + siblings; i++) {
-        pageNumbers.push([i, i]);
-      }
-      pageNumbers.push(["…", page + 2]);
-      for (let i = total - boundaries + 1; i <= total; i++) {
-        pageNumbers.push([i, i]);
-      }
-    }
-  }
-
+}) {
+  if (total <= 1) return null;
+  const visible = Array.from({ length: total }, (_, i) => i + 1).filter(
+    (n) => n === 1 || n === total || Math.abs(n - page) <= 1,
+  );
   return (
-    <nav>
-      <ul className="pagination">
-        <button className={`page-link${page === 1 ? " disabled" : ""}`} onClick={() => setPage(Math.max(1, page - 1))}>
-          <ChevronLeft className="pagination-navigation" />
-        </button>
-
-        {pageNumbers.map((pageNumber) => (
+    <nav className="pagination" aria-label="Market pages">
+      <button
+        type="button"
+        className="page-link"
+        aria-label="Previous page"
+        disabled={page === 1}
+        onClick={() => setPage(page - 1)}
+      >
+        <Left aria-hidden="true" />
+      </button>
+      {visible.map((n, i) => (
+        <React.Fragment key={n}>
+          {i > 0 && n - visible[i - 1] > 1 && (
+            <span className="page-ellipsis" aria-hidden="true">
+              …
+            </span>
+          )}
           <button
-            key={pageNumber.toString()}
-            className={`page-link${pageNumber[0] === page ? " active" : ""}${pageNumber[0] === "…" ? " dots" : ""}`}
-            onClick={() => setPage(pageNumber[1])}
+            type="button"
+            className="page-link"
+            aria-label={`Page ${n}`}
+            aria-current={n === page ? "page" : undefined}
+            onClick={() => setPage(n)}
           >
-            {pageNumber[0]}
+            {n}
           </button>
-        ))}
-
-        <button className={`page-link${page === total ? " disabled" : ""}`} onClick={() => setPage(Math.min(page + 1, total))}>
-          <ChevronRight className="pagination-navigation" />
-        </button>
-      </ul>
+        </React.Fragment>
+      ))}
+      <button
+        type="button"
+        className="page-link"
+        aria-label="Next page"
+        disabled={page === total}
+        onClick={() => setPage(page + 1)}
+      >
+        <Right aria-hidden="true" />
+      </button>
     </nav>
   );
 }
-
-export default Pagination;

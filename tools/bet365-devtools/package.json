@@ -1,0 +1,6 @@
+{
+  "name": "freebets-public-odds-devtools",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test *.test.js" }
+}

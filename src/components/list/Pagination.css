@@ -1,48 +1,40 @@
 .pagination {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-}
-
-.page-link {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 4px;
+}
+.page-link {
   width: 32px;
   height: 32px;
-  border: none;
-  background-color: transparent;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--medium-contrast-text);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.page-link svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+.page-link:hover:not(:disabled) {
+  background: var(--button-hover);
+}
+.page-link[aria-current="page"] {
+  border-color: var(--low-contrast-border);
+  background: var(--betcard-background);
   color: var(--high-contrast-text);
-  font-size: 14px;
-  border-radius: 4px;
-  margin: 0 3px;
-  cursor: pointer;
+  font-weight: 600;
 }
-
-.page-link.active {
-  background-color: var(--button-active);
-  color: var(--high-contrast-text);
+.page-link:disabled {
+  opacity: 0.35;
 }
-
-.page-link.active:hover {
-  background-color: var(--button-active-hover);
-}
-
-.page-link:hover {
-  background-color: var(--button-hover);
-}
-
-.page-link.disabled {
-  pointer-events: none;
-  opacity: 0.38;
-}
-
-.pagination-navigation {
-  height: 0.7em;
-}
-
-.page-link.dots:hover {
-  content: ">>";
+.page-ellipsis {
+  width: 20px;
+  text-align: center;
+  color: var(--low-contrast-text);
 }

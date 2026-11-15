@@ -1,0 +1,12 @@
+{
+  "name": "freebets-bet365-browser-check",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Optional local observer for bet365's own public NBA responses",
+  "dependencies": {
+    "playwright-core": "1.65.0"
+  },
+  "scripts": {
+    "test": "node --test check.test.cjs"
+  }
+}

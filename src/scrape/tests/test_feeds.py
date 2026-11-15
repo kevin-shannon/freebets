@@ -1,6 +1,8 @@
 """Regression tests for recorded feeds, matching, and failure isolation."""
 import importlib
 import copy
+import io
+from contextlib import redirect_stdout
 import json
 import os
 import pathlib
@@ -293,6 +295,22 @@ class MatchingTests(unittest.TestCase):
 
 
 class FailureHandlingTests(unittest.TestCase):
+    def test_request_diagnostics_identify_unfinished_requests_without_secrets(self):
+        client = FeedClient()
+        output = io.StringIO()
+        try:
+            with redirect_stdout(output), patch.object(client, "_get_json", side_effect=FeedError("private-error")):
+                with self.assertRaises(FeedError):
+                    client.get_json("https://example.com/feed?key=private-query", headers={"Authorization": "private-header"})
+            records = [json.loads(line) for line in output.getvalue().splitlines()]
+            self.assertEqual([record["phase"] for record in records], ["start", "error"])
+            self.assertEqual(records[0]["host"], "example.com")
+            self.assertEqual(records[0]["path"], "/feed")
+            self.assertGreaterEqual(records[1]["duration_ms"], 0)
+            self.assertNotIn("private-", output.getvalue())
+        finally:
+            client.close()
+
     def test_proxy_routes_caesars_only_and_keeps_existing_timeouts(self):
         proxy = "https://test-user:test-password@proxy.example:8443"
         with patch.dict(os.environ, {"CAESARS_PROXY_URL": proxy}):

@@ -1,30 +1,19 @@
-import React, { KeyboardEvent } from "react";
+import React from "react";
 import "./Switch.css";
 
-interface SwitchInterface {
+interface SwitchProps {
   label: string;
   checked: boolean;
   setChecked: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-export default function Switch({ label, checked, setChecked }: SwitchInterface) {
-  const handleToggle = () => {
-    setChecked(!checked);
-  };
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      handleToggle();
-    }
-  };
-
+export default function Switch({ label, checked, setChecked }: SwitchProps) {
   return (
-    <div className={`switch-container ${checked ? "checked" : ""}`} onClick={handleToggle} onKeyDown={handleKeyDown}>
-      <div className="switch" tabIndex={0}>
-        <div className="slider"></div>
-      </div>
+    <label className="switch-container">
+      <input type="checkbox" role="switch" checked={checked} onChange={(event) => setChecked(event.target.checked)} />
+      <span className="switch-track" aria-hidden="true">
+        <span />
+      </span>
       <span className="switch-label">{label}</span>
-    </div>
+    </label>
   );
 }

@@ -1,69 +1,82 @@
-.betcard-info,
-.card-outcome {
-  text-align: center;
+.bet-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
-
-.betcard-outcomes {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-  border-top: 1px solid var(--low-contrast-border);
+.betcard {
+  padding: 20px;
+  min-width: 0;
+  border: 1px solid var(--low-contrast-border);
+  border-radius: 14px;
+  background: var(--betcard-background);
 }
-
-.card-rate {
-  font-size: xx-large;
-  font-weight: 600;
+.card-topline {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
 }
-
-.rate-container {
-  margin: 0 auto;
-  position: relative;
+.card-topline .rate-pill {
+  font-size: 12px;
+  padding: 5px 8px;
+  gap: 5px;
 }
-
-.card-calc-link {
-  height: 75%;
-  padding-left: 15px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  position: absolute;
-  left: 100%;
-  top: 0%;
+.rate-pill small {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 10px;
 }
-
 .card-event {
-  padding-top: 4px;
-  padding-bottom: 8px;
-  color: var(--low-contrast-text);
-}
-
-.card-market {
-  font-size: large;
-  padding-bottom: 5px;
+  font-size: 16px;
   font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
 }
-
-.card-outcome:first-child {
-  border-right: 1px solid var(--low-contrast-border);
+.card-market-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 0 12px;
 }
-
-.betcard {
-  border-radius: 15px;
-  max-width: 550px;
-  min-width: 300px;
-  margin: 5px auto 5px auto;
-  padding: 5px;
-  background-color: var(--betcard-background);
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+.card-market {
+  font-size: 12px;
+  color: var(--medium-contrast-text);
 }
-
+.card-outcomes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--low-contrast-border);
+  padding-top: 16px;
+}
+.card-outcome {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  padding-right: 10px;
+}
+.card-outcome + .card-outcome {
+  border-left: 1px solid var(--low-contrast-border);
+  padding-left: 16px;
+  padding-right: 0;
+}
 .card-outcome-name {
-  padding: 2px;
+  font-size: 12px;
+  line-height: 1.5;
 }
-
 .card-outcome-odds {
-  padding: 2px;
-  font-weight: 600;
-  font-size: large;
+  font-family: "Roboto Mono", monospace;
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 600px) {
+  .bet-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .betcard {
+    padding: 18px;
+  }
 }

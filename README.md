@@ -29,8 +29,48 @@ npm run scrape -- --books betmgm fanduel --sports nba nhl --region nj
 # Regression tests and frontend validation.
 npm run scrape:test
 npm run tsc
+npm test -- --watchAll=false --runInBand
 npm run build
 ```
+
+## Interface
+
+Home introduces the site and getting-started workflow. The top navigation opens
+Bets, Tools, and Learn, and the logo returns Home. Direct hash links work with
+GitHub Pages. Tools currently previews the planned bet tracker and standalone
+calculators; the market-linked calculators are available on Bets.
+
+The state selector saves your preference, shows active online sportsbooks, and
+limits book filters and comparison results to available connected operators.
+Only states with active statewide online betting are selectable. Leaving the
+state unset shows all ten operators and selects all connected books.
+The catalog covers the ten requested brands across all 50 states and DC, with
+sources and a verification date. It does not change the current feed's region
+or connect additional odds feeds. See the [full availability list](docs/sportsbook-availability.md)
+and [site structure](docs/site-structure.md) for details.
+
+Appearance and odds format are saved on the current device under Preferences.
+For the adapter contract, registration steps and bet365 investigation status,
+see [adding sportsbooks](docs/adding-sportsbooks.md).
+System appearance follows operating-system changes. American, decimal, and
+implied-probability formats apply to the results and calculator; optional odds
+limits remain explicitly American.
+
+Shared colors live in `src/components/common/etc/variables.css` and apply at the
+document root so dialogs inherit the selected theme. Settings and calculators
+use native modal dialogs with Escape dismissal, focus restoration, and keyboard
+navigation. Animations respect reduced-motion preferences.
+
+The feed refreshes in the background every 60 seconds without navigating or
+reloading the page. An open calculator keeps its captured odds, amounts, and
+active tab even if the refreshed market moves off the page or becomes unavailable.
+
+`npm start` excludes the generated feed JSON and its atomic-write temporary files
+from CRA's public-asset watcher. Local scraper updates therefore use background
+polling instead of triggering a full-page reload. Source-code Fast Refresh and
+reloads for other public assets remain enabled.
+
+## Feed access and deployment
 
 `SPORTSBOOK_REGION` defaults to `nj`. State-specific access varies. Both `local`
 and `check` exit 1 for incomplete coverage, even when working feeds successfully
@@ -64,6 +104,12 @@ Lambda. Caesars requests then run through the home relay; aggregation and S3
 publishing remain in AWS. Relay routing takes precedence over the optional
 forward proxy below. The server and tunnel must be installed and a live
 collection verified before Caesars can be considered restored in production.
+
+bet365 has an optional free, self-hosted [normal-browser publisher](tools/bet365-devtools/README.md).
+It sends fresh MO NBA responses to the home relay; Lambda reads the expiring
+cache. Recurring local delivery is verified. Production enablement remains
+opt-in through `BET365_ENABLED` in Lambda and `ENABLE_BET365` for frontend builds.
+The browser/DevTools must stay open; expired quotes are removed independently.
 
 Caesars can optionally use an external HTTP/HTTPS forward proxy while the
 collector stays in Lambda. Configure `CAESARS_PROXY_URL` in Lambda's environment

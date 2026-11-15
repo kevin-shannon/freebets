@@ -1,32 +1,33 @@
+import { useState } from "react";
 import "./HamburgerMenu.css";
 import StyleToggle from "./StyleToggle";
 import OddsFormatToggle from "./OddsFormatToggle";
+import Dialog from "../common/Dialog";
 
-interface HamburgerMenuProps {
-  hamburgerActive: boolean;
-  setHamburgerActive: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export default function HamburgerMenu({ hamburgerActive, setHamburgerActive }: HamburgerMenuProps) {
-  const toggleMenu = () => {
-    setHamburgerActive(!hamburgerActive);
-  };
-
+export default function HamburgerMenu() {
+  const [open, setOpen] = useState(false);
   return (
-    <div className={`hamburger-container ${hamburgerActive ? "active" : ""}`}>
-      <div className="burger-wrapper" onClick={toggleMenu}>
-        <div className="hamburger"></div>
-      </div>
-      <div className="sliding-drawer">
-        <div className="sliding-shelf">
-          <div className={`sliding-div ${hamburgerActive ? "visible" : ""}`}>
-            <div className="menu-container">
-              <StyleToggle />
-              <OddsFormatToggle />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <button
+        className={`menu-button ${open ? "is-open" : ""}`}
+        type="button"
+        aria-label="Open preferences"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        onClick={() => setOpen(true)}
+      >
+        <span className="menu-button-label">Preferences</span>
+        <span className="hamburger" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </span>
+      </button>
+      <Dialog open={open} onClose={() => setOpen(false)} title="Make it yours" className="preferences-dialog">
+        <StyleToggle />
+        <OddsFormatToggle />
+        <p className="preferences-note">Your preferences are saved on this device.</p>
+      </Dialog>
+    </>
   );
 }

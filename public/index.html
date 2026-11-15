@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -6,10 +6,21 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon-96.ico" />
     <link rel="icon" href="%PUBLIC_URL%/favicon-180.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Sports Betting Aggregator Tool"
-    />
+    <meta name="theme-color" content="#1d1f22" />
+    <script>
+      try {
+        var mode = JSON.parse(localStorage.getItem("style") || '"system"');
+        document.documentElement.dataset.theme =
+          mode === "light" || mode === "dark"
+            ? mode
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+      } catch (_) {
+        document.documentElement.dataset.theme = "light";
+      }
+    </script>
+    <meta name="description" content="Sports Betting Aggregator Tool" />
     <title>Freebets</title>
   </head>
   <body>

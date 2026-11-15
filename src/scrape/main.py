@@ -7,15 +7,13 @@ import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from books.betmgm.betmgm import fetch_sport as fetch_betmgm
-from books.caesars.caesars import fetch_sport as fetch_caesars
-from books.draftkings.draftkings import fetch_sport as fetch_draftkings
-from books.fanduel.fanduel import fetch_sport as fetch_fanduel
+from books.registry import registered_fetchers, EXPERIMENTAL_BOOKS
 from http_client import FeedClient, FeedError
 from markets import american_odds
 
 ROOT = Path(__file__).resolve().parents[2]
-FETCHERS = {"betmgm": fetch_betmgm, "caesars": fetch_caesars, "draftkings": fetch_draftkings, "fanduel": fetch_fanduel}
+FETCHERS = registered_fetchers()
+EXPERIMENTAL_FETCHERS = registered_fetchers(EXPERIMENTAL_BOOKS)
 SPORTS = ("nhl", "mlb", "nba")
 
 
@@ -31,23 +29,31 @@ def counts(events):
 
 
 def collect(books=None, sports=SPORTS, region=None):
-    books = list(FETCHERS) if books is None else list(books)
+    if books is None:
+        books = list(FETCHERS)
+        if os.getenv("BET365_ENABLED", "").lower() == "true" and "bet365" not in books:
+            books.append("bet365")
+    else:
+        books = list(books)
     region = region or os.getenv("SPORTSBOOK_REGION", "nj")
     client = FeedClient(region)
     data, statuses = {}, {}
     try:
         for book in books:
-            if book not in FETCHERS:
+            fetcher = FETCHERS.get(book) or EXPERIMENTAL_FETCHERS.get(book)
+            if fetcher is None:
                 raise ValueError(f"Unknown sportsbook: {book}")
             data[book], sport_statuses = {}, {}
-            if book == "caesars":
-                transport = "home_relay" if client.caesars_relay_url else "forward_proxy" if client.caesars_proxy_url else "direct"
-                trace = f" trace_id={client.caesars_relay_trace_id}" if transport == "home_relay" else ""
-                print(f"caesars transport={transport}{trace}", flush=True)
+            if book in {"caesars", "bet365"}:
+                transport = "home_relay" if getattr(client, f"{book}_relay_url") else "forward_proxy" if book == "caesars" and client.caesars_proxy_url else "direct"
+                trace = f" trace_id={getattr(client, f'{book}_relay_trace_id')}" if transport == "home_relay" else ""
+                print(f"{book} transport={transport}{trace}", flush=True)
             for sport in sports:
+                started = time.monotonic()
+                print(json.dumps({"event": "sport_collection", "book": book, "sport": sport, "phase": "start"}), flush=True)
                 client.warnings = []
                 try:
-                    events = FETCHERS[book](sport, client)
+                    events = fetcher(sport, client)
                     data[book][sport] = events
                     totals = counts(events)
                     state = "partial" if client.warnings else "ok" if totals["markets"] else "no_events"
@@ -61,23 +67,32 @@ def collect(books=None, sports=SPORTS, region=None):
                         "message": str(error), "events": 0, "markets": 0,
                     }
                 status = sport_statuses[sport]
+                status["durationMs"] = round((time.monotonic() - started) * 1000)
+                print(json.dumps({"event": "sport_collection", "book": book, "sport": sport,
+                                  "phase": "complete", "duration_ms": status["durationMs"],
+                                  "state": status["state"]}), flush=True)
                 print(f"{book:12} {sport:3} {status['state']:19} {status['events']:3} events, {status['markets']:4} markets", flush=True)
                 if status.get("message"):
                     print("  " + status["message"], flush=True)
             total_events = sum(s["events"] for s in sport_statuses.values())
             total_markets = sum(s["markets"] for s in sport_statuses.values())
             states = {s["state"] for s in sport_statuses.values()}
-            if states <= {"ok", "no_events"}:
+            supported_states = states - {"unsupported"}
+            if supported_states and supported_states <= {"ok", "no_events"}:
                 state = "ok" if total_markets else "no_events"
             elif total_markets:
                 state = "partial"
             else:
-                state = next(iter(states)) if len(states) == 1 else "error"
+                state = next(iter(supported_states)) if len(supported_states) == 1 else next(iter(states)) if len(states) == 1 else "error"
             statuses[book] = {"state": state, "events": total_events, "markets": total_markets, "sports": sport_statuses}
-            if book == "caesars":
+            if book == "bet365":
+                statuses[book].update(region=client.bet365_region, supportedSports=["nba"])
+                if client.bet365_capture:
+                    statuses[book].update(client.bet365_capture)
+            if book in {"caesars", "bet365"}:
                 statuses[book]["transport"] = transport
                 if transport == "home_relay":
-                    statuses[book].update(relayTraceId=client.caesars_relay_trace_id, relayRequests=client.caesars_relay_requests)
+                    statuses[book].update(relayTraceId=getattr(client, f"{book}_relay_trace_id"), relayRequests=getattr(client, f"{book}_relay_requests"))
     finally:
         client.close()
     rows = aggregate(data)
@@ -153,7 +168,9 @@ def write_json(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = None
     try:
-        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, delete=False) as stream:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=path.parent, prefix=f".{path.name}.", suffix=".tmp", delete=False
+        ) as stream:
             temporary = Path(stream.name)
             json.dump(value, stream, ensure_ascii=False, allow_nan=False)
             stream.write("\n")
@@ -174,6 +191,8 @@ def local(books=None, sports=SPORTS, region=None, output=None, status_output=Non
 
 def lambda_handler(event, context):
     # Network requests happen on EVERY invocation, including warm Lambda invocations.
+    print(json.dumps({"event": "collection_start", "request_id": getattr(context, "aws_request_id", None),
+                      "memory_mb": getattr(context, "memory_limit_in_mb", None)}), flush=True)
     import boto3
     rows, report = collect()
     s3 = boto3.client("s3")
@@ -190,7 +209,8 @@ def lambda_handler(event, context):
 def cli():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("local", "check"))
-    parser.add_argument("--books", nargs="+", choices=tuple(FETCHERS))
+    parser.add_argument("--books", nargs="+", choices=tuple(FETCHERS) + tuple(EXPERIMENTAL_FETCHERS),
+                        help="Explicit selection can include experimental adapters; defaults use connected books only")
     parser.add_argument("--sports", nargs="+", choices=SPORTS, default=SPORTS)
     parser.add_argument("--region", default=os.getenv("SPORTSBOOK_REGION", "nj"))
     parser.add_argument("--output", type=Path)

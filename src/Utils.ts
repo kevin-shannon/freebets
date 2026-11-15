@@ -12,10 +12,12 @@ export function filterBets(
   showToday: boolean
 ): Bet[] {
   let bets: Bet[] = [];
+  const allowedA = new Set(books_a);
+  const allowedB = new Set(books_b);
   const func = betType.value === BetType.ARBITRAGE ? computeEv : betType.value === BetType.PLAYTHROUGH ? computePlaythrough : computeConversion;
   for (let i = 0; i < data.length; i++) {
     if (data[i]["outcomes"].length !== 2) continue;
-    const best = findBestPair(new Set(books_a), new Set(books_b), data[i]["outcomes"][0]["books"], data[i]["outcomes"][1]["books"], func);
+    const best = findBestPair(allowedA, allowedB, data[i]["outcomes"][0]["books"], data[i]["outcomes"][1]["books"], func);
     if (best !== null) {
       if (!show_push && data[i]["outcomes"][0]["name"].includes(".0")) continue;
       if (!show_live && isInPast(data[i]["start"])) continue;
@@ -36,7 +38,7 @@ export function filterBets(
       for (let j = 0; j < data[i]["outcomes"].length; j++) {
         temp["outcomes"][j]["name"] = data[i]["outcomes"][j]["name"];
         temp["outcomes"][j]["odds"] = best[0][j];
-        temp["outcomes"][j]["books"] = data[i]["outcomes"][j]["books"][best[0][j]];
+        temp["outcomes"][j]["books"] = data[i]["outcomes"][j]["books"][best[0][j]].filter((book: string) => allowedA.has(book) || allowedB.has(book));
       }
       bets.push(temp);
     }

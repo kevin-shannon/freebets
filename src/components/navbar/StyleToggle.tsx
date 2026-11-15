@@ -1,85 +1,36 @@
 import "./StyleToggle.css";
-import React, { useContext, useEffect } from "react";
-import { ReactComponent as MoonStars } from "../../icons/moon-stars.svg";
+import { ReactComponent as Moon } from "../../icons/moon-stars.svg";
 import { ReactComponent as Sun } from "../../icons/sun.svg";
-import { ReactComponent as SystemBrightness } from "../../icons/system-brightness.svg";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { ThemeContext } from "../layout/App";
-import useLocalStorageState from "../common/etc/useLocalStorageState";
+import { ReactComponent as System } from "../../icons/system-brightness.svg";
+import { usePreferences } from "../common/etc/Preferences";
 
-const children = [
-  <ToggleButton className="toggle-button style" disableRipple={true} value="light" key="left">
-    <div className="style-option col1-content">
-      <Sun className="style-icon" /> Light
-    </div>
-  </ToggleButton>,
-  <ToggleButton className="toggle-button style" disableRipple={true} value="system" key="center">
-    <div className="style-option col2-content">
-      <SystemBrightness className="style-icon" /> System
-    </div>
-  </ToggleButton>,
-  <ToggleButton className="toggle-button style" disableRipple={true} value="dark" key="right">
-    <div className="style-option col3-content">
-      <MoonStars className="style-icon" /> Dark
-    </div>
-  </ToggleButton>,
-];
-
+const choices = [
+  { value: "light", label: "Light", Icon: Sun },
+  { value: "system", label: "System", Icon: System },
+  { value: "dark", label: "Dark", Icon: Moon },
+] as const;
 export default function StyleToggle() {
-  const [style, setStyle] = useLocalStorageState("style", "system");
-  const { setTheme } = useContext(ThemeContext);
-
-  useEffect(() => {
-    const setThemeBasedOnStyle = (newStyle: string) => {
-      if (newStyle === "system") {
-        if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          setTheme("dark");
-        } else {
-          setTheme("light");
-        }
-      } else {
-        setTheme(newStyle);
-      }
-    };
-
-    setThemeBasedOnStyle(style);
-  }, [style, setTheme]);
-
-  const handleChange = (_: React.MouseEvent<HTMLElement>, newStyle: string) => {
-    if (newStyle !== null) {
-      setStyle(newStyle);
-    }
-  };
-
+  const { themePreference, setThemePreference } = usePreferences();
   return (
-    <div className="styles-block">
-      <label className="menu-setting-label">MODE</label>
-      <ToggleButtonGroup
-        value={style}
-        exclusive
-        onChange={handleChange}
-        sx={{
-          "& .MuiToggleButton-root.Mui-selected": {
-            backgroundColor: "#32c85536;",
-            color: "var(--slider-green)",
-            fill: "var(--slider-green)",
-            borderColor: "#098a27",
-          },
-          "& .MuiToggleButton-root.Mui-selected:hover": {
-            backgroundColor: "#32c85536;",
-            color: "var(--slider-green)",
-            fill: "var(--slider-green)",
-            borderColor: "#098a27",
-          },
-          "& .MuiToggleButton-root": {
-            color: "var(--slider-text)",
-            fill: "var(--slider-text)",
-            borderColor: "#CFD9DE",
-          },
-        }}
-      >
-        {children}
-      </ToggleButtonGroup>
-    </div>
+    <fieldset className="preference-group">
+      <legend>Appearance</legend>
+      <div className="segmented-control">
+        {choices.map(({ value, label, Icon }) => (
+          <label className="segment" key={value}>
+            <input
+              type="radio"
+              name="appearance"
+              value={value}
+              checked={themePreference === value}
+              onChange={() => setThemePreference(value)}
+            />
+            <span>
+              <Icon aria-hidden="true" />
+              {label}
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
   );
 }

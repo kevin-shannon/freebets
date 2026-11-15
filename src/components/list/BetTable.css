@@ -1,6 +1,107 @@
+.results-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 30px 2px 16px;
+}
+.results-heading h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  margin: 0;
+  white-space: nowrap;
+}
+.results-heading h2 > span {
+  font-size: 11px;
+  background: var(--button-active);
+  color: var(--medium-contrast-text);
+  padding: 3px 7px;
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+.table-container {
+  border: 1px solid var(--low-contrast-border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--betcard-background);
+}
 .bet-table {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 1400px;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.bet-table > thead {
+  background: var(--surface-muted);
+  color: var(--medium-contrast-text);
+}
+.bet-table > thead th {
+  padding: 14px 18px;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.bet-table > thead th:first-child {
+  width: 92px;
+}
+.bet-table > thead th:nth-child(2) {
+  width: 23%;
+}
+.bet-table > thead th:nth-child(3) {
+  width: 15%;
+}
+.bet-table > thead th:nth-child(5) {
+  width: 80px;
+}
+.bet-table > thead th:nth-child(6) {
+  width: 152px;
+}
+@media (max-width: 1200px) {
+  .bet-table > thead th:nth-child(6) {
+    width: 94px;
+  }
+}
+.results-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 0 2px;
+}
+.results-footer > span {
+  color: var(--low-contrast-text);
+  font-size: 11px;
+}
+.empty-state {
+  border: 1px dashed var(--low-contrast-border-highlight);
+  border-radius: 16px;
+  padding: 64px 24px;
+  text-align: center;
+}
+.empty-state h3 {
+  font-size: 18px;
+  margin: 0 0 10px;
+  font-weight: 500;
+}
+.empty-state p {
+  font-size: 13px;
+  color: var(--medium-contrast-text);
+  margin: 0;
+}
+@media (max-width: 700px) {
+  .results-footer {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .results-heading h2 {
+    font-size: 17px;
+  }
 }

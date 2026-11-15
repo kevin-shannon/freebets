@@ -1,3 +1,65 @@
-.orgNodeChildGroup tbody :nth-child(3) td:only-child {
-  visibility: collapse;
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.scenario-card {
+  padding: 16px;
+  border: 1px solid var(--low-contrast-border);
+  border-radius: 12px;
+  min-width: 0;
+}
+.scenario-card .scenario-eyebrow {
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--low-contrast-text);
+  margin: 0 0 10px;
+}
+.scenario-card h4 {
+  margin: 0 0 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.scenario-card dl {
+  margin: 0;
+}
+.scenario-card dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+}
+.scenario-card dt {
+  color: var(--medium-contrast-text);
+  font-size: 11px;
+}
+.scenario-card dd {
+  margin: 0;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.scenario-card .scenario-net {
+  border-top: 1px solid var(--low-contrast-border);
+  margin-top: 10px;
+  padding-top: 14px;
+}
+.scenario-net dd {
+  color: var(--positive-text);
+  font-weight: 500;
+}
+.scenario-net dd.is-negative {
+  color: var(--negative-text);
+}
+.scenario-bonus {
+  border-top: 1px solid var(--low-contrast-border);
+  margin-top: 12px;
+  font-size: 11px;
+}
+.scenario-bonus p {
+  line-height: 1.6;
+}
+@media (max-width: 500px) {
+  .scenario-grid {
+    grid-template-columns: 1fr;
+  }
 }

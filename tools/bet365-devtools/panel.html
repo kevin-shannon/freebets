@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Freebets odds capture</title><link rel="stylesheet" href="panel.css"></head>
+<body>
+  <main>
+    <h1>Public NBA odds capture</h1>
+    <p>Keep this panel open and reload bet365's NBA page in this normal browser window. No sportsbook login is needed for this test.</p>
+    <p id="status" role="status">Waiting for the captured MO NBA request.</p>
+    <form id="publisher-form">
+      <h2>Publish to your home relay</h2>
+      <label>Relay origin <input id="origin" type="url" required placeholder="https://your-relay.example.com" autocomplete="off"></label>
+      <label>Relay token <input id="relay-token" type="password" required minlength="32" autocomplete="off"></label>
+      <label>Cloudflare Access client ID <input id="client-id" type="text" autocomplete="off"></label>
+      <label>Cloudflare Access client secret <input id="client-secret" type="password" autocomplete="off"></label>
+      <label class="remember"><input id="remember" type="checkbox"> Remember credentials on this device</label>
+      <div><button type="submit">Start publishing</button> <button id="stop" type="button" disabled>Stop publishing</button></div>
+      <p id="publisher-status" role="status">Publishing is off. Keep the NBA tab and DevTools open while publishing.</p>
+      <p class="note">While enabled, this reloads only the MO NBA page once per minute. Only newly observed odds responses are uploaded. Permission is requested for your chosen relay origin.</p>
+    </form>
+    <button id="download" type="button" disabled>Save public odds response</button>
+    <p class="note">Only the matching public response body is saved or published. Sportsbook cookies and request-token headers are excluded. The collector validates the pipe feed.</p>
+    <h2>Recent matching requests</h2>
+    <ul id="recent"><li>No matching requests yet.</li></ul>
+  </main>
+  <script type="module" src="panel.js"></script>
+</body>
+</html>

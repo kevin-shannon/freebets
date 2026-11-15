@@ -1,91 +1,57 @@
-import React from "react";
 import "./BetSlab.css";
-import ImageList from "@mui/material/ImageList";
 import Book from "../common/Book";
 import CalcLink from "../calc/CalcLink";
-import { Bet, BetType, BetOption, ScreenType } from "../../enums";
+import { Bet, BetOption, ScreenType } from "../../enums";
+import { readableRate, isNegativeRate } from "./BetCard";
+import { displayOdds, usePreferences } from "../common/etc/Preferences";
 
-function readableRate(rate: number, betOption: BetOption) {
-  if (betOption.value === BetType.ARBITRAGE) {
-    return rate > 1 ? "+" + ((rate - 1) * 100).toFixed(1) : ((rate - 1) * 100).toFixed(1);
-  } else {
-    return (rate * 100).toFixed(1);
-  }
-}
-
-interface BooksBlockProps {
-  bet: Bet;
-}
-
-function BooksBlock({ bet }: BooksBlockProps) {
-  const books_a: React.ReactNode[] = [];
-  const books_b: React.ReactNode[] = [];
-  bet.outcomes[0].books.forEach((book: string) => {
-    books_a.push(<Book book={book} key={book} />);
-  });
-  bet.outcomes[1].books.forEach((book: string) => {
-    books_b.push(<Book book={book} key={book} />);
-  });
-
-  return (
-    <table className="books-block">
-      <tbody>
-        <tr>
-          <td className="odds-value">{bet.outcomes[0].odds > 0 ? "+" + bet.outcomes[0].odds : bet.outcomes[0].odds}</td>
-          <td>
-            <div className="books-container">
-              <ImageList style={{ margin: 0, gap: 2 }} cols={Math.min(4, books_a.length)}>
-                {books_a}
-              </ImageList>
-            </div>
-          </td>
-        </tr>
-        <tr style={{ borderTop: "1px solid #cccccc" }}>
-          <td className="odds-value">{bet.outcomes[1].odds > 0 ? "+" + bet.outcomes[1].odds : bet.outcomes[1].odds}</td>
-          <td>
-            <div className="books-container">
-              <ImageList style={{ margin: 0, gap: 2 }} cols={Math.min(4, books_b.length)}>
-                {books_b}
-              </ImageList>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  );
-}
-
-interface BetSlabProps {
+export default function BetSlab({
+  bet,
+  betOption,
+  screenType,
+}: {
   bet: Bet;
   betOption: BetOption;
   screenType: ScreenType;
-}
-
-export default function BetSlab({ bet, betOption, screenType }: BetSlabProps) {
+}) {
+  const { oddsFormat } = usePreferences();
   return (
-    <tr className="bet-row">
-      <td>{readableRate(bet.rate, betOption)}%</td>
-      {screenType === "medium" ? null : <td>{bet.date}</td>}
-      <td>{bet.event}</td>
-      <td>{bet.market}</td>
-      <td>
-        <table className="bets-block">
-          <tbody>
-            <tr>
-              <td>{bet.outcomes[0].name}</td>
-            </tr>
-            <tr>
-              <td>{bet.outcomes[1].name}</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-      <td>
-        <BooksBlock bet={bet} />
-      </td>
-      <td>
-        <CalcLink bet={bet} betOption={betOption} screenType={screenType} />
-      </td>
-    </tr>
+    <tbody className="bet-market">
+      {bet.outcomes.map((outcome, index) => (
+        <tr className={index === 0 ? "bet-row" : "bet-outcome-row"} key={index}>
+          {index === 0 && (
+            <>
+              <td rowSpan={2}>
+                <span className={`rate-pill ${isNegativeRate(bet.rate, betOption) ? "is-negative" : ""}`}>
+                  {readableRate(bet.rate, betOption)}%
+                </span>
+              </td>
+              <td className="event-cell" rowSpan={2}>
+                <span className="sport-tag">{bet.sport.toUpperCase()}</span>
+                <span className="event-name">{bet.event}</span>
+                <span className="event-date">{bet.date}</span>
+              </td>
+              <td className="market-cell" rowSpan={2}>
+                {bet.market}
+              </td>
+            </>
+          )}
+          <td className="paired-cell selection-name">{outcome.name}</td>
+          <td className="paired-cell odds-value">{displayOdds(outcome.odds, oddsFormat)}</td>
+          <td className="paired-cell books-cell">
+            <div className="books-container">
+              {outcome.books.map((book: string) => (
+                <Book key={book} book={book} />
+              ))}
+            </div>
+          </td>
+          {index === 0 && (
+            <td className="calculator-cell" rowSpan={2}>
+              <CalcLink bet={bet} betOption={betOption} screenType={screenType} />
+            </td>
+          )}
+        </tr>
+      ))}
+    </tbody>
   );
 }

@@ -1,13 +1,63 @@
-.slab-calc-link {
-  height: 2em;
+.bet-market {
+  border-top: 1px solid var(--low-contrast-border);
 }
-
-.books-block {
-  height: 100%;
-  border-collapse: collapse;
+.bet-market:hover {
+  background: var(--surface-muted);
 }
-
-.bets-block {
-  height: 100%;
-  border-collapse: collapse;
+.bet-market > tr > td {
+  padding: 18px;
+  vertical-align: middle;
+}
+.bet-market .calculator-cell {
+  padding-left: 0;
+  padding-right: 16px;
+  width: 48px;
+}
+.sport-tag {
+  display: block;
+  color: var(--low-contrast-text);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+.event-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 5px 0;
+  line-height: 1.4;
+}
+.event-date {
+  display: block;
+  color: var(--low-contrast-text);
+  font-size: 10px;
+}
+.market-cell {
+  font-size: 12px;
+  color: var(--medium-contrast-text);
+  line-height: 1.6;
+}
+.bet-market > tr:first-child > .paired-cell {
+  padding-bottom: 4px;
+}
+.bet-market > tr:last-child > .paired-cell {
+  padding-top: 4px;
+}
+.selection-name {
+  min-width: 130px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.odds-value {
+  font-family: "Roboto Mono", monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+@media (max-width: 1200px) {
+  .bet-market > tr > td,
+  .bet-table > thead th {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
 }

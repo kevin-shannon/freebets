@@ -1,10 +1,6 @@
 import "./ScenarioTab.css";
-import { Node, BetOption, BetType } from "../../enums";
-import { formatMoneyNumber } from "../../Utils";
-import OrgChart from "react-orgchart";
-import OutcomesCell from "./cells/OutcomesCell";
-import OutcomeCell from "./cells/OutcomeCell";
-import EvalCell from "./cells/EvalCell";
+import { BetOption, BetType } from "../../enums";
+import { calcBetStats, formatMoneyNumber } from "../../Utils";
 
 interface ScenarioTabProps {
   betOption: BetOption;
@@ -12,147 +8,43 @@ interface ScenarioTabProps {
   amount_b: string;
   bet_a: string;
   bet_b: string;
-  stats: {
-    perc: number;
-    profit: number;
-    won_a: string;
-    won_b: string;
-    sunk: string;
-    net_a: string;
-    net_b: string;
-    won_a_2?: string;
-    won_b_2?: string;
-    sunk_2?: string;
-    net_a_2?: string;
-    net_b_2?: string;
-  };
+  stats: ReturnType<typeof calcBetStats>;
 }
-
-export default function ScenarioTab({ betOption, amount_a, amount_b, bet_a, bet_b, stats }: ScenarioTabProps) {
-  let org = {
-    type: "OutcomesNode",
-    betLabel: betOption.label,
-    bet_a: bet_a,
-    bet_b: bet_b,
-    amount_a: amount_a,
-    amount_b: amount_b,
-    children: [
-      {
-        type: "OutcomeNode",
-        name: bet_a,
-        children: [{}],
-      },
-      {
-        type: "OutcomeNode",
-        name: bet_b,
-        children: [{}],
-      },
-    ],
-  };
-
-  const ScenarioNode = ({ node }: { node: Node }) => {
-    switch (node.type) {
-      case "OutcomesNode":
-        return <OutcomesCell betLabel={node.betLabel} bet_a={node.bet_a} amount_a={node.amount_a} bet_b={node.bet_b} amount_b={node.amount_b} />;
-      case "OutcomeNode":
-        return <OutcomeCell name={node.name} />;
-      case "EvalNode":
-        return <EvalCell won={node.won} sunk={node.sunk} net={node.net} bonus={node.bonus} />;
-      default:
-        return null;
-    }
-  };
-
-  if (betOption.value === BetType.ARBITRAGE) {
-    org.children[0].children[0] = {
-      type: "EvalNode",
-      won: stats.won_a,
-      sunk: stats.sunk,
-      net: stats.net_a,
-    };
-    org.children[1].children[0] = {
-      type: "EvalNode",
-      won: stats.won_b,
-      sunk: stats.sunk,
-      net: stats.net_b,
-    };
-  } else if (betOption.value === BetType.PLAYTHROUGH) {
-    org.children[0].children[0] = {
-      type: "EvalNode",
-      won: stats.won_a,
-      sunk: stats.sunk,
-      net: stats.net_a,
-    };
-    org.children[1].children[0] = {
-      type: "EvalNode",
-      won: stats.won_b,
-      sunk: stats.sunk,
-      net: stats.net_b,
-    };
-  } else if (betOption.value === BetType.FREEBET) {
-    org.children[0].children[0] = {
-      type: "EvalNode",
-      won: stats.won_a,
-      sunk: stats.sunk,
-      net: stats.net_a,
-    };
-    org.children[1].children[0] = {
-      type: "EvalNode",
-      won: stats.won_b,
-      sunk: stats.sunk,
-      net: stats.net_b,
-    };
-  } else if (betOption.value === BetType.RISKFREE) {
-    org.children[0].children[0] = {
-      type: "EvalNode",
-      won: stats.won_a,
-      sunk: stats.sunk,
-      net: stats.net_a,
-    };
-    org.children[1].children[0] = {
-      type: "EvalNode",
-      won: stats.won_b,
-      sunk: stats.sunk,
-      net: stats.net_b,
-      bonus: formatMoneyNumber(Number(amount_a), Number(amount_a) < 100),
-      children: [
-        {
-          type: "OutcomesNode",
-          betLabel: "Free Bet",
-          bet_a: "Outcome A",
-          bet_b: "Outcome B",
-          amount_a: amount_a,
-          amount_b: "X",
-          children: [
-            {
-              type: "OutcomeNode",
-              name: "Outcome A",
-              children: [
-                {
-                  type: "EvalNode",
-                  won: stats.won_b_2,
-                  sunk: stats.sunk_2,
-                  net: stats.net_b_2,
-                },
-              ],
-            },
-            {
-              type: "OutcomeNode",
-              name: "Outcome B",
-              children: [
-                {
-                  type: "EvalNode",
-                  won: stats.won_b_2,
-                  sunk: stats.sunk_2,
-                  net: stats.net_b_2,
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    };
-  }
-
-  return <OrgChart tree={org} NodeComponent={ScenarioNode} />;
+export default function ScenarioTab({ betOption, amount_a, bet_a, bet_b, stats }: ScenarioTabProps) {
+  const riskFree = betOption.value === BetType.RISKFREE;
+  return (
+    <div className="scenario-grid">
+      {[
+        { name: bet_a, won: stats.won_a, net: stats.net_a },
+        { name: bet_b, won: stats.won_b, net: stats.net_b },
+      ].map((side, index) => (
+        <section className="scenario-card" key={index}>
+          <p className="scenario-eyebrow">IF THIS SIDE WINS</p>
+          <h4>{side.name}</h4>
+          <dl>
+            <div>
+              <dt>Payout</dt>
+              <dd>{side.won}</dd>
+            </div>
+            <div>
+              <dt>Cash staked</dt>
+              <dd>{stats.sunk}</dd>
+            </div>
+            <div className="scenario-net">
+              <dt>Net</dt>
+              <dd className={side.net.startsWith("-") ? "is-negative" : ""}>{side.net}</dd>
+            </div>
+          </dl>
+          {riskFree && index === 1 && (
+            <div className="scenario-bonus">
+              <p>Plus a {formatMoneyNumber(Number(amount_a), false)} replacement free bet.</p>
+              <p>
+                Estimated net after conversion: <strong>{stats.net_b_2}</strong>
+              </p>
+            </div>
+          )}
+        </section>
+      ))}
+    </div>
+  );
 }

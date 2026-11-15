@@ -1,72 +1,56 @@
-import React from "react";
 import "./BetCard.css";
 import Book from "../common/Book";
-import ImageList from "@mui/material/ImageList";
-import Stack from "@mui/material/Stack";
 import CalcLink from "../calc/CalcLink";
 import { Bet, BetType, BetOption, ScreenType } from "../../enums";
+import { displayOdds, usePreferences } from "../common/etc/Preferences";
 
 export function readableRate(rate: number, betOption: BetOption) {
-  if (betOption.value === BetType.ARBITRAGE) {
-    return rate > 1 ? "+" + ((rate - 1) * 100).toFixed(1) : ((rate - 1) * 100).toFixed(1);
-  } else {
-    return (rate * 100).toFixed(1);
-  }
+  const value = betOption.value === BetType.ARBITRAGE ? (rate - 1) * 100 : rate * 100;
+  return `${value > 0 && betOption.value === BetType.ARBITRAGE ? "+" : ""}${value.toFixed(1)}`;
 }
-
-interface OutcomeBlockProps {
-  outcome: { name: string, odds: number, books: string[] };
+export function isNegativeRate(rate: number, betOption: BetOption) {
+  return betOption.value === BetType.ARBITRAGE ? rate < 1 : rate < 0;
 }
-
-function OutcomeBlock({ outcome }: OutcomeBlockProps) {
-  const books: React.ReactNode[] = [];
-  outcome.books.forEach((book, index) => {
-    books.push(<Book book={book} key={index} />);
-  });
-
-  return (
-    <div>
-      <Stack>
-        <span className="card-outcome-name">{outcome.name}</span>
-        <span className="card-outcome-odds">{outcome.odds > 0 ? "+" + outcome.odds : outcome.odds}</span>
-        <ImageList className="card-outcome-books" style={{ margin: "auto", paddingTop: 2, gap: 2 }} cols={Math.min(4, books.length)}>
-          {books}
-        </ImageList>
-      </Stack>
-    </div>
-  );
-}
-
-interface BetCardProps {
+export default function BetCard({
+  bet,
+  betOption,
+  screenType,
+}: {
   bet: Bet;
   betOption: BetOption;
   screenType: ScreenType;
-}
-
-export default function BetCard({ bet, betOption, screenType }: BetCardProps) {
-  let outcomes: React.ReactNode[] = [];
-  bet.outcomes.forEach((outcome, index) => {
-    outcomes.push(
-      <td className="card-outcome" key={index}>
-        <OutcomeBlock outcome={outcome} />
-      </td>
-    );
-  });
+}) {
+  const { oddsFormat } = usePreferences();
   return (
-    <div className="betcard">
-      <Stack className="betcard-info">
-        <div className="rate-container">
-          <span className="card-rate">{readableRate(bet.rate, betOption)}%</span>
-          <CalcLink bet={bet} betOption={betOption} screenType={screenType} />
-        </div>
-        <span className="card-event">{bet.event}</span>
+    <article className="betcard">
+      <div className="card-topline">
+        <span className="sport-tag">{bet.sport.toUpperCase()}</span>
+        <span className={`rate-pill ${isNegativeRate(bet.rate, betOption) ? "is-negative" : ""}`}>
+          {readableRate(bet.rate, betOption)}%{" "}
+          <small>
+            {betOption.value === BetType.ARBITRAGE ? "EV" : betOption.value === BetType.PLAYTHROUGH ? "W. EV" : "conv."}
+          </small>
+        </span>
+      </div>
+      <h3 className="card-event">{bet.event}</h3>
+      <span className="event-date">{bet.date}</span>
+      <div className="card-market-row">
         <span className="card-market">{bet.market}</span>
-      </Stack>
-      <table className="betcard-outcomes">
-        <tbody>
-          <tr className="outcomes-row">{outcomes}</tr>
-        </tbody>
-      </table>
-    </div>
+        <CalcLink bet={bet} betOption={betOption} screenType={screenType} />
+      </div>
+      <div className="card-outcomes">
+        {bet.outcomes.map((outcome, index) => (
+          <div className="card-outcome" key={index}>
+            <span className="card-outcome-name">{outcome.name}</span>
+            <span className="card-outcome-odds">{displayOdds(outcome.odds, oddsFormat)}</span>
+            <div className="books-container">
+              {outcome.books.map((book: string) => (
+                <Book key={book} book={book} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </article>
   );
 }

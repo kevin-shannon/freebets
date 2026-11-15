@@ -1,0 +1,253 @@
+import { sportsbookCatalog, SportsbookId } from "./sportsbooks";
+import { StateCode, states } from "./states";
+
+export interface StateBookAvailability {
+  books: SportsbookId[];
+  verifiedAt: string;
+  sources: string[];
+}
+
+export const availabilityVerifiedAt = "2026-11-14";
+
+// Statewide regulated online/mobile sportsbooks only. Excludes retail-only,
+// on-property-only apps, racing, fantasy, casino-only and prediction products.
+// Nevada remains included: mobile betting is offered after in-person registration.
+export const onlineSportsbookCoverage: Record<SportsbookId, { states: StateCode[]; sources: string[] }> = {
+  draftkings: {
+    states: [
+      "AZ",
+      "AR",
+      "CO",
+      "CT",
+      "DC",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "ME",
+      "MD",
+      "MA",
+      "MI",
+      "MO",
+      "NH",
+      "NJ",
+      "NY",
+      "NC",
+      "OH",
+      "OR",
+      "PA",
+      "TN",
+      "VT",
+      "VA",
+      "WV",
+      "WY",
+    ],
+    sources: [
+      "https://dknetwork.draftkings.com/2026/06/17/draftkings-is-now-available-nationwide-in-the-usa-read-more-inside/",
+    ],
+  },
+  fanduel: {
+    states: [
+      "AZ",
+      "CO",
+      "CT",
+      "DC",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "MD",
+      "MA",
+      "MI",
+      "MO",
+      "NJ",
+      "NY",
+      "NC",
+      "OH",
+      "PA",
+      "TN",
+      "VT",
+      "VA",
+      "WV",
+      "WY",
+    ],
+    sources: ["https://www.fanduel.com/"],
+  },
+  betmgm: {
+    states: [
+      "AZ",
+      "CO",
+      "DC",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "MD",
+      "MA",
+      "MI",
+      "MO",
+      "NV",
+      "NJ",
+      "NY",
+      "NC",
+      "OH",
+      "PA",
+      "TN",
+      "VA",
+      "WV",
+      "WY",
+    ],
+    sources: ["https://sports.betmgm.com/en/blog/discover-betmgm-across-america/"],
+  },
+  fanatics: {
+    states: [
+      "AZ",
+      "CO",
+      "CT",
+      "DC",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "MD",
+      "MA",
+      "MI",
+      "MO",
+      "NJ",
+      "NY",
+      "NC",
+      "OH",
+      "PA",
+      "TN",
+      "VT",
+      "VA",
+      "WV",
+      "WY",
+    ],
+    sources: ["https://www.fanaticsinc.com/fanatics-sportsbook-online-experience"],
+  },
+  caesars: {
+    states: [
+      "AZ",
+      "CO",
+      "DC",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "ME",
+      "MD",
+      "MA",
+      "MI",
+      "MO",
+      "NV",
+      "NJ",
+      "NY",
+      "NC",
+      "OH",
+      "PA",
+      "TN",
+      "VA",
+      "WV",
+      "WY",
+    ],
+    sources: [
+      "https://sportsbook.caesars.com/",
+      "https://www.caesars.com/sportsbook-and-casino",
+      "https://investor.caesars.com/news-releases/news-release-details/caesars-sportsbook-enhances-mobile-wagering-experience-nevada",
+    ],
+  },
+  bet365: {
+    states: [
+      "AZ",
+      "CO",
+      "DC",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "MD",
+      "MI",
+      "MO",
+      "NJ",
+      "NC",
+      "OH",
+      "PA",
+      "TN",
+      "VA",
+      "WV",
+    ],
+    sources: ["https://www.bet365.com/hub/en-us/states"],
+  },
+  thescorebet: {
+    states: [
+      "AZ",
+      "CO",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "MD",
+      "MA",
+      "MI",
+      "MO",
+      "NJ",
+      "NY",
+      "NC",
+      "OH",
+      "PA",
+      "TN",
+      "VA",
+      "WV",
+    ],
+    sources: ["https://sportsbook.thescore.bet/hc/en-us/articles/13873583070733-Where-can-I-use-theScore-Bet"],
+  },
+  hardrockbet: {
+    states: ["AZ", "CO", "FL", "IL", "IN", "MI", "NJ", "OH", "TN", "VA"],
+    sources: ["https://www.hardrock.bet/where-is-hard-rock-bet-available/"],
+  },
+  circasports: {
+    states: ["CO", "IL", "IA", "KY", "MO", "NV"],
+    sources: ["https://www.circasports.com/support-new"],
+  },
+  betrivers: {
+    states: ["AZ", "CO", "DE", "IL", "IN", "IA", "LA", "MD", "MI", "NJ", "NY", "OH", "PA", "VA", "WV"],
+    sources: [
+      "https://ir.rushstreetinteractive.com/news/news-details/2026/Rush-Street-Interactive-Announces-Third-Quarter-2026-Results-and-Reiterates-Full-Year-Guidance/default.aspx",
+    ],
+  },
+};
+
+const allSources = Array.from(new Set(Object.values(onlineSportsbookCoverage).flatMap((book) => book.sources)));
+export const stateBookAvailability = Object.fromEntries(
+  states.map(([state]) => [
+    state,
+    {
+      books: sportsbookCatalog
+        .filter((book) => onlineSportsbookCoverage[book.id].states.includes(state))
+        .map((book) => book.id),
+      verifiedAt: availabilityVerifiedAt,
+      sources: allSources,
+    },
+  ]),
+) as Record<StateCode, StateBookAvailability>;
+
+export function getActiveSportsbooks(state: StateCode | "") {
+  return state
+    ? sportsbookCatalog.filter((book) => stateBookAvailability[state].books.includes(book.id))
+    : [...sportsbookCatalog];
+}

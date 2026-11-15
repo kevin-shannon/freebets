@@ -1,10 +1,126 @@
-.conversion-container {
-  position: relative;
+.stake-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
-
-#conversion-span {
-  position: absolute;
-  left: 100%;
-  top: 33%;
-  padding: 8px;
+.stake-side {
+  min-width: 0;
+}
+.stake-side h4 {
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 500;
+  min-height: 42px;
+  margin: 12px 0 0;
+}
+.calc-odds {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--surface-muted);
+  padding: 10px 12px;
+  border-radius: 9px;
+  margin-bottom: 18px;
+  font-size: 11px;
+}
+.calc-odds > span {
+  color: var(--medium-contrast-text);
+}
+.calc-odds > strong {
+  font-family: "Roboto Mono", monospace;
+  font-weight: 400;
+  font-size: 13px;
+}
+.input-label {
+  display: block;
+  color: var(--medium-contrast-text);
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+.calc-input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--low-contrast-border-highlight);
+  border-radius: 9px;
+  background: var(--betcard-background);
+  color: var(--high-contrast-text);
+  font-family: "Roboto Mono", monospace;
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+  height: 48px;
+  padding: 0 12px;
+}
+.calc-input::placeholder {
+  color: var(--low-contrast-text);
+}
+.calc-input:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.calc-input[readonly] {
+  border-color: var(--low-contrast-border);
+  background: var(--surface-muted);
+}
+.profit-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--positive-soft);
+  color: var(--positive-text);
+  border-radius: 12px;
+  padding: 22px;
+  margin-top: 24px;
+  gap: 6px;
+}
+.profit-box.is-negative {
+  background: var(--negative-soft);
+  color: var(--negative-text);
+}
+.profit-box > span {
+  font-size: 11px;
+}
+.profit-box > strong {
+  font-size: 30px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+}
+.profit-box > small {
+  font-size: 11px;
+}
+.conversion-container {
+  padding: 20px 0 0;
+}
+.conversion-full-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 110px;
+  border: 1px solid var(--low-contrast-border);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.conversion-full-input:focus-within {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.conversion-input {
+  width: 60px;
+  border: 0;
+  background: transparent;
+  color: var(--high-contrast-text);
+  outline: 0;
+}
+.conversion-container p {
+  font-size: 11px;
+  color: var(--low-contrast-text);
+}
+@media (max-width: 400px) {
+  .stake-grid {
+    gap: 12px;
+  }
+  .calc-input {
+    font-size: 17px;
+  }
 }

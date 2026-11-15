@@ -1,0 +1,15 @@
+.option-check {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--low-contrast-border-highlight);
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--positive-text);
+  font-size: 12px;
+}
+.option-check.is-selected {
+  background: var(--positive-soft);
+  border-color: var(--positive-text);
+}

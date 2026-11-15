@@ -52,3 +52,4 @@ public/output.json
 public/scrape-status.json
 .local/
 .venv/
+/tools/bet365-browser/node_modules/

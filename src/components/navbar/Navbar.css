@@ -1,57 +1,83 @@
-.nav-container {
-  height: 65px;
-  max-width: 1400px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  padding: 0px 20px;
-  justify-content: space-between;
-}
-
 .sticky-navbar {
   position: sticky;
   top: 0;
-  z-index: 999;
-  background-color: var(--navbar-black);
-  color: #e5e6e7;
-  fill: #e5e6e7;
-  backdrop-filter: blur(5px);
-  transition: ease;
+  z-index: 20;
+  background: var(--navbar-background);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--low-contrast-border);
 }
-
-.sticky-navbar.has-box-shadow {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
-}
-
-.logo-container,
-.links-container,
-.extras-container {
-  display: flex;
-}
-
-.nav-link {
-  height: 100%;
-  cursor: pointer;
+.nav-container {
+  width: min(1280px, 100% - 64px);
+  margin: auto;
+  height: 76px;
   display: flex;
   align-items: center;
+  gap: 56px;
+}
+.brand {
+  color: var(--high-contrast-text);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  text-decoration: none;
+  font-size: 25px;
   font-weight: 600;
-  padding: 0 10px;
-  box-sizing: border-box;
-  border-bottom: solid 5px #00000000;
+  letter-spacing: -0.06em;
 }
-
-.nav-link:hover {
-  color: #b8bcbf;
-  transition: color 0.25s ease;
+.brand img {
+  display: block;
 }
-
+.brand-dot {
+  color: var(--freebets-pink);
+}
 .links-container {
-  height: 100%;
-  justify-content: space-around;
-  width: 220px;
+  display: flex;
+  align-self: stretch;
+  gap: 30px;
 }
-
-.link-active {
-  border-bottom: solid 5px #fa5b67;
+.nav-link {
+  display: flex;
+  align-items: center;
+  color: var(--medium-contrast-text);
+  text-decoration: none;
+  font-size: 13px;
+  border-bottom: 2px solid transparent;
+  padding-top: 2px;
+}
+.nav-link:hover {
+  color: var(--high-contrast-text);
+}
+.nav-link.link-active {
+  color: var(--high-contrast-text);
+  border-color: var(--freebets-pink);
+  font-weight: 500;
+}
+@media (max-width: 700px) {
+  .nav-container {
+    width: calc(100% - 32px);
+    height: 64px;
+    gap: 16px;
+  }
+  .brand {
+    font-size: 23px;
+    gap: 7px;
+  }
+  .brand img {
+    width: 29px;
+    height: 29px;
+  }
+  .links-container {
+    gap: 16px;
+  }
+  .nav-link {
+    font-size: 12px;
+  }
+}
+@media (max-width: 360px) {
+  .brand > span {
+    display: none;
+  }
+  .links-container {
+    gap: 14px;
+  }
 }

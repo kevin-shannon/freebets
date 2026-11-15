@@ -1,14 +1,17 @@
 import "./Book.css";
-import { Tooltip } from "react-tooltip";
+import { getSportsbook } from "../../data/sportsbooks";
 
-export default function Book({ book }: { book: string }) {
-  const src = process.env.PUBLIC_URL + "/books/" + book + ".png";
+export default function Book({ book, title }: { book: string; title?: string }) {
+  const details = getSportsbook(book);
   return (
-    <div>
-      <span data-tooltip-id="book-tool" style={{ display: "flex" }} data-tooltip-html={book}>
-        <img className="book" src={src} alt={book} />
-      </span>
-      <Tooltip id="book-tool" style={{ backgroundColor: "rgb(65 62 73)", color: "#fff", opacity: 1, borderRadius: "8px" }} place="bottom" />
-    </div>
+    <img
+      className="book"
+      src={`${process.env.PUBLIC_URL}/books/${details?.icon || `${book}.png`}`}
+      alt={details?.name || book}
+      title={title || details?.name || book}
+      width="27"
+      height="27"
+      loading="lazy"
+    />
   );
 }

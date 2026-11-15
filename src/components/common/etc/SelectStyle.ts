@@ -1,99 +1,47 @@
-interface SingleSelectStyle {
-  control: (base: any, state: any) => any;
-  menuList: (base: any) => any;
-  singleValue: (base: any) => any;
-  option: (base: any, state: any) => any;
-  dropdownIndicator: (base: any) => any;
-  indicatorSeparator: (base: any) => any;
-}
+import { StylesConfig } from "react-select";
 
-export const singleSelectStyle: SingleSelectStyle = {
+const common: StylesConfig<any, any> = {
   control: (base, state) => ({
     ...base,
-    backgroundColor: "#00000000",
-    "&:hover": {
-      border: state.isFocused ? base.border : "1px solid var(--low-contrast-border-highlight)",
-    },
-    border: state.isFocused ? "1px solid #fa5b67" : "1px solid var(--low-contrast-border)",
-    boxShadow: state.isFocused ? "0 0 0 1px #fa5b67" : base.boxShadow,
+    minHeight: 44,
+    borderRadius: 9,
+    backgroundColor: "var(--betcard-background)",
+    borderColor: state.isFocused ? "var(--focus-ring)" : "var(--low-contrast-border)",
+    boxShadow: state.isFocused ? "0 0 0 1px var(--focus-ring)" : "none",
+    cursor: "pointer",
+    ":hover": { borderColor: state.isFocused ? "var(--focus-ring)" : "var(--low-contrast-border-highlight)" },
   }),
-  menuList: (base) => ({
+  menu: (base) => ({
     ...base,
     backgroundColor: "var(--dropdown-menu-background)",
+    border: "1px solid var(--low-contrast-border)",
+    borderRadius: 10,
+    overflow: "hidden",
+    boxShadow: "var(--dialog-shadow)",
+    zIndex: 30,
   }),
-  singleValue: (base) => ({
-    ...base,
-    color: "var(--high-contrast-text)",
-  }),
+  menuList: (base) => ({ ...base, padding: 4 }),
+  valueContainer: (base) => ({ ...base, padding: "2px 12px", fontSize: 13, color: "var(--high-contrast-text)" }),
+  singleValue: (base) => ({ ...base, color: "var(--high-contrast-text)" }),
+  placeholder: (base) => ({ ...base, color: "var(--low-contrast-text)" }),
+  input: (base) => ({ ...base, color: "var(--high-contrast-text)" }),
   option: (base, state) => ({
     ...base,
-    backgroundColor: state.isSelected ? "#fa5b67" : null,
-    "&:active": {
-      backgroundColor: state.isSelected ? "#fa5b67" : "#fa5b6755",
-      color: state.isSelected ? "#ffffff" : "var(--high-contrast-text)",
-    },
-    "&:hover:not(:active)": {
-      backgroundColor: state.isSelected ? "#fa5b67" : "#fa5b6725",
-    },
+    borderRadius: 6,
+    backgroundColor: state.isSelected || state.isFocused ? "var(--button-hover)" : "transparent",
+    color: "var(--high-contrast-text)",
+    fontSize: 13,
+    cursor: "pointer",
+    padding: "10px 12px",
+    ":active": { backgroundColor: "var(--button-active)" },
   }),
   dropdownIndicator: (base) => ({
     ...base,
-    color: "var(--low-contrast-border)",
-    "&:active": {
-      color: "var(--low-contrast-text)",
-    },
-    "&:hover:not(:active)": {
-      color: "var(--low-contrast-text)",
-    },
+    color: "var(--low-contrast-text)",
+    padding: 10,
+    ":hover": { color: "var(--high-contrast-text)" },
   }),
-  indicatorSeparator: (base) => ({
-    ...base,
-    backgroundColor: "var(--low-contrast-border)",
-  }),
+  indicatorSeparator: () => ({ display: "none" }),
 };
-
-interface MultiSelectStyle {
-  control: (base: any, state: any) => any;
-  menuList: (base: any) => any;
-  option: (base: any, _: any) => any;
-  dropdownIndicator: (base: any) => any;
-  indicatorSeparator: (base: any) => any;
-}
-
-export const multiSelectStyle: MultiSelectStyle = {
-  control: (base, state) => ({
-    ...base,
-    backgroundColor: "#00000000",
-    "&:hover": {
-      border: state.isFocused ? base.border : "1px solid var(--low-contrast-border-highlight)",
-    },
-    border: state.isFocused ? "1px solid #fa5b67" : "1px solid var(--low-contrast-border)",
-    boxShadow: state.isFocused ? "0 0 0 1px #fa5b67" : base.boxShadow,
-  }),
-  menuList: (base) => ({
-    ...base,
-    backgroundColor: "var(--dropdown-menu-background)",
-  }),
-  option: (base, _) => ({
-    ...base,
-    backgroundColor: null,
-    color: null,
-    "&:hover": {
-      backgroundColor: "rgba(250, 91, 103, .15)",
-    },
-  }),
-  dropdownIndicator: (base) => ({
-    ...base,
-    color: "var(--low-contrast-border)",
-    "&:active": {
-      color: "var(--low-contrast-text)",
-    },
-    "&:hover:not(:active)": {
-      color: "var(--low-contrast-text)",
-    },
-  }),
-  indicatorSeparator: (base) => ({
-    ...base,
-    backgroundColor: "var(--low-contrast-border)",
-  }),
-};
+export const singleSelectStyle = common as StylesConfig<any, false>;
+export const multiSelectStyle = common as StylesConfig<any, true>;

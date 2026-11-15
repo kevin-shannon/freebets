@@ -22,7 +22,10 @@ jobs:
 
       # Preserve the existing CRA/TypeScript peer-dependency combination.
       - run: npm ci --legacy-peer-deps
+      - run: npm test -- --watchAll=false --runInBand
       - run: npm run build
+        env:
+          REACT_APP_ENABLE_BET365: ${{ vars.ENABLE_BET365 }}
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v4

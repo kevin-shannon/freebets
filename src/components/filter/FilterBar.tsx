@@ -3,12 +3,15 @@ import "./FilterBar.css";
 import Select from "react-select";
 import { ActionMeta } from "react-select";
 import CheckSelect from "./CheckSelect";
-import { bet_type_options, book_options_all, sport_options_all } from "../../Options";
-import { BetType, AmericanOdds, BetOption, BookOption, SportOption } from "../../enums";
+import { bet_type_options, sport_options_all } from "../../Options";
+import { BetType, BookType, AmericanOdds, BetOption, BookOption, SportOption } from "../../enums";
 import { singleSelectStyle } from "../common/etc/SelectStyle";
 import FilterExtra from "./FilterExtra";
+import StateSelector, { StateSelectorProps } from "../common/StateSelector";
+import ActiveBooks from "./ActiveBooks";
 
-interface FilterBarProps {
+interface FilterBarProps extends StateSelectorProps {
+  bookOptions: BookOption[];
   betOption: BetOption;
   setBetOption: React.Dispatch<React.SetStateAction<BetOption>>;
   bookA: BookOption[];
@@ -36,13 +39,62 @@ export default function FilterBar(props: FilterBarProps) {
     }
   };
 
-  const { betOption, bookA, bookB, sport, minOdds, maxOdds, showLive, showPush, showToday } = props;
-  const { setBetOption, setBookA, setBookB, setSport, setMinOdds, setMaxOdds, setShowLive, setShowPush, setShowToday } = props;
+  const {
+    betOption,
+    bookA,
+    bookB,
+    sport,
+    minOdds,
+    maxOdds,
+    showLive,
+    showPush,
+    showToday,
+    state,
+    onStateChange,
+    bookOptions,
+  } = props;
+  const { setBetOption, setBookA, setBookB, setSport, setMinOdds, setMaxOdds, setShowLive, setShowPush, setShowToday } =
+    props;
 
-  const filterExtraProps = { minOdds, maxOdds, showLive, showPush, showToday, setMinOdds, setMaxOdds, setShowLive, setShowPush, setShowToday };
+  const filterExtraProps = {
+    minOdds,
+    maxOdds,
+    showLive,
+    showPush,
+    showToday,
+    setMinOdds,
+    setMaxOdds,
+    setShowLive,
+    setShowPush,
+    setShowToday,
+  };
 
   return (
-    <div className="filter-container">
+    <section className="filter-container" id="filters" aria-label="Market filters">
+      <div className="filter-heading">
+        <div className="filter-state-row">
+          <StateSelector state={state} onStateChange={onStateChange} compact />
+          <ActiveBooks state={state} />
+        </div>
+        <button
+          type="button"
+          className="reset-filters"
+          onClick={() => {
+            setBetOption(bet_type_options[0]);
+            setSport(sport_options_all);
+            const allBooks = [{ value: BookType.ALL, label: "All" }];
+            setBookA(allBooks);
+            setBookB(allBooks);
+            setMinOdds(null);
+            setMaxOdds(null);
+            setShowLive(false);
+            setShowPush(false);
+            setShowToday(false);
+          }}
+        >
+          Reset filters
+        </button>
+      </div>
       <div className="filter-box">
         <div className="filter-bar">
           <div className="filter-col">
@@ -51,7 +103,8 @@ export default function FilterBar(props: FilterBarProps) {
                 Bet Type
               </label>
               <Select
-                id="bet-type"
+                inputId="bet-type"
+                instanceId="bet-type"
                 className="dropdown"
                 value={betOption}
                 styles={singleSelectStyle}
@@ -73,35 +126,49 @@ export default function FilterBar(props: FilterBarProps) {
                 <label className="select-helper" htmlFor="books-select">
                   Books
                 </label>
-                <CheckSelect id="books-select" options={book_options_all} value={bookA} setValue={setBookA} />
+                <CheckSelect id="books-select" kind="books" options={bookOptions} value={bookA} setValue={setBookA} />
               </div>
             ) : betOption.value === BetType.PLAYTHROUGH ? (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="playthrough-select">
                   Playthrough Book
                 </label>
-                <CheckSelect id="playthrough-select" options={book_options_all} value={bookA} setValue={setBookA} />
+                <CheckSelect
+                  id="playthrough-select"
+                  kind="books"
+                  options={bookOptions}
+                  value={bookA}
+                  setValue={setBookA}
+                />
               </div>
             ) : (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="freebet-select">
                   Free Bet Book
                 </label>
-                <CheckSelect id="freebet-select" options={book_options_all} value={bookA} setValue={setBookA} />
+                <CheckSelect id="freebet-select" kind="books" options={bookOptions} value={bookA} setValue={setBookA} />
               </div>
             )}
-            {betOption.value === BetType.FREEBET || betOption.value === BetType.RISKFREE || betOption.value === BetType.PLAYTHROUGH ? (
+            {betOption.value === BetType.FREEBET ||
+            betOption.value === BetType.RISKFREE ||
+            betOption.value === BetType.PLAYTHROUGH ? (
               <div className="filter-cell">
                 <label className="select-helper" htmlFor="hedge-book-select">
                   Hedge Book
                 </label>
-                <CheckSelect id="hedge-book-select" options={book_options_all} value={bookB} setValue={setBookB} />
+                <CheckSelect
+                  id="hedge-book-select"
+                  kind="books"
+                  options={bookOptions}
+                  value={bookB}
+                  setValue={setBookB}
+                />
               </div>
             ) : null}
           </div>
         </div>
         <FilterExtra {...filterExtraProps} />
       </div>
-    </div>
+    </section>
   );
 }

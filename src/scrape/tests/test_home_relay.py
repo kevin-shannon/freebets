@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src/scrape"))
 
-from caesars_relay.server import make_server, fetch_upstream
+from caesars_relay.server import make_server, fetch_upstream, BET365_PATH, BET365_UPSTREAM
 from books.caesars.caesars import COMPETITIONS
 from http_client import FeedClient, FeedError
 import main
@@ -27,6 +27,69 @@ DEVICE_ID = "00000000-0000-4000-8000-000000000001"
 
 
 class HomeRelayTests(unittest.TestCase):
+    def test_bet365_is_opt_in_and_cannot_choose_another_target_or_query(self):
+        self.assertEqual(requests.get(self.origin + BET365_PATH, headers=self.headers, timeout=2).status_code, 400)
+        self.server.enable_bet365 = True
+        for path in [BET365_PATH + "?url=https://example.com", BET365_PATH + "?pd=other", "/bet365/nhl", "/bet365/nba/", "/bet365/account"]:
+            with self.subTest(path=path):
+                self.assertEqual(requests.get(self.origin + path, headers=self.headers, timeout=2).status_code, 400)
+        self.upstream.assert_not_called()
+
+    def test_bet365_pipe_text_authentication_headers_and_trace(self):
+        self.server.enable_bet365 = True
+        payload = (Path(__file__).parent / "fixtures/bet365-nba.txt").read_bytes()
+        self.upstream.return_value = (200, payload)
+        self.assertEqual(requests.get(self.origin + BET365_PATH, timeout=2).status_code, 401)
+        headers = {**self.headers, "Cookie": "private-cookie", "CF-Access-Client-Secret": "private-access",
+                   "X-Platform": "rn-web", "Referer": "https://example.com/", "X-Freebets-Trace-Id": DEVICE_ID}
+        with self.assertLogs("caesars_relay.server", level="INFO") as logged:
+            response = requests.get(self.origin + BET365_PATH, headers=headers, timeout=2)
+        self.assertEqual(response.content, payload)
+        self.assertEqual(response.headers["Content-Type"], "text/plain; charset=utf-8")
+        url, sent = self.upstream.call_args.args
+        self.assertEqual(url, BET365_UPSTREAM)
+        self.assertEqual(sent["Referer"], "https://www.mo.bet365.com/")
+        for header in ("Authorization", "Cookie", "CF-Access-Client-Secret", "X-Unique-Device-Id", "X-Platform"):
+            self.assertNotIn(header, sent)
+        record = json.loads(logged.records[0].getMessage())
+        self.assertEqual(record["event"], "bet365_relay_request")
+        self.assertEqual(record["kind"], "markets")
+        self.assertEqual(record["trace_id"], DEVICE_ID)
+
+    def test_bet365_collection_through_home_relay_reuses_auth_and_keeps_other_books_separate(self):
+        self.server.enable_bet365 = True
+        self.upstream.return_value = (200, (Path(__file__).parent / "fixtures/bet365-nba.txt").read_bytes())
+        client = self.client(BET365_RELAY_URL=self.origin,
+                             CAESARS_RELAY_ACCESS_CLIENT_ID="test-access-id",
+                             CAESARS_RELAY_ACCESS_CLIENT_SECRET="test-access-secret")
+        client.region = "mo"
+        client.bet365_region = "mo"
+        try:
+            with patch.object(main, "FeedClient", return_value=client), redirect_stdout(io.StringIO()):
+                rows, report = main.collect(books=["bet365"], sports=["nba"], region="mo")
+            self.assertEqual(len(rows), 6)
+            self.assertEqual(report["books"]["bet365"]["transport"], "home_relay")
+            self.assertEqual(report["books"]["bet365"]["relayRequests"], 1)
+            self.assertEqual(client.caesars_relay_requests, 0)
+            self.assertEqual(client.bet365_relay_token, TOKEN)
+            self.assertEqual(client.bet365_access_id, "test-access-id")
+            self.assertEqual(self.upstream.call_args.args[0], BET365_UPSTREAM)
+        finally:
+            client.close()
+
+    def test_bet365_relay_outage_does_not_disable_caesars(self):
+        client = self.client(BET365_RELAY_URL=self.origin)
+        try:
+            with patch.object(client.session, "get", side_effect=requests.Timeout("secret")) as get, redirect_stdout(io.StringIO()):
+                for _ in range(2):
+                    with self.assertRaises(FeedError):
+                        client.get_text("https://www.mo.bet365.com/contentdata/matchmarketscontentapi/markets")
+                self.assertEqual(get.call_count, 1)
+            self.assertIsNone(client.caesars_relay_failure)
+            self.assertIsNotNone(client.bet365_relay_failure)
+        finally:
+            client.close()
+
     def setUp(self):
         self.upstream = Mock(return_value=(200, b"[]"))
         self.server = make_server(("127.0.0.1", 0), TOKEN, fetch=self.upstream)
@@ -237,6 +300,21 @@ class HomeRelayTests(unittest.TestCase):
 
 
 class RelayUpstreamTests(unittest.TestCase):
+    def test_bet365_upstream_requires_bounded_pipe_text_and_does_not_solve_challenges(self):
+        for content_type, body, valid in [("text/plain", b"F|CL;ID=18;|", True),
+                                           ("text/html", b"F|CL;ID=18;|", False),
+                                           ("text/plain", b"<html>challenge</html>", False),
+                                           ("text/plain", b"F|CL;" + b"x" * 33, False)]:
+            response = MagicMock(status_code=200, headers={"Content-Type": content_type})
+            response.iter_content.return_value = [body]
+            with self.subTest(content_type=content_type, valid=valid), patch("caesars_relay.server.MAX_RESPONSE_BYTES", 32), patch("caesars_relay.server.requests.Session") as session:
+                session.return_value.__enter__.return_value.get.return_value.__enter__.return_value = response
+                if valid:
+                    self.assertEqual(fetch_upstream(BET365_UPSTREAM, {}), (200, body))
+                else:
+                    with self.assertRaises(ValueError):
+                        fetch_upstream(BET365_UPSTREAM, {})
+
     def test_upstream_uses_direct_connection_and_refuses_redirects(self):
         response = MagicMock(status_code=200, headers={"Content-Type": "application/json"})
         response.iter_content.return_value = [b'{"event": {}}']

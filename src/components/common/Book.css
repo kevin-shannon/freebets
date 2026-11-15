@@ -1,3 +1,8 @@
 .book {
-    border-radius: 3px;
+  display: block;
+  width: 27px;
+  height: 27px;
+  object-fit: contain;
+  border-radius: 7px;
+  flex-shrink: 0;
 }

@@ -1,42 +1,10 @@
-.toggle-button.style {
-  text-transform: none;
-}
-
-.styles-block {
-  display: flex;
+.segment > .odds-format-choice {
   flex-direction: column;
-  width: fit-content;
-  margin: 25px auto 0 auto;
+  gap: 3px;
+  font-size: 11px;
 }
-
-.menu-setting-label {
-  font-family: "IBM Plex Sans";
-  font-weight: 700;
-  margin-left: 2px;
-  margin-bottom: 8px;
-  font-size: 12px;
-  letter-spacing: 1px;
-}
-
-.style-icon {
-  margin-right: 8px;
-  height: 20px;
-}
-
-.odd-format-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.col1-content {
-  width: 64px;
-}
-
-.col2-content {
-  width: 78px;
-}
-
-.col3-content {
-  width: 59px;
+.odds-format-choice small {
+  font-size: 13px;
+  font-family: "Roboto Mono", monospace;
+  font-variant-numeric: tabular-nums;
 }

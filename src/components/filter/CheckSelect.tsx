@@ -1,7 +1,6 @@
 import React from "react";
 import "./CheckSelect.css";
 import Select, { components, MultiValue, ActionMeta, ValueContainerProps, OptionProps } from "react-select";
-import Check from "../common/Check";
 import { multiSelectStyle } from "../common/etc/SelectStyle";
 import { GenericOption } from "../../enums";
 import { book_options_all } from "../../Options";
@@ -11,8 +10,10 @@ const Option = (props: OptionProps<GenericOption<any>>) => {
     <div>
       <components.Option {...props}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <label>{props.label}</label>
-          <Check checkActive={props.isSelected} />
+          <span>{props.label}</span>
+          <span className={`option-check ${props.isSelected ? "is-selected" : ""}`} aria-hidden="true">
+            {props.isSelected ? "✓" : ""}
+          </span>
         </div>
       </components.Option>
     </div>
@@ -60,13 +61,14 @@ const ValueContainerSport = ({ children, ...props }: ValueContainerProps<Generic
 };
 
 interface CheckSelectProps<T> {
+  kind?: "books" | "sports";
   id: string;
   options: GenericOption<T>[];
   value: GenericOption<T>[];
   setValue: React.Dispatch<React.SetStateAction<GenericOption<T>[]>>;
 }
 
-export default function CheckSelect<T>({ id, options, setValue, value }: CheckSelectProps<T>) {
+export default function CheckSelect<T>({ id, options, setValue, value, kind }: CheckSelectProps<T>) {
   const handleSelectAll = (selectAll: boolean) => {
     selectAll ? setValue(options) : setValue([]);
   };
@@ -87,13 +89,14 @@ export default function CheckSelect<T>({ id, options, setValue, value }: CheckSe
     }
   };
 
-  const ValueContainer = options === book_options_all ? ValueContainerBook : ValueContainerSport;
+  const ValueContainer = kind === "books" || options === book_options_all ? ValueContainerBook : ValueContainerSport;
 
   return (
     <div>
       <Select
         styles={multiSelectStyle}
-        id={id}
+        inputId={id}
+        instanceId={id}
         className="dropdown"
         isMulti={true}
         components={{
@@ -106,6 +109,7 @@ export default function CheckSelect<T>({ id, options, setValue, value }: CheckSe
         blurInputOnSelect={false}
         isSearchable={false}
         isClearable={false}
+        isDisabled={options.length === 0}
         options={options}
         value={value}
         onChange={handleChange}

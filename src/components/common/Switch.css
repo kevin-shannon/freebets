@@ -1,70 +1,47 @@
 .switch-container {
-  cursor: pointer;
-}
-
-.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   position: relative;
-  display: inline-block;
-  width: 35px;
-  height: 20px;
-  margin-right: 10px;
+  cursor: pointer;
+  min-height: 32px;
 }
-
-.switch:focus-visible {
-  outline: 2px solid #fa5b67;
-  outline-offset: 2px;
-  border-radius: 10px;
-}
-
-.swith-label {
-  color: #323232;
-}
-
-.slider {
+.switch-container input {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  transition: 0.1s cubic-bezier(0.4, 0, 1, 1);
-  border-radius: 10px;
-  border: 2px solid var(--switch-off-outer);
+  opacity: 0;
+  width: 1px;
+  height: 1px;
 }
-
-.slider::before {
-  position: absolute;
-  content: "";
+.switch-track {
+  display: flex;
+  align-items: center;
+  width: 30px;
+  height: 18px;
+  padding: 3px;
+  border-radius: 20px;
+  background: var(--low-contrast-border-highlight);
+  transition: background 160ms ease;
+  flex-shrink: 0;
+}
+.switch-track > span {
   width: 12px;
   height: 12px;
-  top: 2px;
-  left: 2px;
-  transition: 0.1s cubic-bezier(0.4, 0, 1, 1);
-  border-radius: 6px;
-  background-color: var(--switch-off-inner);
+  border-radius: 50%;
+  background: var(--betcard-background);
+  box-shadow: 0 1px 2px #00000020;
+  transition: transform 160ms ease;
 }
-
-.switch-container.checked .slider {
-  border-color: var(--freebets-pink);
+.switch-container input:checked + .switch-track {
+  background: var(--positive-text);
 }
-
-.switch-container.checked .slider::before {
-  transform: translate(15px);
-  background-color: var(--freebets-pink);
+.switch-container input:checked + .switch-track > span {
+  transform: translateX(12px);
 }
-
-.switch:hover,
-.slider:hover {
-  border-color: var(--black-white);
+.switch-container input:focus-visible + .switch-track {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
 }
-
-.slider:hover::before {
-  background-color: var(--black-white);
-}
-
-.switch-container.checked .slider:hover {
-  border-color: #e65b5b;
-}
-
-.switch-container.checked.switch-container:hover .slider::before {
-  background-color: #e65b5b;
+.switch-label {
+  font-size: 12px;
+  color: var(--medium-contrast-text);
 }

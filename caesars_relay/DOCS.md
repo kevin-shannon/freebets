@@ -1,6 +1,7 @@
 # Caesars relay on Home Assistant OS
 
-The app fetches public Caesars JSON using your home internet connection. AWS
+The app fetches public Caesars JSON using your home internet connection. Version
+0.3.0 also accepts fresh bet365 MO NBA captures from a normal-browser publisher. AWS
 Lambda still runs the collector, normalizes the odds, and publishes to S3.
 
 ```text
@@ -57,6 +58,9 @@ Use the LAN address of the Home Assistant machine. `localhost` inside another
 app/container may refer to that container instead of Home Assistant's host.
 Keep your existing Home Assistant hostname and tunnel route in place.
 
+The optional bet365 test uses the same relay hostname, port, and Access policy;
+it does not need a second tunnel route or application.
+
 For a dashboard-managed tunnel, add a **Published application route** in
 Cloudflare. If the tunnel is managed by your Home Assistant Cloudflared app,
 add this hostname/service pair using that app's additional-host configuration.
@@ -87,7 +91,8 @@ the following while preserving the existing variables:
 | `CAESARS_RELAY_ACCESS_CLIENT_SECRET` | Cloudflare Access service-token secret |
 
 Relay routing takes precedence over `CAESARS_PROXY_URL` for Caesars. Other books
-keep their existing routing. The deployment workflow preserves these Lambda
+keep their existing routing unless explicitly configured as described below.
+The deployment workflow preserves these Lambda
 environment settings. A relay connection/access failure stops further relay
 attempts during that collection so the other books can finish. Each new
 collection retries the relay, including warm Lambda invocations.
@@ -105,6 +110,55 @@ are live only after that end-to-end check succeeds.
 
 To disable the relay, remove `CAESARS_RELAY_URL` from Lambda. The collector then
 uses the configured Caesars forward proxy, or its existing direct connection.
+
+## Optional bet365 NBA browser publisher (0.3.0)
+
+bet365's normal Chrome capture path is verified; automated Chrome and Firefox
+sessions stalled before requesting odds. The self-hosted publisher runs in the
+normal browser, reloads the public NBA page once per minute, and uploads only a
+newly observed response. It requires the browser, the NBA tab, and DevTools to
+remain open and the machine to remain awake. This app does not run that browser.
+
+After the new version is published to the repository:
+
+1. Update this app to **0.3.0**. Set `enable_bet365: true`,
+   `bet365_source: browser`, and `bet365_max_age_seconds: 120`. Preserve the
+   existing `region` and `relay_token`; Caesars' region does not change.
+2. Follow the [publisher setup](../tools/bet365-devtools/README.md) using the
+   existing relay HTTPS origin, relay token, and Cloudflare Access service token.
+   Grant the extension access only to that relay origin. Confirm at least two
+   successful uploads a minute apart before enabling scheduled collection.
+3. In a terminal with the existing `CAESARS_RELAY_*` credentials, run:
+
+   ```powershell
+   $env:BET365_RELAY_URL = $env:CAESARS_RELAY_URL
+   $env:BET365_REGION = 'mo'
+   npm run scrape:check -- --books bet365 --sports nba --region mo
+   ```
+
+   `BET365_RELAY_TOKEN`, `BET365_RELAY_ACCESS_CLIENT_ID`, and
+   `BET365_RELAY_ACCESS_CLIENT_SECRET` are optional overrides; otherwise the
+   client uses the existing Caesars relay credentials. Enter secrets locally,
+   never in chat. Requests use the same authentication on `/bet365/nba`; nothing
+   is bypassed in Cloudflare Access. Lambda can later use the same variables,
+   and set `BET365_ENABLED=true` to opt the scheduled collector in. Other feeds
+   keep their regions. Only NBA is implemented; unsupported sports are reported
+   explicitly. Verify `source: browser_capture`, `captureObservedAt`, and fresh
+   markets in the collection report before showing the book on the website.
+4. Set the GitHub repository variable `ENABLE_BET365=true` for the next frontend
+   build only after this check succeeds. This sets `REACT_APP_ENABLE_BET365`.
+   The website removes expired bet365 prices even while the page stays open.
+
+`POST /bet365/capture` accepts only authenticated, bounded, recent MO NBA pipe
+captures. `GET /bet365/nba` serves that in-memory capture while fresh, and returns
+503 `capture_missing` or `capture_stale` otherwise. This mode never fetches bet365
+directly. Logs use `bet365_relay_request` with kind `capture` or `markets`; their
+shared `capture_id` ties an upload to a read. `upstream_status` is null for cached
+responses. Credentials and bodies are not logged.
+
+The source option `direct` retains the earlier diagnostic GET behavior, which
+has not solved access. To disable bet365 in production, remove `BET365_ENABLED`
+and its frontend variable, and stop publishing. Other books are unaffected.
 
 ## Verify that Lambda used the home relay
 
@@ -140,12 +194,16 @@ fallback occurs when the home relay is configured.
 - GET requests to Caesars v4 NBA/NHL/MLB schedule and event-detail paths for the
   configured state. The upstream host is fixed to `api.americanwagering.com`.
 - Only the schedule's `competitionId` and event's `useEventPayloadWithTabNav`
-  query parameters. Arbitrary URLs, private-network targets, write methods, and
+  query parameters. Arbitrary URLs, private-network targets, other write methods, and
   upstream redirects are rejected.
 - Only public sportsbook headers are forwarded. Relay credentials, Cloudflare
   Access credentials, cookies, and forwarded-IP headers stop at the relay.
 - Upstream connections use certificate verification, bounded timeouts, four
   concurrent requests, and a maximum decoded response size of 8 MiB.
+- When browser mode is enabled, the one upload endpoint accepts at most 1 MiB,
+  requires a capture timestamp no more than 30 seconds old, and expires quotes
+  based on their observation time. Malformed/older uploads do not refresh the
+  last good capture. Restarting drops the cache and returns `capture_missing`.
 
 The app needs no Home Assistant API access, host filesystem mounts, Docker API
 access, or router port forwarding. The container reads its app options, then

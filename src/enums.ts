@@ -11,6 +11,12 @@ export enum BookType {
   CAESARS = "caesars",
   DRAFTKINGS = "draftkings",
   FANDUEL = "fanduel",
+  BET365 = "bet365",
+  FANATICS = "fanatics",
+  THESCOREBET = "thescorebet",
+  HARDROCKBET = "hardrockbet",
+  CIRCASPORTS = "circasports",
+  BETRIVERS = "betrivers",
 }
 
 export enum SportType {

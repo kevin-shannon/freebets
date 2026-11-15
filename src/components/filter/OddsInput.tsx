@@ -3,6 +3,7 @@ import "./OddsInput.css";
 import { ChangeEvent } from "react";
 
 interface OddsInputProps {
+  id: string;
   sign: string;
   value: AmericanOdds;
   setValue: React.Dispatch<React.SetStateAction<AmericanOdds>>;
@@ -24,7 +25,7 @@ function convertFromAmericanOdds(americanOdds: AmericanOdds): string {
   return Math.abs(americanOdds.value).toString();
 }
 
-export default function OddsInput({ sign, value, setValue }: OddsInputProps) {
+export default function OddsInput({ id, sign, value, setValue }: OddsInputProps) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
 
@@ -42,6 +43,7 @@ export default function OddsInput({ sign, value, setValue }: OddsInputProps) {
     <div className="odds-input">
       <span className="input-prefix">{sign}</span>
       <input
+        id={id}
         className="min-odds-input"
         type="text"
         inputMode="numeric"

@@ -1,0 +1,83 @@
+.app-dialog {
+  box-sizing: border-box;
+  width: min(600px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: 0;
+  border: 1px solid var(--low-contrast-border);
+  border-radius: 20px;
+  background: var(--betcard-background);
+  color: var(--high-contrast-text);
+  box-shadow: var(--dialog-shadow);
+  overflow: auto;
+}
+.app-dialog::backdrop {
+  background: var(--modal-backdrop);
+  backdrop-filter: blur(5px);
+}
+.app-dialog[open] {
+  animation: dialog-enter 160ms ease-out;
+}
+.dialog-header {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid var(--low-contrast-border);
+}
+.dialog-header h2 {
+  margin: 4px 0 0;
+  font-size: 21px;
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+}
+.dialog-close {
+  flex-shrink: 0;
+}
+.dialog-close svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+.dialog-body {
+  padding: 24px;
+  line-height: 1.65;
+}
+.dialog-body > :first-child {
+  margin-top: 0;
+}
+.dialog-body > :last-child {
+  margin-bottom: 0;
+}
+.dialog-body p {
+  color: var(--medium-contrast-text);
+}
+.preferences-dialog {
+  width: min(360px, calc(100vw - 24px));
+  max-height: calc(100dvh - 100px);
+  margin: 0;
+  position: fixed;
+  inset: 84px max(16px, calc((100vw - 1280px) / 2)) auto auto;
+}
+.preferences-dialog .dialog-header {
+  padding: 20px;
+}
+.preferences-dialog .dialog-body {
+  padding: 22px 20px;
+}
+.preferences-note {
+  font-size: 12px;
+  margin: 24px 0 0;
+  color: var(--low-contrast-text);
+}
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
