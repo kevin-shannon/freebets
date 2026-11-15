@@ -108,8 +108,9 @@ After the code is published:
    Unsupported NHL/MLB sports are explicit and do not make valid NBA coverage
    partial. Failed/stale NBA captures do make overall coverage partial while
    retaining the other books' successful data.
-6. Set GitHub repository variable **ENABLE_BET365=true** for the next website
-   build, or `REACT_APP_ENABLE_BET365=true` for a local build. Book options then
+6. Production website builds enable bet365 by default after live verification;
+   repository variable **ENABLE_BET365=false** hides it. Set
+   `REACT_APP_ENABLE_BET365=true` for a local build. Book options then
    include bet365 where available. The page rechecks source freshness every ten
    seconds and removes expired bet365 prices even without another feed update.
 

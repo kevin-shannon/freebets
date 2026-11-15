@@ -145,8 +145,9 @@ After the new version is published to the repository:
    keep their regions. Only NBA is implemented; unsupported sports are reported
    explicitly. Verify `source: browser_capture`, `captureObservedAt`, and fresh
    markets in the collection report before showing the book on the website.
-4. Set the GitHub repository variable `ENABLE_BET365=true` for the next frontend
-   build only after this check succeeds. This sets `REACT_APP_ENABLE_BET365`.
+4. Production website builds now enable bet365 by default after its live-feed
+   verification. Repository variable `ENABLE_BET365=false` disables it; local
+   builds can use `REACT_APP_ENABLE_BET365=true`.
    The website removes expired bet365 prices even while the page stays open.
 
 `POST /bet365/capture` accepts only authenticated, bounded, recent MO NBA pipe

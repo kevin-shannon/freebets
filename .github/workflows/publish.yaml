@@ -25,7 +25,8 @@ jobs:
       - run: npm test -- --watchAll=false --runInBand
       - run: npm run build
         env:
-          REACT_APP_ENABLE_BET365: ${{ vars.ENABLE_BET365 }}
+          # The production browser feed is verified; an explicit false disables it.
+          REACT_APP_ENABLE_BET365: ${{ vars.ENABLE_BET365 || 'true' }}
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v4

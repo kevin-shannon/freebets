@@ -108,7 +108,8 @@ collection verified before Caesars can be considered restored in production.
 bet365 has an optional free, self-hosted [normal-browser publisher](tools/bet365-devtools/README.md).
 It sends fresh MO NBA responses to the home relay; Lambda reads the expiring
 cache. Recurring local delivery is verified. Production enablement remains
-opt-in through `BET365_ENABLED` in Lambda and `ENABLE_BET365` for frontend builds.
+opt-in through `BET365_ENABLED` in Lambda. Website builds include bet365 by
+default; repository variable `ENABLE_BET365=false` hides it as a rollback switch.
 The browser/DevTools must stay open; expired quotes are removed independently.
 
 Caesars can optionally use an external HTTP/HTTPS forward proxy while the

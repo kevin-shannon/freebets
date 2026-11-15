@@ -175,7 +175,8 @@ The receiver validates capture age/layout, rejects malformed/older uploads,
 and expires quotes after its configured TTL (default 120 seconds). The backend
 can opt in with `BET365_ENABLED=true`, `BET365_REGION=mo`, and `BET365_RELAY_URL`.
 It continues collecting other books on bet365 outages. The frontend opt-in is
-`ENABLE_BET365=true` for GitHub builds (`REACT_APP_ENABLE_BET365` locally); the
+`REACT_APP_ENABLE_BET365=true` locally; GitHub builds now enable it by default
+after live verification, with `ENABLE_BET365=false` available for rollback. The
 page independently removes expired browser quotes while preserving other books.
 
 Live local delivery was verified on November 15: three new website captures on
